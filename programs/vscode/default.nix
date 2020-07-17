@@ -3,13 +3,13 @@
 let
   cfg = config.programs.vscode;
 
-  font = "Iosevka DDD Term";
+  font = "Iosevka DDD";
 
 in {
   options.programs.vscode.enable' = lib.mkEnableOption "vscode";
 
   config = lib.mkIf cfg.enable' {
-    fonts.fonts = with pkgs; [ iosevka-ddd-term-font ];
+    fonts.fonts = with pkgs; [ iosevka-ddd-font ];
 
     programs.vscode = lib.mkMerge [{
       enable = true;

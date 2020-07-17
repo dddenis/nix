@@ -1,45 +1,31 @@
 { fetchzip, iosevka }:
 
-let
-  commonPrivateBuildPlan = {
-    design = [ "extended" ];
-
-    weights = {
-      regular = {
-        shape = 400;
-        menu = 400;
-        css = 400;
-      };
-
-      bold = {
-        shape = 700;
-        menu = 700;
-        css = 700;
-      };
-    };
-
-    slants = {
-      upright = "normal";
-      italic = "oblique";
-    };
-  };
-
-in {
+{
   ddd = iosevka.override {
     set = "ddd";
 
-    privateBuildPlan = commonPrivateBuildPlan // {
+    privateBuildPlan = {
       family = "Iosevka DDD";
-      design = commonPrivateBuildPlan.design ++ [ "calt" "ligset-haskell" ];
-    };
-  };
+      design = [ "sp-term" ];
 
-  ddd-term = iosevka.override {
-    set = "ddd-term";
+      weights = {
+        regular = {
+          shape = 400;
+          menu = 400;
+          css = 400;
+        };
 
-    privateBuildPlan = commonPrivateBuildPlan // {
-      family = "Iosevka DDD Term";
-      design = commonPrivateBuildPlan.design ++ [ "term" ];
+        bold = {
+          shape = 700;
+          menu = 700;
+          css = 700;
+        };
+      };
+
+      slants = {
+        upright = "normal";
+        italic = "oblique";
+      };
     };
   };
 

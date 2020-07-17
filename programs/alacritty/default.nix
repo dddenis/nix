@@ -6,7 +6,7 @@ in {
   options.programs.alacritty.enable' = lib.mkEnableOption "alacritty";
 
   config = lib.mkIf cfg.enable' {
-    fonts.fonts = with pkgs; [ iosevka-ddd-term-font ];
+    fonts.fonts = with pkgs; [ iosevka-ddd-font ];
 
     programs.alacritty = {
       enable = true;
@@ -16,7 +16,7 @@ in {
           size = 12;
 
           normal = {
-            family = "Iosevka DDD Term";
+            family = "Iosevka DDD";
             style = "Extended";
           };
           bold.style = "Bold Extended";
