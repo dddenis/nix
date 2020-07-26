@@ -9,16 +9,21 @@ let
 
   variable = "SpaceFn";
 
+  swap = x: y: [ (fromTo x y) (fromTo y x) ];
+
   fromTo = from: to: {
     from = { key_code = from; };
     to = { key_code = to; };
   };
 
-  swap = x: y: [ (fromTo x y) (fromTo y x) ];
-
   fromToConsumer = from: to: {
     from = { key_code = from; };
     to = { consumer_key_code = to; };
+  };
+
+  fromToShellCommand = from: to: {
+    inherit from;
+    to = [{ shell_command = to; }];
   };
 
   mkRule = description: manipulators: {
@@ -151,6 +156,13 @@ let
           [ (whenPressed "caps_lock" "left_control" "escape") ])
         (mkRule "HHKB: Ctrl to esc"
           [ (whenPressed "left_control" "left_control" "escape") ])
+        (mkRule "Launch Alacritty" [
+          (fromToShellCommand {
+            key_code = "return_or_enter";
+            modifiers = { mandatory = [ "left_option" "left_shift" ]; };
+          }
+            "open -n ${pkgs.alacritty}/Applications/Alacritty.app --args -e ${config.programs.tmux.launch}")
+        ])
       ];
     };
     devices = [ hhkb ];
