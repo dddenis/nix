@@ -1,9 +1,20 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
-let cfg = config.programs.tmux;
+let
+  inherit (lib) types;
+
+  cfg = config.programs.tmux;
+  tmux = "${pkgs.tmux}/bin/tmux";
 
 in {
-  options.programs.tmux.enable' = lib.mkEnableOption "tmux";
+  options.programs.tmux = {
+    enable' = lib.mkEnableOption "tmux";
+
+    launch = lib.mkOption {
+      type = types.package;
+      default = pkgs.writeShellScript "tmux-launch" tmux;
+    };
+  };
 
   config = lib.mkIf cfg.enable' {
     programs.tmux = {
@@ -16,6 +27,10 @@ in {
       keyMode = "vi";
       shortcut = "a";
       terminal = "tmux-256color";
+
+      launch = pkgs.writeShellScript "tmux-attach" ''
+        (${tmux} ls | grep -vq attached && ${tmux} a) || ${tmux}
+      '';
 
       extraConfig = lib.mkBefore ''
         bind s split-window -v -c '#{pane_current_path}'

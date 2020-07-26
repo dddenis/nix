@@ -14,7 +14,7 @@ in {
 
       oh-my-zsh = {
         enable = true;
-        plugins = [ "git" "tmux" ];
+        plugins = [ "git" ];
       };
 
       plugins = with pkgs; [
