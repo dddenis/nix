@@ -11,6 +11,9 @@ in {
       userName = "Denis Goncharenko";
       userEmail = lib.mkDefault "dddenjer@gmail.com";
       ignores = [ ".log/" ".vim/" ];
+      extraConfig = {
+        pull.rebase = true;
+      };
     };
   };
 }
