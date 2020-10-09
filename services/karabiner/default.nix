@@ -42,30 +42,6 @@ let
 
   setVariable = name: value: { set_variable = { inherit name value; }; };
 
-  mkModifierTrigger = modifier: variable: {
-    from = {
-      key_code = modifier;
-      modifiers = { optional = [ "any" ]; };
-    };
-    to_if_alone = [
-      (setVariable variable 0)
-      {
-        key_code = modifier;
-        halt = true;
-      }
-    ];
-    to_if_held_down = [ (setVariable variable 1) ];
-    to_after_key_up = [ (setVariable variable 0) { key_code = "vk_none"; } ];
-    to_delayed_action = {
-      to_if_canceled = [ (setVariable variable 0) { key_code = modifier; } ];
-    };
-    parameters = {
-      "basic.to_if_alone_timeout_milliseconds" = 300;
-      "basic.to_delayed_action_delay_milliseconds" = 0;
-      "basic.to_if_held_down_threshold_milliseconds" = 0;
-    };
-  };
-
   mapWithModifier = from: to: modifier: variable: [
     {
       conditions = [{
@@ -85,13 +61,12 @@ let
         simultaneous_options = {
           key_down_order = "strict";
           key_up_order = "strict_inverse";
-          detect_key_down_uninterruptedly = true;
           to_after_key_up = [ (setVariable variable 0) ];
         };
         modifiers = { optional = [ "any" ]; };
       };
       to = [ (setVariable variable 1) { key_code = to; } ];
-      parameters = { "basic.simultaneous_threshold_milliseconds" = 300; };
+      parameters = { "basic.simultaneous_threshold_milliseconds" = 500; };
     }
   ];
 
@@ -150,7 +125,6 @@ let
           (mapWithModifier "j" "down_arrow" modifier variable)
           (mapWithModifier "k" "up_arrow" modifier variable)
           (mapWithModifier "l" "right_arrow" modifier variable)
-          (mkModifierTrigger modifier variable)
         ]))
         (mkRule "Caps to ctrl/esc"
           [ (whenPressed "caps_lock" "left_control" "escape") ])
@@ -161,7 +135,7 @@ let
             key_code = "return_or_enter";
             modifiers = { mandatory = [ "left_option" "left_shift" ]; };
           }
-            "open -n ${pkgs.alacritty}/Applications/Alacritty.app --args -e ${config.programs.tmux.launch}")
+            "open -n ${pkgs.alacritty}/Applications/Alacritty.app")
         ])
       ];
     };
