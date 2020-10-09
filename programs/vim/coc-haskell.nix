@@ -10,14 +10,17 @@ in {
     programs.vim.coc-nvim.coc-settings = {
       languageserver = {
         haskell = {
-          command = "hie";
-          args = [ "--lsp" ];
-          rootPatterns =
-            [ "*.cabal" "stack.yaml" "cabal.project" "package.yaml" ];
-          filetypes = [ "hs" "lhs" "haskell" ];
-          initializationOptions = {
-            languageServerHaskell = { "hlintOn" = true; };
-          };
+          command = "haskell-language-server-wrapper";
+          args = [ "--lsp" "-d" ];
+          rootPatterns = [
+            "*.cabal"
+            "stack.yaml"
+            "cabal.project"
+            "package.yaml"
+            "hie.yaml"
+          ];
+          filetypes = [ "haskell" "lhaskell" ];
+          initializationOptions = { haskell = { }; };
         };
       };
     };
