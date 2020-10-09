@@ -26,6 +26,7 @@
       nnn
       postman
       slack
+      spotify
       tdesktop
       unityhub
     ];
