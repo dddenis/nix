@@ -7,7 +7,7 @@ let
   cfg = config.programs.vim.coc-nvim;
 
 in {
-  imports = [ ./coc-haskell.nix ./coc-lists.nix ./coc-tsserver.nix ];
+  imports = [ ./coc-lists.nix ./coc-tsserver.nix ];
 
   options.programs.vim.coc-nvim = {
     enable' = lib.mkEnableOption "vim.coc-nvim";
@@ -17,7 +17,6 @@ in {
 
   config = lib.mkIf cfg.enable' {
     programs.vim = {
-      coc-haskell.enable' = true;
       coc-lists.enable' = true;
       coc-tsserver.enable' = true;
 

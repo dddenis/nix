@@ -7,8 +7,15 @@ let
   inherit (cfg) leader;
 
 in {
-  imports =
-    [ ./bufkill.nix ./coc-nvim.nix ./hardtime.nix ./lightline.nix ./nix.nix ./tmux-navigator.nix ];
+  imports = [
+    ./bufkill.nix
+    ./coc-nvim.nix
+    ./hardtime.nix
+    ./haskell.nix
+    ./lightline.nix
+    ./nix.nix
+    ./tmux-navigator.nix
+  ];
 
   options.programs.vim = {
     enable' = lib.mkEnableOption "vim";
@@ -28,6 +35,7 @@ in {
       bufkill.enable' = true;
       coc-nvim.enable' = true;
       hardtime.enable' = true;
+      haskell.enable' = true;
       lightline.enable' = true;
       nix.enable' = true;
       tmux-navigator.enable' = true;
@@ -99,7 +107,7 @@ in {
       '';
 
       plugins = with pkgs.vimPlugins; [
-        gruvbox
+        gruvbox-community
         vim-abolish
         vim-commentary
         vim-polyglot
