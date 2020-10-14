@@ -75,7 +75,7 @@ in {
           endif
         endfunction
 
-        nmap <${leader}>cr <Plug>(coc-rename)
+        nmap <${leader}>cr :CocCommand document.renameCurrentWord<CR>
         nmap <${leader}>cR <Plug>(coc-refactor)
 
         nmap <${leader}>cf <Plug>(coc-format)
