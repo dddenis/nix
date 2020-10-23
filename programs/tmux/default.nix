@@ -27,6 +27,7 @@ in {
       keyMode = "vi";
       shortcut = "a";
       terminal = "tmux-256color";
+      plugins = with pkgs.tmuxPlugins; [ gruvbox ];
 
       launch = pkgs.writeShellScript "tmux-attach" ''
         (${tmux} ls | grep -vq attached && ${tmux} a) || ${tmux}
