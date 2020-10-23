@@ -21,7 +21,7 @@ in {
       programs.vim.coc-nvim.coc-settings = {
         languageserver = {
           haskell = {
-            command = "haskell-language-server-wrapper";
+            command = "haskell-language-server";
             args = [ "--lsp" "-d" ];
             rootPatterns = [
               "*.cabal"
