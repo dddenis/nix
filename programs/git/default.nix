@@ -10,7 +10,7 @@ in {
       enable = true;
       userName = "Denis Goncharenko";
       userEmail = lib.mkDefault "dddenjer@gmail.com";
-      ignores = [ ".log/" ".vim/" ];
+      ignores = [ ".log/" ".vim/" ".ignore" ];
       extraConfig = {
         pull.rebase = true;
       };
