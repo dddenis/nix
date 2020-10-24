@@ -11,9 +11,24 @@ in {
       userName = "Denis Goncharenko";
       userEmail = lib.mkDefault "dddenjer@gmail.com";
       ignores = [ ".log/" ".vim/" ".ignore" ];
-      extraConfig = {
-        pull.rebase = true;
+
+      delta = {
+        enable = true;
+
+        options = {
+          features = "side-by-side line-numbers decorations";
+          syntax-theme = "gruvbox";
+
+          decorations = {
+            commit-decoration-style = "bold yellow box ul";
+            file-style = "bold yellow ul";
+            file-decoration-style = "none";
+            whitespace-error-style = "22 reverse";
+          };
+        };
       };
+
+      extraConfig = { pull.rebase = true; };
     };
   };
 }
