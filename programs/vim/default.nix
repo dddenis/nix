@@ -14,7 +14,6 @@ in {
     ./haskell.nix
     ./lightline.nix
     ./nix.nix
-    ./tmux-navigator.nix
   ];
 
   options.programs.vim = {
@@ -38,7 +37,6 @@ in {
       haskell.enable' = true;
       lightline.enable' = true;
       nix.enable' = true;
-      tmux-navigator.enable' = true;
     };
 
     programs.neovim = {
@@ -112,6 +110,7 @@ in {
         vim-commentary
         vim-polyglot
         vim-surround
+        vim-tmux-navigator
       ];
     };
   };
