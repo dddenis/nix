@@ -10,6 +10,9 @@ in {
 
     fonts.fonts = with pkgs; [ emacs-all-the-icons-fonts ];
 
-    home.sessionVariables = { PATH = "$PATH:$HOME/.emacs.d/bin"; };
+    home = {
+      packages = with pkgs; [ gitAndTools.delta nixfmt ];
+      sessionVariables = { PATH = "$PATH:$HOME/.emacs.d/bin"; };
+    };
   };
 }
