@@ -36,14 +36,17 @@
 
   programs = {
     alacritty.enable' = true;
+    bat.enable' = true;
     command-not-found.enable = true;
     direnv.enable' = true;
     emacs.enable' = true;
     feh.enable = true;
+    fzf.enable' = true;
     git.enable' = true;
     google-chrome.enable' = true;
     home-manager.enable = true;
     mpv.enable = true;
+    ripgrep.enable' = true;
     tmux.enable' = true;
     vim.enable' = true;
     vscode.enable' = true;
