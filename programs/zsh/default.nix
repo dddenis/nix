@@ -17,6 +17,8 @@ in {
         plugins = [ "git" ];
       };
 
+      dirHashes = { nix = toString ../..; };
+
       plugins = with pkgs; [
         {
           name = "powerlevel10k";
