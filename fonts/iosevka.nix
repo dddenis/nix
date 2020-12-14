@@ -1,4 +1,4 @@
-{ fetchzip, iosevka }:
+{ iosevka, nerdfonts }:
 
 {
   ddd = iosevka.override {
@@ -29,17 +29,5 @@
     };
   };
 
-  nerd = fetchzip {
-    name = "iosevka-nerd-font";
-
-    url =
-      "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/Iosevka.zip";
-
-    postFetch = ''
-      mkdir -p $out/share/fonts/iosevka-nerd
-      unzip -j $downloadedFile -d $out/share/fonts/iosevka-nerd
-    '';
-
-    sha256 = "13yyv7s901x3z74y5314qjxsacdq26idn4gwixgl7c2q7c6rv8i9";
-  };
+  nerd = nerdfonts.override { fonts = [ "Iosevka" ]; };
 }
