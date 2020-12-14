@@ -15,13 +15,10 @@ in {
         font = {
           size = 12;
 
-          normal = {
-            family = "Iosevka DDD";
-            style = "Extended";
-          };
-          bold.style = "Bold Extended";
-          italic.style = "Extended Oblique";
-          bold_italic.style = "Bold Extended Oblique";
+          normal.family = "monospace";
+          bold.style = "Bold";
+          italic.style = "Oblique";
+          bold_italic.style = "Bold Oblique";
         };
 
         colors = config.theme // (with config.theme; {
