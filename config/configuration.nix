@@ -94,6 +94,10 @@ in {
     users.ddd = import ./home.nix;
   };
 
+  fonts.fontconfig.defaultFonts = {
+    monospace = [ "Iosevka DDD Extended" "Iosevka Nerd Font Mono" ];
+  };
+
   environment.systemPackages = with pkgs; [
     fd
     git
