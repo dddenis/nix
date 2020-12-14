@@ -71,7 +71,7 @@ in {
           if (index(['vim','help'], &filetype) >= 0)
             execute 'h '.expand('<cword>')
           else
-            call CocAction('doHover')
+            call CocActionAsync('doHover')
           endif
         endfunction
 
@@ -85,7 +85,7 @@ in {
         xmap <${leader}>c. <Plug>(coc-codeaction-selected)
         nmap <${leader}>cc <Plug>(coc-fix-current)
         nmap <${leader}>ca :CocCommand eslint.executeAutofix<CR>
-        nmap <${leader}>ci :call CocAction('organizeImport')<CR>
+        nmap <${leader}>ci :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 
         nnoremap <silent> <${leader}>cx :<C-u>CocList diagnostics<CR>
         nnoremap <silent> <${leader}>cs :<C-u>CocList -I symbols<CR>
