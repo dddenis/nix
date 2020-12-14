@@ -16,7 +16,10 @@ in {
   };
 
   config = lib.mkMerge [
-    { home.packages = cfg.fonts; }
+    {
+      fonts.fonts = with pkgs; [ iosevka-ddd-font iosevka-nerd-font ];
+      home.packages = cfg.fonts;
+    }
 
     (lib.mkIf cfg.enable' { fonts.fontconfig.enable = true; })
   ];
