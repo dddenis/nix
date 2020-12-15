@@ -12,7 +12,7 @@ in {
       enable = true;
 
       settings = {
-        font = {
+        font = lib.mkDefault {
           size = 12;
 
           normal.family = "monospace";
