@@ -40,6 +40,12 @@ let
     to_if_alone = [{ key_code = to_if_alone; }];
   };
 
+  launchApp = key_code:
+    fromToShellCommand {
+      inherit key_code;
+      modifiers = { mandatory = [ "left_option" "left_shift" ]; };
+    };
+
   setVariable = name: value: { set_variable = { inherit name value; }; };
 
   mapWithModifier = from: to: modifier: variable: [
@@ -131,12 +137,11 @@ let
         (mkRule "HHKB: Ctrl to esc"
           [ (whenPressed "left_control" "left_control" "escape") ])
         (mkRule "Launch Alacritty" [
-          (fromToShellCommand {
-            key_code = "return_or_enter";
-            modifiers = { mandatory = [ "left_option" "left_shift" ]; };
-          }
+          (launchApp "return_or_enter"
             "open -n ${pkgs.alacritty}/Applications/Alacritty.app")
         ])
+        (mkRule "Launch Emacs"
+          [ (launchApp "e" "open -n ${pkgs.emacs}/Applications/Emacs.app") ])
       ];
     };
     devices = [ hhkb ];

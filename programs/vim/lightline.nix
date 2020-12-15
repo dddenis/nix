@@ -15,11 +15,12 @@ in {
           \ 'active': {
           \   'left': [
           \     [ 'mode', 'paste' ],
-          \     [ 'cocstatus', 'readonly', 'filename', 'modified' ]
+          \     [ 'git', 'cocstatus', 'readonly', 'filename', 'modified' ]
           \   ]
           \ },
           \ 'component_function': {
-          \   'cocstatus': 'coc#status'
+          \   'cocstatus': 'coc#status',
+          \   'git': 'FugitiveStatusline'
           \ },
           \ }
       '';

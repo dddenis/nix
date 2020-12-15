@@ -21,6 +21,11 @@ in {
     buildCores = 8;
     maxJobs = 8;
 
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
     gc = {
       automatic = true;
       interval = { Weekday = 0; };

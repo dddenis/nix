@@ -108,6 +108,7 @@ in {
         gruvbox-community
         vim-abolish
         vim-commentary
+        vim-fugitive
         vim-polyglot
         vim-surround
         vim-tmux-navigator
