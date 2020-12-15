@@ -67,7 +67,7 @@ in {
         set colorcolumn=100
 
         set list
-        set listchars=tab:▸-,trail:•,extends:›,precedes:‹,nbsp:␣
+        set listchars=tab:▸-,trail:·,extends:›,precedes:‹,nbsp:␣
 
         set expandtab
         set softtabstop=2
