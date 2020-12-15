@@ -13,6 +13,7 @@ let
 in {
   imports = [
     <home-manager/nix-darwin>
+    (import ../nix)
     (import ../services/lorri/darwin.nix { inherit userConfig; })
   ];
 
@@ -26,7 +27,7 @@ in {
       options = "--delete-older-than 14d";
     };
 
-    trustedUsers = [ "root" "ddd" ];
+    trustedUsers = [ "ddd" ];
   };
 
   nixpkgs = {
