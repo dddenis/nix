@@ -42,7 +42,7 @@
     git = {
       enable' = true;
       userEmail = "denis.goncharenko@mcmakler.de";
-      ignores = [ "*.org" ".dir-locals.el" ".envrc" "shell.nix" ];
+      ignores = [ "*.org" ".DS_Store" ".dir-locals.el" ".envrc" "shell.nix" ];
     };
 
     zsh = {
