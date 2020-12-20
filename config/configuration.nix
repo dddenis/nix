@@ -77,8 +77,6 @@ in {
     };
   };
 
-  location.provider = "geoclue2";
-
   users = {
     defaultUserShell = pkgs.zsh;
 
@@ -95,7 +93,8 @@ in {
   };
 
   fonts.fontconfig.defaultFonts = {
-    monospace = [ "Iosevka DDD Extended" "Iosevka Nerd Font Mono" ];
+    monospace =
+      lib.mkBefore [ "Iosevka DDD Extended" "Iosevka Nerd Font Mono" ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -115,8 +114,6 @@ in {
   };
 
   services = {
-    blueman.enable = true;
-    redshift.enable = true;
     safeeyes.enable = true;
 
     journald.extraConfig = ''
@@ -127,34 +124,12 @@ in {
     xserver = {
       enable = true;
 
-      desktopManager.xterm.enable = true;
+      layout = "us,ru";
+      xkbModel = "hhk";
+      xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
 
-      displayManager = {
-        defaultSession = "xterm";
-
-        lightdm = {
-          greeters = {
-            gtk.enable = false;
-
-            mini = {
-              enable = true;
-              user = "ddd";
-              extraConfig = ''
-                [greeter]
-                show-password-label = false
-                password-alignment = left
-
-                [greeter-theme]
-                background-color = "#3B4252"
-                border-width = 0px
-                window-color = "#2E3440"
-                password-color = "#ECEFF4"
-                password-background-color = "#4C566A"
-              '';
-            };
-          };
-        };
-      };
+      displayManager.sddm.enable = true;
+      desktopManager.plasma5.enable = true;
     };
   };
 

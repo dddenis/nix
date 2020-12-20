@@ -3,21 +3,18 @@
 {
   imports = [
     ../fonts
-    ../home/keyboard
+    ../home
     ../programs
     ../services
     ../theme
+    ../xdg
     ../xresources
-    ../xsession/windowManager/xmonad
+    ../xserver
   ];
 
   home = {
-    keyboard'.enable' = true;
-
     packages = with pkgs; [
-      cachix
       discord
-      dmenu
       filezilla
       inkscape
       jetbrains.rider
@@ -40,12 +37,10 @@
     command-not-found.enable = true;
     direnv.enable' = true;
     emacs.enable' = true;
-    feh.enable = true;
     fzf.enable' = true;
     git.enable' = true;
     google-chrome.enable' = true;
     home-manager.enable = true;
-    mpv.enable = true;
     ripgrep.enable' = true;
     tmux.enable' = true;
     vim.enable' = true;
@@ -55,16 +50,11 @@
 
   services = {
     flameshot.enable = true;
-    lorri.enable' = true;
-    polybar.enable' = true;
     xcape.enable' = true;
   };
 
   xdg.enable = true;
   xresources.enable' = true;
 
-  xsession = {
-    enable = true;
-    windowManager.xmonad.enable' = true;
-  };
+  xserver.desktopManager.plasma5.enable' = true;
 }
