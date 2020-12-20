@@ -1,0 +1,13 @@
+[1]
+Description=Maximize Normal Windows
+maximizehoriz=true
+maximizehorizrule=3
+maximizevert=true
+maximizevertrule=3
+types=1
+wmclass=
+wmclasscomplete=false
+wmclassmatch=0
+
+[General]
+count=1
