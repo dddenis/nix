@@ -3,7 +3,7 @@
 let overlays = import ../overlays-compat/overlays.nix;
 
 in {
-  imports = [ <home-manager/nixos> ./hardware-configuration.nix ];
+  imports = [ <home-manager/nixos> ../nix ./hardware-configuration.nix ];
 
   nix = {
     nixPath = [
