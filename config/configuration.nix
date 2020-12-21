@@ -49,7 +49,14 @@ in {
   networking = {
     hostName = "ddd-pc";
 
-    firewall.allowedUDPPorts = [ 34997 54997 ];
+    firewall.allowedUDPPorts = [
+      # spotify
+      5353
+
+      # unity
+      34997
+      54997
+    ];
 
     useDHCP = false;
     interfaces = {
