@@ -52,7 +52,6 @@
 
   services = {
     flameshot.enable = true;
-    xcape.enable' = true;
   };
 
   xdg.enable = true;
