@@ -14,7 +14,7 @@ in {
 
       oh-my-zsh = {
         enable = true;
-        plugins = [ "git" ];
+        plugins = [ "git" "vi-mode" ];
       };
 
       dirHashes = { nix = toString ../..; };
