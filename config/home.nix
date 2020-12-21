@@ -52,7 +52,10 @@
 
   services = {
     flameshot.enable = true;
+    kmonad.enable = true;
   };
+
+  systemd.user.startServices = "sd-switch";
 
   xdg.enable = true;
   xresources.enable' = true;
