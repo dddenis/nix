@@ -27,6 +27,8 @@
       tdesktop
       unityhub
     ];
+
+    stateVersion = "20.09";
   };
 
   fonts.enable' = true;
