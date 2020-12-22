@@ -9,6 +9,7 @@ let
       inherit (callLibs ./trivial.nix) withDefault;
 
       fs = callLibs ./fs.nix;
+      user = callLibs ./user.nix;
     };
 
 in { lib = super.lib.extend (self: mkCustomLib); }
