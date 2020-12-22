@@ -2,7 +2,7 @@ self: super:
 
 let
   inherit (super) lib;
-  inherit (import ../lib { inherit lib; }) fs;
+  fs = import ../lib/fs.nix { inherit lib; };
 
   overlays = fs.importDirRec {
     path = toString ./..;

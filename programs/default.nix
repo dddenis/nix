@@ -1,5 +1,7 @@
 { lib, ... }:
 
-let inherit (import ../lib { inherit lib; }) fs;
-
-in { imports = fs.importDirRec { path = toString ./.; }; }
+{
+  imports = (import ../lib/fs.nix { inherit lib; }).importDirRec {
+    path = toString ./.;
+  };
+}

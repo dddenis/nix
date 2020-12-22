@@ -1,8 +1,6 @@
-args@{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  lib = import ../../../lib { lib = args.lib; };
-
   cfg = config.xserver.desktopManager.plasma5;
 
   plasma5Config =
