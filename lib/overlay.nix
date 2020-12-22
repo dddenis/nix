@@ -6,6 +6,7 @@ let
 
     in {
       inherit (callLibs ./attrsets.nix) concatAttrs;
+      inherit (callLibs ./lists.nix) isEmpty;
       inherit (callLibs ./trivial.nix) withDefault;
 
       fs = callLibs ./fs.nix;
