@@ -24,7 +24,7 @@ in {
       options = "--delete-older-than 14d";
     };
 
-    trustedUsers = [ "root" "ddd" ];
+    trustedUsers = [ "ddd" ];
   };
 
   nixpkgs = {
