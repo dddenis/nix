@@ -17,7 +17,7 @@ in {
         plugins = [ "git" "vi-mode" ];
       };
 
-      dirHashes = { nix = toString ../..; };
+      dirHashes = { nix = "${config.home.homeDirectory}/dev/dddenis/nix"; };
 
       plugins = with pkgs; [
         {

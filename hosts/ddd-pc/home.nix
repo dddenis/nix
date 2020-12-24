@@ -2,14 +2,14 @@
 
 {
   imports = [
-    ../fonts
-    ../home
-    ../programs
-    ../services
-    ../theme
-    ../xdg
-    ../xresources
-    ../xserver
+    ../../fonts
+    ../../home
+    ../../programs
+    ../../services
+    ../../theme
+    ../../xdg
+    ../../xresources
+    ../../xserver
   ];
 
   home = {

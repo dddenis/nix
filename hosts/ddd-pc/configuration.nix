@@ -1,23 +1,12 @@
 { config, lib, pkgs, ... }:
 
-let overlays = import ../overlays-compat/overlays.nix;
+let overlays = import ../../overlays-compat/overlays.nix;
 
 in {
-  imports = [
-    <home-manager/nixos>
-    ../nix
-    ../services/kmonad/nixos.nix
-    ./hardware-configuration.nix
-  ];
+  imports =
+    [ ../../nix ../../services/kmonad/nixos.nix ./hardware-configuration.nix ];
 
   nix = {
-    nixPath = [
-      "nixpkgs=${toString <nixpkgs>}"
-      "nixos-config=${toString ./configuration.nix}"
-      "nixpkgs-overlays=${toString ../overlays-compat}"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
-
     gc = {
       automatic = true;
       dates = "weekly";

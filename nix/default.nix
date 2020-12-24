@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 let
   caches = {
     "https://hydra.iohk.io" =
@@ -9,5 +11,9 @@ in {
     binaryCaches = builtins.attrNames caches;
     binaryCachePublicKeys = builtins.attrValues caches;
     trustedUsers = [ "root" ];
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
   };
 }
