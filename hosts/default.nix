@@ -27,7 +27,10 @@ let
             "/nix/var/nix/profiles/per-user/root/channels"
           ];
 
-          registry.nixpkgs.flake = pkgs;
+          registry = {
+            config.flake = outputs;
+            nixpkgs.flake = pkgs;
+          };
         };
 
         system = {
