@@ -94,11 +94,11 @@ in {
       };
     };
 
-    xdg.configSymlink = {
-      kglobalshortcutsrc = toString ./kglobalshortcutsrc;
-      kwinrc = toString ./kwinrc;
-      kwinrulesrc = toString ./kwinrulesrc;
-      kxkbrc = toString ./kxkbrc;
+    xdg.configFile = {
+      kglobalshortcutsrc.source = ./kglobalshortcutsrc;
+      kwinrc.source = ./kwinrc;
+      kwinrulesrc.source = ./kwinrulesrc;
+      kxkbrc.source = ./kxkbrc;
     };
 
     home.activation.plasma5Config =

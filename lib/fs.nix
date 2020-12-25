@@ -7,6 +7,10 @@ let
   joinPath = a: b: a + "/${b}";
 
 in rec {
+  baseDirOf = path:
+    let dir = toString (dirOf path);
+    in lib.last (lib.splitString "/" dir);
+
   readDirRec = path:
     let
       processEntry = name: type:

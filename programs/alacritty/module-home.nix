@@ -6,8 +6,6 @@ in {
   options.programs.alacritty.enable' = lib.mkEnableOption "alacritty";
 
   config = lib.mkIf cfg.enable' {
-    fonts.fonts = with pkgs; [ iosevka-ddd-font ];
-
     programs.alacritty = {
       enable = true;
 

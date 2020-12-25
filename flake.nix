@@ -9,15 +9,8 @@
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = input@{ self, flake-utils, home-manager, nixos, nixpkgs }:
+  outputs = inputs@{ self, flake-utils, nixpkgs, ... }:
     let
-      extendedLib = import ./lib/extended-lib.nix nixpkgs.lib;
-
-      normalizedInput = {
-        flake = input;
-        lib = extendedLib;
-      };
-
       defaultSystems = flake-utils.lib.eachDefaultSystem (system:
         let
           pkgs = import nixpkgs {
@@ -36,11 +29,28 @@
           };
         });
 
+      importModules = regex: _: {
+        imports = self.lib.fs.importDirRec {
+          inherit regex;
+          path = toString ./.;
+        };
+      };
+
     in defaultSystems // {
       lib = import ./lib { inherit (nixpkgs) lib; };
 
-      nixosConfigurations = import ./hosts normalizedInput;
+      nixosConfigurations = import ./hosts {
+        lib = import ./lib/extended-lib.nix nixpkgs.lib;
+        inputs = removeAttrs inputs [ "self" ];
+        outputs = self;
+      };
+
+      nixosModule = importModules "module-nixos.nix";
+
+      homeModule = importModules "module-home.nix";
 
       overlay = import ./overlays-compat/overlays.nix;
+
+      stateVersion = "20.09";
     };
 }

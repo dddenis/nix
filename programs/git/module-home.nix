@@ -5,11 +5,11 @@ let cfg = config.programs.git;
 in {
   options.programs.git.enable' = lib.mkEnableOption "git";
 
-  config = lib.mkIf cfg.enable' {
+  config = lib.mkIf cfg.enable' (lib.mkDefault {
     programs.git = {
       enable = true;
       userName = "Denis Goncharenko";
-      userEmail = lib.mkDefault "dddenjer@gmail.com";
+      userEmail = "dddenjer@gmail.com";
       ignores = [ ".log/" ".vim/" ".ignore" ];
 
       delta = {
@@ -30,5 +30,5 @@ in {
 
       extraConfig = { pull.rebase = true; };
     };
-  };
+  });
 }

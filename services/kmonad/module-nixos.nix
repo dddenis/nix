@@ -2,7 +2,7 @@
 
 let
   userConfigs =
-    pkgs.lib.user.filterConfigs (userConfig: userConfig.services.kmonad.enable)
+    pkgs.lib.user.filterConfigs (userConfig: userConfig.services.kmonad.enable')
     config;
 
   mkNixosUserConfigs = value:

@@ -4,7 +4,7 @@ let cfg = config.services.kmonad;
 
 in {
   options.services.kmonad = {
-    enable = lib.mkEnableOption "kmonad";
+    enable' = lib.mkEnableOption "kmonad";
 
     config = lib.mkOption {
       type = lib.types.path;
@@ -12,7 +12,7 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable' {
     systemd.user.services.kmonad = {
       Unit = {
         Description = "kmonad";

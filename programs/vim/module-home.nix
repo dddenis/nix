@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  inherit (lib) types;
-
   cfg = config.programs.vim;
   inherit (cfg) leader;
 
@@ -20,7 +18,7 @@ in {
     enable' = lib.mkEnableOption "vim";
 
     leader = lib.mkOption {
-      type = types.str;
+      type = lib.types.str;
       default = "\\";
     };
   };

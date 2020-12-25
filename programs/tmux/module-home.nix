@@ -1,9 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
-  inherit (lib) types;
-
   cfg = config.programs.tmux;
+
   tmux = "${pkgs.tmux}/bin/tmux";
 
 in {
@@ -11,7 +10,7 @@ in {
     enable' = lib.mkEnableOption "tmux";
 
     launch = lib.mkOption {
-      type = types.package;
+      type = lib.types.package;
       default = pkgs.writeShellScript "tmux-launch" tmux;
     };
   };

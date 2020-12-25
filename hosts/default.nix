@@ -1,10 +1,13 @@
-{ flake, lib, ... }:
+args@{ lib, inputs, outputs }:
 
 let
-  nixosSystem = system: configuration:
+  nixosSystem = { hostName, system, users }:
     let
-      pkgs = if isDarwin then flake.nixpkgs else flake.nixos;
-      home-manager = flake.home-manager."${if isDarwin then
+      config = ./. + "/${hostName}/configuration.nix";
+
+      pkgs = if isDarwin then inputs.nixpkgs else inputs.nixos;
+
+      home-manager = inputs.home-manager."${if isDarwin then
         "darwinModules"
       else
         "nixosModules"}".home-manager;
@@ -12,10 +15,14 @@ let
       isDarwin = lib.hasInfix "darwin" system;
 
       commonModule = { lib, ... }: {
+        home-manager.users = lib.getAttrs users (import ../users args);
+
+        networking = { inherit hostName; };
+
         nix = {
           nixPath = [
             "nixpkgs=${pkgs}"
-            "nixos-config=${toString configuration}"
+            "nixos-config=${toString config}"
             "nixpkgs-overlays=${toString ../overlays-compat}"
             "/nix/var/nix/profiles/per-user/root/channels"
           ];
@@ -23,19 +30,33 @@ let
           registry.nixpkgs.flake = pkgs;
         };
 
-        system.configurationRevision =
-          lib.mkIf (flake.self ? rev) flake.self.rev;
+        system = {
+          configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
+          stateVersion = outputs.stateVersion;
+        };
+
+        users.users = lib.genAttrs users (_: {
+          isNormalUser = true;
+          extraGroups = [ "wheel" ];
+        });
       };
 
-    in pkgs.lib.nixosSystem {
-      inherit system;
+    in {
+      "${hostName}" = pkgs.lib.nixosSystem {
+        inherit system;
 
-      modules = [
-        pkgs.nixosModules.notDetected
-        home-manager
-        commonModule
-        configuration
-      ];
+        modules = [
+          pkgs.nixosModules.notDetected
+          outputs.nixosModule
+          home-manager
+          commonModule
+          config
+        ];
+      };
     };
 
-in { ddd-pc = nixosSystem "x86_64-linux" ./ddd-pc/configuration.nix; }
+in nixosSystem {
+  hostName = "ddd-pc";
+  system = "x86_64-linux";
+  users = [ "ddd" ];
+}
