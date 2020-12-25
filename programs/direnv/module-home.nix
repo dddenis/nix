@@ -8,6 +8,7 @@ in {
   config = lib.mkIf cfg.enable' {
     programs.direnv = {
       enable = true;
+      enableNixDirenvIntegration = true;
       enableZshIntegration = true;
     };
   };
