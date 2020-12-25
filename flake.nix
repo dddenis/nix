@@ -52,5 +52,7 @@
       overlay = import ./overlays-compat/overlays.nix;
 
       stateVersion = "20.09";
+
+      templates = import ./templates { inherit (nixpkgs) lib; };
     };
 }
