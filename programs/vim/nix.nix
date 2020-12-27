@@ -12,6 +12,7 @@ in {
     programs.neovim = {
       extraConfig = ''
         autocmd FileType nix setlocal formatprg=${pkgs.nixfmt}/bin/nixfmt
+        autocmd FileType nix setlocal iskeyword-=-
         autocmd FileType nix nmap <buffer><silent> <${leader}>cf :%!${pkgs.nixfmt}/bin/nixfmt<CR>
       '';
 
