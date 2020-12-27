@@ -12,6 +12,11 @@ in {
       enableCompletion = true;
       dotDir = ".config/zsh";
 
+      initExtra = ''
+        ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(''${ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#*forward-char})
+        ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char vi-forward-char)
+      '';
+
       oh-my-zsh = {
         enable = true;
         plugins = [ "git" "vi-mode" ];
