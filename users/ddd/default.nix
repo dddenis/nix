@@ -29,6 +29,7 @@
     fzf.enable' = true;
     git.enable' = true;
     google-chrome.enable' = true;
+    less.enable' = true;
     ripgrep.enable' = true;
     spotify.enable' = true;
     tmux.enable' = true;
