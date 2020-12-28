@@ -13,11 +13,9 @@
     jetbrains.rider
     krita
     niv
-    nnn
     postman
     slack
     tdesktop
-    unzip
     xclip
   ];
 
@@ -30,6 +28,7 @@
     git.enable' = true;
     google-chrome.enable' = true;
     less.enable' = true;
+    nnn.enable' = true;
     ripgrep.enable' = true;
     spotify.enable' = true;
     tmux.enable' = true;
