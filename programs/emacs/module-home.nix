@@ -12,7 +12,7 @@ in {
 
     home = {
       packages = with pkgs; [ gitAndTools.delta nixfmt ];
-      sessionVariables = { PATH = "$PATH:$HOME/.emacs.d/bin"; };
+      sessionPath = [ "${config.home.homeDirectory}/.emacs.d/bin" ];
     };
   };
 }
