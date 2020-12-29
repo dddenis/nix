@@ -4,6 +4,8 @@ let
   cfg = config.programs.nnn;
   nnnConfigHome = "${config.xdg.configHome}/nnn";
 
+  customPlugins = [ ./symlink2file.sh ];
+
   nnnPlugins = ''
     PLUGINS="${nnnConfigHome}/plugins";
     mkdir -p $PLUGINS
@@ -30,7 +32,7 @@ in {
       packages = with pkgs; [ atool file nnn tree unzip ];
       sessionVariables = {
         NNN_OPTS = "HUadou";
-        NNN_PLUG = "p:preview-tui";
+        NNN_PLUG = "L:symlink2file;p:preview-tui";
       };
       activation.nnnPlugins =
         lib.hm.dag.entryAfter [ "writeBoundary" ] nnnPlugins;
@@ -39,5 +41,12 @@ in {
     programs.zsh.initExtra = ''
       . ${quitcd}
     '';
+
+    xdg.configFile = builtins.listToAttrs (map (source:
+      lib.nameValuePair
+      ("nnn/plugins/" + (lib.removeSuffix ".sh" (baseNameOf source))) {
+        inherit source;
+        executable = true;
+      }) customPlugins);
   };
 }
