@@ -15,5 +15,9 @@ in builtins.mapAttrs (_: userConfig: {
     home-manager.enable = true;
   };
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+    mimeApps.enable = true;
+    configFile."mimeapps.list".force = true;
+  };
 }) userConfigs
