@@ -15,6 +15,7 @@ in {
   imports = [
     ./bufkill.nix
     ./coc-nvim.nix
+    ./floaterm.nix
     ./hardtime.nix
     ./haskell.nix
     ./lightline.nix
@@ -38,6 +39,7 @@ in {
 
       bufkill.enable' = true;
       coc-nvim.enable' = true;
+      floaterm.enable' = true;
       hardtime.enable' = true;
       haskell.enable' = true;
       lightline.enable' = true;
@@ -88,7 +90,6 @@ in {
         nnoremap <silent> <Esc> :nohlsearch<CR><Esc>
 
         cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<CR>
-        map <${leader}>. :e %%<C-z>
 
         set hidden
         nnoremap <silent> <${leader}>` :b#<CR>
