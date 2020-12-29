@@ -9,15 +9,4 @@ in builtins.mapAttrs (_: userConfig: {
   imports = [ outputs.homeModule userConfig ];
 
   home.stateVersion = outputs.stateVersion;
-
-  programs = {
-    command-not-found.enable = true;
-    home-manager.enable = true;
-  };
-
-  xdg = {
-    enable = true;
-    mimeApps.enable = true;
-    configFile."mimeapps.list".force = true;
-  };
 }) userConfigs

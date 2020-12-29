@@ -3,22 +3,26 @@
 {
   fonts.enable' = true;
 
-  home.packages = with pkgs; [
-    discord
-    fd
-    filezilla
-    git
-    google-chrome
-    htop
-    inkscape
-    jetbrains.rider
-    krita
-    niv
-    postman
-    slack
-    tdesktop
-    xclip
-  ];
+  home = {
+    enable' = true;
+
+    packages = with pkgs; [
+      discord
+      fd
+      filezilla
+      git
+      google-chrome
+      htop
+      inkscape
+      jetbrains.rider
+      krita
+      niv
+      postman
+      slack
+      tdesktop
+      xclip
+    ];
+  };
 
   programs = {
     alacritty.enable' = true;
