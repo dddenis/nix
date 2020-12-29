@@ -8,6 +8,7 @@
     fd
     filezilla
     git
+    google-chrome
     htop
     inkscape
     jetbrains.rider
@@ -26,7 +27,6 @@
     emacs.enable' = true;
     fzf.enable' = true;
     git.enable' = true;
-    google-chrome.enable' = true;
     less.enable' = true;
     nnn.enable' = true;
     ripgrep.enable' = true;
