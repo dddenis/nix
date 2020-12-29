@@ -4,7 +4,23 @@ let
   cfg = config.programs.nnn;
   nnnConfigHome = "${config.xdg.configHome}/nnn";
 
+  pluginsConfig = {
+    L = "symlink2file";
+    b = "bookmarks";
+    p = "preview-tui";
+  };
+
   customPlugins = [ ./symlink2file.sh ];
+
+  nnnBookmarks = ''
+    BOOKMARKS="${config.xdg.cacheHome}/nnn/bookmarks"
+    rm -rf $BOOKMARKS
+    mkdir -p $BOOKMARKS
+
+    ${lib.concatStrings (lib.mapAttrsToList (name: path: ''
+      ln -fs "${path}" "$BOOKMARKS/${name}"
+    '') config.home.bookmarks)}
+  '';
 
   nnnPlugins = ''
     PLUGINS="${nnnConfigHome}/plugins";
@@ -32,10 +48,11 @@ in {
       packages = with pkgs; [ atool file nnn tree unzip ];
       sessionVariables = {
         NNN_OPTS = "HUadou";
-        NNN_PLUG = "L:symlink2file;p:preview-tui";
+        NNN_PLUG = lib.concatStringsSep ";"
+          (lib.mapAttrsToList (key: plugin: "${key}:${plugin}") pluginsConfig);
       };
-      activation.nnnPlugins =
-        lib.hm.dag.entryAfter [ "writeBoundary" ] nnnPlugins;
+      activation.nnn =
+        lib.hm.dag.entryAfter [ "writeBoundary" ] (nnnBookmarks + nnnPlugins);
     };
 
     programs.zsh.initExtra = ''
