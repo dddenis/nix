@@ -22,7 +22,7 @@ in {
         plugins = [ "git" "vi-mode" ];
       };
 
-      dirHashes = { nix = "${config.home.homeDirectory}/dev/dddenis/nix"; };
+      dirHashes = config.home.bookmarks;
 
       plugins = with pkgs; [
         {
