@@ -4,6 +4,13 @@ let
   cfg = config.programs.vim;
   inherit (cfg) leader;
 
+  desktopItem = pkgs.makeDesktopItem {
+    name = "vim";
+    desktopName = "vim";
+    exec =
+      "${pkgs.alacritty}/bin/alacritty -v -e ${config.programs.neovim.finalPackage}/bin/nvim %F";
+  };
+
 in {
   imports = [
     ./bufkill.nix
@@ -24,7 +31,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable' {
-    home.packages = with pkgs; [ watchman ];
+    home.packages = with pkgs; [ desktopItem watchman ];
 
     programs.vim = {
       leader = "Space";
@@ -111,5 +118,7 @@ in {
         vim-tmux-navigator
       ];
     };
+
+    xdg.mimeApps.defaultApplications = { "text/plain" = "vim.desktop"; };
   };
 }
