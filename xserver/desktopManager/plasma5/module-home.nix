@@ -53,32 +53,36 @@ in {
           loginMode = "emptySession";
         };
 
-        krunnerrc.Plugins = {
-          CharacterRunnerEnabled = true;
-          DictionaryEnabled = false;
-          "Kill RunnerEnabled" = true;
-          PowerDevilEnabled = false;
-          "Spell CheckerEnabled" = false;
-          baloosearchEnabled = false;
-          bookmarksEnabled = false;
-          browsertabsEnabled = false;
-          calculatorEnabled = false;
-          desktopsessionsEnabled = false;
-          konsoleprofilesEnabled = false;
-          krunner_appstreamEnabled = false;
-          kwinEnabled = false;
-          locationsEnabled = false;
-          "org.kde.activitiesEnabled" = false;
-          "org.kde.datetimeEnabled" = false;
-          "org.kde.windowedwidgetsEnabled" = false;
-          placesEnabled = true;
-          plasma-desktopEnabled = false;
-          recentdocumentsEnabled = false;
-          servicesEnabled = true;
-          shellEnabled = false;
-          unitconverterEnabled = true;
-          webshortcutsEnabled = false;
-          windowsEnabled = false;
+        krunnerrc = {
+          General.FreeFloating = true;
+
+          Plugins = {
+            CharacterRunnerEnabled = true;
+            DictionaryEnabled = false;
+            "Kill RunnerEnabled" = true;
+            PowerDevilEnabled = false;
+            "Spell CheckerEnabled" = false;
+            baloosearchEnabled = false;
+            bookmarksEnabled = false;
+            browsertabsEnabled = false;
+            calculatorEnabled = false;
+            desktopsessionsEnabled = false;
+            konsoleprofilesEnabled = false;
+            krunner_appstreamEnabled = false;
+            kwinEnabled = false;
+            locationsEnabled = false;
+            "org.kde.activitiesEnabled" = false;
+            "org.kde.datetimeEnabled" = false;
+            "org.kde.windowedwidgetsEnabled" = false;
+            placesEnabled = true;
+            plasma-desktopEnabled = false;
+            recentdocumentsEnabled = false;
+            servicesEnabled = true;
+            shellEnabled = false;
+            unitconverterEnabled = true;
+            webshortcutsEnabled = false;
+            windowsEnabled = false;
+          };
         };
 
         "plasma-org.kde.plasma.desktop-appletsrc".Containments = {
