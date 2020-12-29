@@ -5,17 +5,19 @@ let
   nnnConfigHome = "${config.xdg.configHome}/nnn";
 
   pluginsConfig = {
-    L = "symlink2file";
+    P = "fzcd";
     b = "bookmarks";
-    p = "preview-tui";
+    d = "diffs";
+    l = "preview-tui";
+    p = "fzopen";
   };
 
   customPlugins = [ ./symlink2file.sh ];
 
   nnnBookmarks = ''
     BOOKMARKS="${config.xdg.cacheHome}/nnn/bookmarks"
-    rm -rf $BOOKMARKS
-    mkdir -p $BOOKMARKS
+    rm -rf "$BOOKMARKS"
+    mkdir -p "$BOOKMARKS"
 
     ${lib.concatStrings (lib.mapAttrsToList (name: path: ''
       ln -fs "${path}" "$BOOKMARKS/${name}"
@@ -24,10 +26,17 @@ let
 
   nnnPlugins = ''
     PLUGINS="${nnnConfigHome}/plugins";
-    mkdir -p $PLUGINS
+    mkdir -p "$PLUGINS"
 
     for file in $(find "${pkgs.nnn.src}/plugins" -type f -maxdepth 1 ! -iname "*.md"); do
-      ln -fs "$file" "${nnnConfigHome}/plugins"
+      if [[ "$file" == *".nnn-plugin-helper" ]]; then
+        HELPER_PATH="$PLUGINS/$(basename "$file")"
+        cp --remove-destination "$file" "$HELPER_PATH"
+        chmod 644 "$HELPER_PATH"
+        echo export CUR_CTX=1 >> "$HELPER_PATH"
+      else
+        ln -fs "$file" "$PLUGINS"
+      fi
     done
   '';
 
