@@ -1,5 +1,9 @@
 {
   inputs = {
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -9,7 +13,7 @@
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = inputs@{ self, flake-utils, nixpkgs, ... }:
+  outputs = inputs@{ self, darwin, flake-utils, nixpkgs, ... }:
     let
       defaultSystems = flake-utils.lib.eachDefaultSystem (system:
         let
@@ -29,25 +33,30 @@
           };
         });
 
-      importModules = regex: _: {
-        imports = self.lib.fs.importDirRec {
-          inherit regex;
-          path = toString ./.;
-        };
-      };
-
-    in defaultSystems // {
-      lib = import ./lib { inherit (nixpkgs) lib; };
-
-      nixosConfigurations = import ./hosts {
-        lib = import ./lib/extended-lib.nix nixpkgs.lib;
+      hosts = import ./hosts {
+        inherit (self) lib;
         inputs = removeAttrs inputs [ "self" ];
         outputs = self;
       };
 
-      nixosModule = importModules "module-nixos.nix";
+      mkModules = systemType: {
+        system = mkModule "nixos" systemType;
+        home = mkModule "home" systemType;
+      };
 
-      homeModule = importModules "module-home.nix";
+      mkModule = moduleType: systemType: {
+        imports = (self.lib.importDirRec {
+          regex = "module-${moduleType}(-${systemType})?.nix";
+          path = toString ./.;
+        });
+      };
+
+    in defaultSystems // hosts // {
+      lib = import ./lib/extended-lib.nix nixpkgs.lib;
+
+      nixosModules = mkModules "linux";
+
+      darwinModules = mkModules "darwin";
 
       overlay = import ./overlays-compat/overlays.nix;
 

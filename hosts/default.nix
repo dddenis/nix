@@ -1,65 +1,92 @@
 args@{ lib, inputs, outputs }:
 
 let
-  nixosSystem = { hostName, system, users }:
-    let
-      config = ./. + "/${hostName}/configuration.nix";
+  nixosSystem = hostName:
+    inputs.nixos.lib.nixosSystem {
+      system = "x86_64-linux";
 
-      pkgs = if isDarwin then inputs.nixpkgs else inputs.nixos;
+      modules = [
+        inputs.nixos.nixosModules.notDetected
+        outputs.nixosModules.system
+        inputs.home-manager.nixosModules.home-manager
+        (homeManagerModule outputs.nixosModules.home)
+        (commonModule {
+          inherit hostName;
+          pkgs = inputs.nixos;
+        })
 
-      home-manager = inputs.home-manager."${if isDarwin then
-        "darwinModules"
-      else
-        "nixosModules"}".home-manager;
-
-      isDarwin = lib.hasInfix "darwin" system;
-
-      commonModule = { lib, ... }: {
-        home-manager.users = lib.getAttrs users (import ../users args);
-
-        networking = { inherit hostName; };
-
-        nix = {
-          nixPath = [
-            "nixpkgs=${pkgs}"
-            "nixos-config=${toString config}"
-            "nixpkgs-overlays=${toString ../overlays-compat}"
-            "/nix/var/nix/profiles/per-user/root/channels"
-          ];
+        {
+          nix.nixPath =
+            [ "nixos-config=${toString (getConfiguration hostName)}" ];
 
           registry = {
             config.flake = outputs;
-            nixpkgs.flake = pkgs;
+            nixpkgs.flake = inputs.nixos;
           };
-        };
 
-        system = {
-          configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
-          stateVersion = outputs.stateVersion;
-        };
+          system = {
+            configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
+            stateVersion = outputs.stateVersion;
+          };
 
-        users.users = lib.genAttrs users (_: {
-          isNormalUser = true;
-          extraGroups = [ "wheel" ];
-        });
-      };
-
-    in {
-      "${hostName}" = pkgs.lib.nixosSystem {
-        inherit system;
-
-        modules = [
-          pkgs.nixosModules.notDetected
-          outputs.nixosModule
-          home-manager
-          commonModule
-          config
-        ];
-      };
+          users.users = mapUserConfigs hostName (_: _: {
+            isNormalUser = true;
+            extraGroups = [ "wheel" ];
+          });
+        }
+      ];
     };
 
-in nixosSystem {
-  hostName = "ddd-pc";
-  system = "x86_64-linux";
-  users = [ "ddd" ];
+  darwinSystem = hostName:
+    inputs.darwin.lib.darwinSystem {
+      specialArgs = { inherit lib; };
+
+      modules = [
+        outputs.darwinModules.system
+        inputs.home-manager.darwinModules.home-manager
+        (homeManagerModule outputs.darwinModules.home)
+        (commonModule {
+          inherit hostName;
+          pkgs = inputs.nixpkgs;
+        })
+      ];
+    };
+
+  homeManagerModule = module: {
+    options.home-manager.users = lib.mkOption {
+      type = with lib.types; attrsOf (submoduleWith { modules = [ module ]; });
+    };
+  };
+
+  commonModule = { hostName, pkgs }: {
+    imports = [ (getConfiguration hostName) ];
+
+    home-manager.users = mapUserConfigs hostName (_: path: {
+      imports = [ path ];
+
+      home.stateVersion = outputs.stateVersion;
+
+      systemd.user.startServices = "sd-switch";
+    });
+
+    networking = { inherit hostName; };
+
+    nix.nixPath =
+      [ "nixpkgs=${pkgs}" "nixpkgs-overlays=${toString ../overlays-compat}" ];
+  };
+
+  getConfiguration = hostName: ./. + "/${hostName}/configuration.nix";
+
+  mapUserConfigs = hostName: f:
+    lib.pipe (./. + "/${hostName}/users") [
+      lib.filesystem.listFilesRecursive
+      (map (userConfig: lib.nameValuePair (lib.fileName userConfig) userConfig))
+      builtins.listToAttrs
+      (builtins.mapAttrs f)
+    ];
+
+in {
+  nixosConfigurations = lib.genAttrs [ "ddd-pc" ] nixosSystem;
+
+  darwinConfigurations = lib.genAttrs [ "ddd-mcmakler" ] darwinSystem;
 }

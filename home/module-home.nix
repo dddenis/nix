@@ -26,11 +26,7 @@ in {
 
     programs.home-manager.enable = true;
 
-    xdg = {
-      enable = true;
-      mimeApps.enable = true;
-      configFile."mimeapps.list".force = true;
-    };
+    xdg.enable = true;
   };
 }
 

@@ -2,11 +2,18 @@
 
 let callLibs = file: import file { inherit lib; };
 
-in {
-  inherit (callLibs ./attrsets.nix) concatAttrs;
-  inherit (callLibs ./lists.nix) isEmpty;
-  inherit (callLibs ./trivial.nix) withDefault;
+in rec {
+  attrsets = lib.attrsets // callLibs ./attrsets.nix;
+  inherit (attrsets) concatAttrs;
 
-  fs = callLibs ./fs.nix;
+  filesystem = lib.filesystem // callLibs ./filesystem.nix;
+  inherit (filesystem) baseDirOf fileName findFilesRec importDirRec readDirRec;
+
+  lists = lib.lists // callLibs ./lists.nix;
+  inherit (lists) isEmpty;
+
+  trivial = lib.trivial // callLibs ./trivial.nix;
+  inherit (trivial) flow withDefault;
+
   user = callLibs ./user.nix;
 }

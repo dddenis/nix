@@ -119,7 +119,5 @@ in {
         vim-tmux-navigator
       ];
     };
-
-    xdg.mimeApps.defaultApplications = { "text/plain" = "vim.desktop"; };
   };
 }
