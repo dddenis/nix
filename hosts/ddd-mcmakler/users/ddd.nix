@@ -1,11 +1,14 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   fonts.enable' = true;
 
   home = {
     enable' = true;
-
+    bookmarks = builtins.mapAttrs (_: path: config.home.homeDirectory + path) {
+      portal = "/dev/mcmakler/portal";
+      public-gql = "/dev/mcmakler/public-gql";
+    };
     packages = with pkgs; [ coreutils fd htop niv ];
   };
 

@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let bookmarks = { vn = "/dev/dddenis/vn"; };
-
-in {
+{
   imports = [ ./hardware-configuration.nix ];
 
   boot.blacklistedKernelModules = [ "sp5100_tco" ];
@@ -22,10 +20,6 @@ in {
       package = pkgs.pulseaudioFull;
     };
   };
-
-  home-manager.users.ddd.home.bookmarks = builtins.mapAttrs
-    (_: path: config.home-manager.users.ddd.home.homeDirectory + path)
-    bookmarks;
 
   services = {
     safeeyes.enable = true;

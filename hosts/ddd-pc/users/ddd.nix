@@ -5,7 +5,9 @@
 
   home = {
     enable' = true;
-
+    bookmarks = builtins.mapAttrs (_: path: config.home.homeDirectory + path) {
+      vn = "/dev/dddenis/vn";
+    };
     packages = with pkgs; [
       discord
       fd
