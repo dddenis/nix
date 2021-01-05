@@ -49,6 +49,8 @@ let
           inherit hostName;
           pkgs = inputs.nixpkgs;
         })
+
+        { environment.darwinConfig = toString (getConfiguration hostName); }
       ];
     };
 

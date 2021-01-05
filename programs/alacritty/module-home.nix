@@ -12,15 +12,6 @@ in {
       settings = {
         window.startup_mode = "Maximized";
 
-        font = {
-          size = 12;
-
-          normal.family = "monospace";
-          bold.style = "Bold";
-          italic.style = "Oblique";
-          bold_italic.style = "Bold Oblique";
-        };
-
         colors = config.theme // (with config.theme; {
           cursor = {
             text = primary.background;

@@ -28,7 +28,7 @@ let
     PLUGINS="${nnnConfigHome}/plugins";
     mkdir -p "$PLUGINS"
 
-    for file in $(find "${pkgs.nnn.src}/plugins" -type f -maxdepth 1 ! -iname "*.md"); do
+    for file in $(find "${pkgs.nnn.src}/plugins" -maxdepth 1 -type f ! -iname "*.md"); do
       if [[ "$file" == *".nnn-plugin-helper" ]]; then
         HELPER_PATH="$PLUGINS/$(basename "$file")"
         cp --remove-destination "$file" "$HELPER_PATH"

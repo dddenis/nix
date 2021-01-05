@@ -10,7 +10,7 @@ in {
       enable = true;
       userName = "Denis Goncharenko";
       userEmail = "dddenjer@gmail.com";
-      ignores = [ ".log/" ".vim/" ".ignore" ];
+      ignores = [ ".DS_Store" ".ignore" ".log/" ".vim/" ];
 
       delta = {
         enable = true;
