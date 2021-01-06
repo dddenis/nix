@@ -32,7 +32,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable' {
-    home.packages = with pkgs; [ desktopItem watchman ];
+    home = {
+      sessionVariables.EDITOR = "vim";
+      packages = with pkgs; [ desktopItem watchman ];
+    };
 
     programs.vim = {
       leader = "Space";
