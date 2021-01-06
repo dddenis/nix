@@ -136,12 +136,6 @@ let
           [ (whenPressed "caps_lock" "left_control" "escape") ])
         (mkRule "HHKB: Ctrl to esc"
           [ (whenPressed "left_control" "left_control" "escape") ])
-        (mkRule "Launch Alacritty" [
-          (launchApp "return_or_enter"
-            "open -n ${pkgs.alacritty}/Applications/Alacritty.app")
-        ])
-        (mkRule "Launch Emacs"
-          [ (launchApp "e" "open -n ${pkgs.emacs}/Applications/Emacs.app") ])
       ];
     };
     devices = [ hhkb ];
