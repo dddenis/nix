@@ -16,12 +16,14 @@ let
         })
 
         {
-          nix.nixPath =
-            [ "nixos-config=${toString (getConfiguration hostName)}" ];
+          nix = {
+            nixPath =
+              [ "nixos-config=${toString (getConfiguration hostName)}" ];
 
-          registry = {
-            config.flake = outputs;
-            nixpkgs.flake = inputs.nixos;
+            registry = {
+              config.flake = outputs;
+              nixpkgs.flake = inputs.nixos;
+            };
           };
 
           system = {
