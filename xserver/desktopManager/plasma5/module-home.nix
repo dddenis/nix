@@ -48,6 +48,8 @@ in {
           RepeatRate = 33;
         };
 
+        kdeglobals.KDE.SingleClick = false;
+
         kmserverrc.General = {
           confirmLogout = false;
           loginMode = "emptySession";
