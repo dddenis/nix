@@ -30,6 +30,7 @@
 
   programs = {
     alacritty.enable' = true;
+    atool.enable' = true;
     bat.enable' = true;
     direnv.enable' = true;
     emacs.enable' = true;
