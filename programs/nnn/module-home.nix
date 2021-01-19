@@ -52,27 +52,35 @@ let
 in {
   options.programs.nnn.enable' = lib.mkEnableOption "nnn";
 
-  config = lib.mkIf cfg.enable' {
-    home = {
-      packages = with pkgs; [ atool file nnn tree unzip ];
-      sessionVariables = {
-        NNN_OPTS = "HUadou";
-        NNN_PLUG = lib.concatStringsSep ";"
-          (lib.mapAttrsToList (key: plugin: "${key}:${plugin}") pluginsConfig);
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable' {
+      home = {
+        packages = with pkgs; [ file nnn tree ];
+        sessionVariables = {
+          NNN_OPTS = "HUadou";
+          NNN_PLUG = lib.concatStringsSep ";"
+            (lib.mapAttrsToList (key: plugin: "${key}:${plugin}")
+              pluginsConfig);
+        };
+        activation.nnn =
+          lib.hm.dag.entryAfter [ "writeBoundary" ] (nnnBookmarks + nnnPlugins);
       };
-      activation.nnn =
-        lib.hm.dag.entryAfter [ "writeBoundary" ] (nnnBookmarks + nnnPlugins);
-    };
 
-    programs.zsh.initExtra = ''
-      . ${quitcd}
-    '';
+      programs.zsh.initExtra = ''
+        . ${quitcd}
+      '';
 
-    xdg.configFile = builtins.listToAttrs (map (source:
-      lib.nameValuePair
-      ("nnn/plugins/" + (lib.removeSuffix ".sh" (baseNameOf source))) {
-        inherit source;
-        executable = true;
-      }) customPlugins);
-  };
+      xdg.configFile = builtins.listToAttrs (map (source:
+        lib.nameValuePair
+        ("nnn/plugins/" + (lib.removeSuffix ".sh" (baseNameOf source))) {
+          inherit source;
+          executable = true;
+        }) customPlugins);
+    })
+
+    (lib.mkIf config.programs.atool.enable' {
+      home.sessionVariables.NNN_ARCHIVE =
+        "\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$";
+    })
+  ];
 }
