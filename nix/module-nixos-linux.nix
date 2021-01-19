@@ -37,8 +37,6 @@
     };
   };
 
-  nix.gc.dates = "weekly";
-
   programs = {
     ssh.startAgent = true;
     vim.defaultEditor = true;
