@@ -20,7 +20,7 @@ let
   };
 
   writeConfigEntry = { file, groups, key, value }: ''
-    $DRY_RUN_CMD ${pkgs.kdeFrameworks.kconfig}/bin/kwriteconfig5 \
+    $DRY_RUN_CMD ${pkgs.libsForQt5.kconfig}/bin/kwriteconfig5 \
       --file "${file}" \
       ${lib.concatMapStringsSep "\\n" (group: ''--group "${group}"'') groups} \
       --key "${key}" \
