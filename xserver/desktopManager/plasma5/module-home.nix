@@ -87,6 +87,8 @@ in {
           };
         };
 
+        kscreenlockerrc.Daemon.Autolock = false;
+
         "plasma-org.kde.plasma.desktop-appletsrc".Containments = {
           "1".General.ToolBoxButtonY = statusBarHeight;
           "2".location = 3;
