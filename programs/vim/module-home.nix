@@ -20,6 +20,7 @@ in {
     ./haskell.nix
     ./lightline.nix
     ./nix.nix
+    ./rust.nix
   ];
 
   options.programs.vim = {
@@ -47,6 +48,7 @@ in {
       haskell.enable' = true;
       lightline.enable' = true;
       nix.enable' = true;
+      rust.enable' = true;
     };
 
     programs.neovim = {
