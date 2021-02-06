@@ -37,6 +37,7 @@
     fzf.enable' = true;
     git.enable' = true;
     less.enable' = true;
+    nix-index.enable' = true;
     nnn.enable' = true;
     ripgrep.enable' = true;
     spotify.enable' = true;

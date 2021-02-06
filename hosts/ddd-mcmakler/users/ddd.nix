@@ -24,6 +24,7 @@
       userEmail = "denis.goncharenko@mcmakler.de";
     };
     less.enable' = true;
+    nix-index.enable' = true;
     nnn.enable' = true;
     ripgrep.enable' = true;
     tmux.enable' = true;

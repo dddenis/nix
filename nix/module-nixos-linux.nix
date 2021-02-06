@@ -38,6 +38,7 @@
   };
 
   programs = {
+    command-not-found.enable = false;
     ssh.startAgent = true;
     vim.defaultEditor = true;
   };
