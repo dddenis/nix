@@ -15,7 +15,7 @@
       config.allowUnfree = true;
 
       shell = { pkgs }:
-        pkgs.mkDevShell {
+        pkgs.devshell.mkShell {
           motd = "";
           packages = with pkgs; [ ];
         };
