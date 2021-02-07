@@ -15,6 +15,8 @@
       fd
       filezilla
       git
+      godot
+      godot-mono
       google-chrome
       htop
       inkscape
