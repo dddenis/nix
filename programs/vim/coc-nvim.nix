@@ -13,6 +13,11 @@ in {
     enable' = lib.mkEnableOption "vim.coc-nvim";
 
     coc-settings = lib.mkOption { type = types.attrs; };
+
+    filetypeMap = lib.mkOption {
+      type = with lib.types; attrsOf string;
+      default = { };
+    };
   };
 
   config = lib.mkIf cfg.enable' {
@@ -33,6 +38,8 @@ in {
 
     programs.neovim = {
       extraConfig = ''
+        let g:coc_filetype_map = ${builtins.toJSON cfg.filetypeMap}
+
         augroup CoC
           autocmd!
           autocmd CursorHold * silent call CocActionAsync('highlight')
