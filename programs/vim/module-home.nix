@@ -21,6 +21,7 @@ in {
     ./lightline.nix
     ./nix.nix
     ./rust.nix
+    ./yaml.nix
   ];
 
   options.programs.vim = {
@@ -49,6 +50,7 @@ in {
       lightline.enable' = true;
       nix.enable' = true;
       rust.enable' = true;
+      yaml.enable' = true;
     };
 
     programs.neovim = {
