@@ -10,6 +10,8 @@ in {
   config = lib.mkIf cfg.enable' {
     programs.neovim = {
       extraConfig = ''
+        let g:floaterm_opener = "edit"
+
         noremap <${leader}>. :FloatermNew nnn<CR>
       '';
 
