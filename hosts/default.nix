@@ -19,11 +19,6 @@ let
           nix = {
             nixPath =
               [ "nixos-config=${toString (getConfiguration hostName)}" ];
-
-            registry = {
-              config.flake = outputs;
-              nixpkgs.flake = inputs.nixos;
-            };
           };
 
           system = {
@@ -75,8 +70,15 @@ let
 
     networking = { inherit hostName; };
 
-    nix.nixPath =
-      [ "nixpkgs=${pkgs}" "nixpkgs-overlays=${toString ../overlays-compat}" ];
+    nix = {
+      nixPath =
+        [ "nixpkgs=${pkgs}" "nixpkgs-overlays=${toString ../overlays-compat}" ];
+
+      registry = {
+        config.flake = outputs;
+        nixpkgs.flake = pkgs;
+      };
+    };
   };
 
   getConfiguration = hostName: ./. + "/${hostName}/configuration.nix";

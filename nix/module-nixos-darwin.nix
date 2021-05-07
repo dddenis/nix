@@ -60,6 +60,8 @@ in {
   users = rec {
     knownUsers = builtins.attrNames users;
 
+    nix.configureBuildUsers = true;
+
     users = lib.pipe config [
       lib.user.configs
       (lib.imap1 (i: userConfig:
