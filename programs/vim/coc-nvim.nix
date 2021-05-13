@@ -94,6 +94,8 @@ in {
         nmap <${leader}>ca :CocCommand eslint.executeAutofix<CR>
         nmap <${leader}>ci :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 
+        nmap <${leader}>xx <Plug>(coc-codelens-action)
+
         nnoremap <silent> <${leader}>cx :<C-u>CocList diagnostics<CR>
         nnoremap <silent> <${leader}>cs :<C-u>CocList -I symbols<CR>
         nnoremap <silent> <${leader}>sl :<C-u>CocList lists<CR>
