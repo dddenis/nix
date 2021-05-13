@@ -31,7 +31,13 @@ in {
               "hie.yaml"
             ];
             filetypes = [ "haskell" "lhaskell" ];
-            initializationOptions = { haskell = { }; };
+            initializationOptions = {
+              haskell = {
+                plugin = {
+                  "ghcide-completions" = { config = { snippetsOn = false; }; };
+                };
+              };
+            };
           };
         };
       };
