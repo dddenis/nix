@@ -9,8 +9,6 @@ in {
     services.sxhkd = {
       enable = true;
 
-      extraPath = "${nixosConfig.security.wrapperDir}:${nixosConfig.system.path}/bin";
-
       keybindings = {
         "hyper + shift + Return" =
           "${pkgs.alacritty}/bin/alacritty -e ${config.programs.tmux.launch}";
