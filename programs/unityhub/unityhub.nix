@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, appimageTools, gsettings-desktop-schemas, gtk3 }:
+{ lib, fetchurl, appimageTools, gsettings-desktop-schemas, gtk3 }:
 
 let version = "2.3.2";
 in appimageTools.wrapType2 rec {
@@ -71,7 +71,7 @@ in appimageTools.wrapType2 rec {
     sha256 = "mtx2mK36ZHn4NysLo157HX4q4l89d84jhmyws832gVQ=";
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://unity3d.com/";
     description = "Game development tool";
     longDescription = ''
