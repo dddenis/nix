@@ -21,6 +21,7 @@ in {
     ./lightline.nix
     ./nix.nix
     ./rust.nix
+    ./tmux.nix
     ./yaml.nix
   ];
 
@@ -50,6 +51,7 @@ in {
       lightline.enable' = true;
       nix.enable' = true;
       rust.enable' = true;
+      tmux.enable' = true;
       yaml.enable' = true;
     };
 
@@ -124,7 +126,6 @@ in {
         vim-commentary
         vim-polyglot
         vim-surround
-        vim-tmux-navigator
       ];
     };
   };
