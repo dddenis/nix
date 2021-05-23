@@ -25,7 +25,7 @@
 
   services = {
     gnome.at-spi2-core.enable = true;
-    safeeyes.enable = true;
+    safeeyes.enable' = true;
 
     xserver = {
       enable = true;
