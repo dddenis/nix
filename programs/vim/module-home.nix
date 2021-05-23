@@ -119,6 +119,7 @@ in {
 
       plugins = with pkgs.vimPlugins; [
         gruvbox-community
+        quickfix-reflector-vim
         vim-abolish
         vim-commentary
         vim-polyglot
