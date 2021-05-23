@@ -13,7 +13,6 @@ in {
       "--ignore-case"
       "--jump-target=.5"
       "--quit-if-one-screen"
-      "--status-column"
       "--tabs=4"
       "--window=-4"
     ];
