@@ -16,7 +16,7 @@ in {
         nnoremap <silent> <${leader}>sp :<C-u>CocList grep<CR>
 
         nnoremap <${leader}>sP :Rg<Space>
-        command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList grep '.<q-args>
+        command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList --interactive grep '.<q-args>
         function! s:GrepArgs(...)
           let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
             \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
