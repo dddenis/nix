@@ -12,6 +12,7 @@ in {
     programs.neovim = {
       extraConfig = ''
         nnoremap <silent> <${leader}>bd :BD<CR>
+        nnoremap <silent> <${leader}>bD :BD!<CR>
       '';
 
       plugins = with pkgs.vimPlugins; [ vim-bufkill ];
