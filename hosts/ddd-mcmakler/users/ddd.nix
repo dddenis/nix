@@ -23,6 +23,7 @@
       enable' = true;
       userEmail = "denis.goncharenko@mcmakler.de";
     };
+    lazygit.enable' = true;
     less.enable' = true;
     nix-index.enable' = true;
     nnn.enable' = true;

@@ -39,6 +39,7 @@
     emacs.enable' = true;
     fzf.enable' = true;
     git.enable' = true;
+    lazygit.enable' = true;
     less.enable' = true;
     nix-index.enable' = true;
     nnn.enable' = true;
