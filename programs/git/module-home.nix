@@ -16,14 +16,12 @@ in {
         enable = true;
 
         options = {
-          features = "side-by-side line-numbers decorations";
+          features = "decorations line-numbers";
           syntax-theme = "gruvbox-dark";
 
           decorations = {
-            commit-decoration-style = "bold yellow box ul";
-            file-style = "bold yellow ul";
-            file-decoration-style = "none";
-            whitespace-error-style = "22 reverse";
+            file-style = "blue box";
+            hunk-header-style = "omit";
           };
         };
       };
