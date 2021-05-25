@@ -2,7 +2,7 @@
 
 let
   mkUser = i: username: {
-    uid = 500 + i;
+    uid = 502 + i;
     home = "/Users/${username}";
     shell = pkgs.zsh;
     isHidden = false;
