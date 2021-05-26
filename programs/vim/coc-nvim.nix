@@ -7,7 +7,7 @@ let
   cfg = config.programs.vim.coc-nvim;
 
 in {
-  imports = [ ./coc-diagnostic.nix ./coc-lists.nix ./coc-tsserver.nix ];
+  imports = [ ./coc-diagnostic.nix ./coc-lists.nix ./coc-sh.nix ./coc-tsserver.nix ];
 
   options.programs.vim.coc-nvim = {
     enable' = lib.mkEnableOption "vim.coc-nvim";
@@ -29,6 +29,7 @@ in {
     programs.vim = {
       coc-diagnostic.enable' = true;
       coc-lists.enable' = true;
+      coc-sh.enable' = true;
       coc-tsserver.enable' = true;
 
       coc-nvim.coc-settings = {
