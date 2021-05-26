@@ -11,12 +11,16 @@ in {
   config = lib.mkIf cfg.enable' {
     programs.neovim = {
       extraConfig = ''
-        autocmd FileType nix setlocal formatprg=${pkgs.nixfmt}/bin/nixfmt
         autocmd FileType nix setlocal iskeyword-=-
-        autocmd FileType nix nmap <buffer><silent> <${leader}>cf :%!${pkgs.nixfmt}/bin/nixfmt<CR>
       '';
 
       plugins = with pkgs.vimPlugins; [ vim-nix ];
+    };
+
+    programs.vim.coc-diagnostic = {
+      formatFiletypes = { nix = "nixfmt"; };
+
+      formatters = { nixfmt.command = "${pkgs.nixfmt}/bin/nixfmt"; };
     };
   };
 }
