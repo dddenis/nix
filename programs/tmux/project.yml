@@ -1,0 +1,11 @@
+name: project
+root: .
+
+windows:
+  - vim: vim
+  - shell:
+      layout: even-horizontal
+      panes:
+        -
+        -
+  - git: lazygit

@@ -26,6 +26,8 @@ in {
       keyMode = "vi";
       shortcut = "a";
       terminal = "tmux-256color";
+      tmuxinator.enable = true;
+
       plugins = with pkgs.tmuxPlugins; [ gruvbox ];
 
       launch = pkgs.writeShellScript "tmux-attach" ''
@@ -70,5 +72,9 @@ in {
         bind-key -T copy-mode-vi C-\\ select-pane -l
       '';
     };
+
+    programs.zsh.shellAliases = { mux = "${pkgs.tmuxinator}/bin/tmuxinator"; };
+
+    xdg.configFile."tmuxinator/project.yml".source = ./project.yml;
   };
 }
