@@ -33,6 +33,8 @@ in {
       '';
 
       extraConfig = lib.mkBefore ''
+        bind q choose-tree -s -Z
+
         bind s split-window -v -c '#{pane_current_path}'
         bind v split-window -h -c '#{pane_current_path}'
 
