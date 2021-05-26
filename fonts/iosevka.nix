@@ -2,11 +2,13 @@
 
 {
   ddd = iosevka.override {
-    set = "ddd";
+    set = "iosevka-ddd";
 
     privateBuildPlan = {
       family = "Iosevka DDD";
-      design = [ "sp-term" ];
+      spacing = "fontconfig-mono";
+      serifs = "sans";
+      no-cv-ss = true;
 
       weights = {
         regular = {
