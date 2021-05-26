@@ -12,6 +12,11 @@ in {
   options.programs.vim.coc-nvim = {
     enable' = lib.mkEnableOption "vim.coc-nvim";
 
+    globalExtensions = lib.mkOption {
+      type = with lib.types; listOf string;
+      default = [ ];
+    };
+
     coc-settings = lib.mkOption { type = types.attrs; };
 
     filetypeMap = lib.mkOption {
@@ -40,6 +45,7 @@ in {
     programs.neovim = {
       extraConfig = ''
         let g:coc_filetype_map = ${builtins.toJSON cfg.filetypeMap}
+        let g:coc_global_extensions = ${builtins.toJSON cfg.globalExtensions}
 
         augroup CoC
           autocmd!
