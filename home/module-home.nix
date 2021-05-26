@@ -6,6 +6,11 @@ in {
   options.home = {
     enable' = lib.mkEnableOption "Home";
 
+    devPath = lib.mkOption {
+      type = lib.types.path;
+      readOnly = true;
+    };
+
     configPath = lib.mkOption {
       type = lib.types.path;
       readOnly = true;
@@ -19,8 +24,8 @@ in {
 
   config = lib.mkIf cfg.enable' {
     home = rec {
-      configPath = config.home.homeDirectory + "/dev/dddenis/nix";
-
+      devPath = config.home.homeDirectory + "/dev";
+      configPath = devPath + "/dddenis/nix";
       bookmarks = { nix = configPath; };
     };
 
