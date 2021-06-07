@@ -3,15 +3,23 @@
 let cfg = config.programs.alacritty;
 
 in lib.mkIf cfg.enable' {
-  programs.alacritty.settings.font = {
-    size = 16;
+  programs.alacritty.settings = {
+    font = {
+      size = 16;
 
-    normal = {
-      family = "Iosevka DDD";
-      style = "Extended";
+      normal = {
+        family = "Iosevka DDD";
+        style = "Extended";
+      };
+      bold.style = "Bold Extended";
+      italic.style = "Extended Oblique";
+      bold_italic.style = "Bold Extended Oblique";
     };
-    bold.style = "Bold Extended";
-    italic.style = "Extended Oblique";
-    bold_italic.style = "Bold Extended Oblique";
+
+    key_bindings = [{
+      key = "C";
+      mods = "Alt";
+      chars = "\\x1bc";
+    }];
   };
 }
