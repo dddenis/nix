@@ -18,7 +18,7 @@ in {
       formatters = {
         shfmt = {
           command = "${pkgs.shfmt}/bin/shfmt";
-          args = [ "-i" "2" ];
+          args = [ "-ci" "-i" "2" "-s" ];
         };
       };
     };
