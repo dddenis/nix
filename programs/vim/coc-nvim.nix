@@ -7,7 +7,8 @@ let
   cfg = config.programs.vim.coc-nvim;
 
 in {
-  imports = [ ./coc-diagnostic.nix ./coc-lists.nix ./coc-sh.nix ./coc-tsserver.nix ];
+  imports =
+    [ ./coc-diagnostic.nix ./coc-lists.nix ./coc-sh.nix ./coc-tsserver.nix ];
 
   options.programs.vim.coc-nvim = {
     enable' = lib.mkEnableOption "vim.coc-nvim";
@@ -34,7 +35,6 @@ in {
 
       coc-nvim.coc-settings = {
         "diagnostic.enableMessage" = "jump";
-        "diagnostic.maxWindowHeight" = 50;
 
         "list.insertMappings" = { "<C-l>" = "do:defaultaction"; };
         "list.normalMappings" = { "<C-l>" = "do:defaultaction"; };
