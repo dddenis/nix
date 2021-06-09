@@ -22,7 +22,7 @@ in {
     };
 
     programs.tmux.extraConfig = ''
-      set -sa terminal-overrides ',alacritty*:Tc'
+      set -as terminal-features ",alacritty*:RGB"
     '';
   };
 }
