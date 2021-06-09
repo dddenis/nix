@@ -26,7 +26,10 @@ in {
         };
       };
 
-      extraConfig = { pull.rebase = true; };
+      extraConfig = {
+        fetch.prune = true;
+        pull.rebase = true;
+      };
     };
   });
 }
