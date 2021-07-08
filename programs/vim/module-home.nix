@@ -96,7 +96,7 @@ in {
         set ignorecase
         set smartcase
         set inccommand=nosplit
-        nnoremap <silent> <Esc> :nohlsearch<CR><Esc>
+        nnoremap <silent> <Esc> :<C-u>call coc#float#close_all() \| :nohlsearch<CR><Esc>
 
         cnoremap %% <C-r>=fnameescape(expand('%:h')).'/'<CR>
 

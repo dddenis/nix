@@ -81,7 +81,15 @@ in {
         nmap <silent> gi <Plug>(coc-implementation)
         nmap <silent> gD <Plug>(coc-references)
 
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
+        if has('nvim-0.4.0') || has('patch-8.2.0750')
+          nnoremap <silent><nowait><expr> J coc#float#has_scroll() ? coc#float#scroll(1) : "J"
+          nnoremap <silent><nowait><expr> K coc#float#has_scroll() ? coc#float#scroll(0) : ":call \<SID>show_documentation()\<CR>"
+          inoremap <silent><nowait><expr> J coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "J"
+          inoremap <silent><nowait><expr> K coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "K"
+          vnoremap <silent><nowait><expr> J coc#float#has_scroll() ? coc#float#scroll(1) : "J"
+          vnoremap <silent><nowait><expr> K coc#float#has_scroll() ? coc#float#scroll(0) : "K"
+        endif
+
         function! s:show_documentation()
           if (index(['vim','help'], &filetype) >= 0)
             execute 'h '.expand('<cword>')
