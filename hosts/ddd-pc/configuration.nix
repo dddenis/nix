@@ -34,7 +34,7 @@
       xkbModel = "hhk";
       xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
 
-      desktopManager.plasma5.enable' = true;
+      desktopManager.gnome.enable' = true;
     };
   };
 

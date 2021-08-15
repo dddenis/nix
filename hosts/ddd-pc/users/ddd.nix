@@ -14,7 +14,7 @@
       discord
       fd
       filezilla
-      firefox
+      firefox-wayland
       git
       godot
       godot-mono
