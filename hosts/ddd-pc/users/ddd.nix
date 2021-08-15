@@ -61,11 +61,4 @@
   systemd.user.startServices = "sd-switch";
 
   xresources.enable' = true;
-  xserver.desktopManager.plasma5.enable' = true;
-
-  xsession = {
-    enable = true;
-    scriptPath = ".xsession-hm";
-    windowManager.command = "exec startplasma-x11";
-  };
 }

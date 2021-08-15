@@ -34,17 +34,7 @@
       xkbModel = "hhk";
       xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
 
-      displayManager = {
-        sddm.enable = true;
-
-        session = [{
-          name = "xsession";
-          start = "${pkgs.runtimeShell} $HOME/.xsession-hm & waitPID=$!";
-          manage = "window";
-        }];
-      };
-
-      desktopManager.plasma5.enable = true;
+      desktopManager.plasma5.enable' = true;
     };
   };
 
