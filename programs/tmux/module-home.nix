@@ -4,6 +4,7 @@ let
   cfg = config.programs.tmux;
 
   tmux = "${pkgs.tmux}/bin/tmux";
+  tmuxinator = "${pkgs.tmuxinator}/bin/tmuxinator";
 
 in {
   options.programs.tmux = {
@@ -73,7 +74,10 @@ in {
       '';
     };
 
-    programs.zsh.shellAliases = { mux = "${pkgs.tmuxinator}/bin/tmuxinator"; };
+    programs.zsh.shellAliases = {
+      mux = tmuxinator;
+      muxinate = "${tmuxinator} start project -n $(basename $PWD)";
+    };
 
     xdg.configFile."tmuxinator/project.yml".source = ./project.yml;
   };
