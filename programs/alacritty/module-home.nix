@@ -10,7 +10,10 @@ in {
       enable = true;
 
       settings = {
-        window.startup_mode = "Maximized";
+        window = {
+          decorations = "none";
+          startup_mode = "Maximized";
+        };
 
         colors = config.theme // (with config.theme; {
           cursor = {
