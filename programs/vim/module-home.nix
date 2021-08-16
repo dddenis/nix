@@ -16,6 +16,7 @@ in {
     ./bufkill.nix
     ./coc-nvim.nix
     ./floaterm.nix
+    ./go.nix
     ./hardtime.nix
     ./haskell.nix
     ./lightline.nix
@@ -46,6 +47,7 @@ in {
       bufkill.enable' = true;
       coc-nvim.enable' = true;
       floaterm.enable' = true;
+      go.enable' = true;
       hardtime.enable' = true;
       haskell.enable' = true;
       lightline.enable' = true;
