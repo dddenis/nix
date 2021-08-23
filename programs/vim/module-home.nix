@@ -22,6 +22,7 @@ in {
     ./lightline.nix
     ./nix.nix
     ./rust.nix
+    ./sql.nix
     ./tmux.nix
     ./yaml.nix
   ];
@@ -52,6 +53,7 @@ in {
       haskell.enable' = true;
       lightline.enable' = true;
       nix.enable' = true;
+      sql.enable' = true;
       rust.enable' = true;
       tmux.enable' = true;
       yaml.enable' = true;
