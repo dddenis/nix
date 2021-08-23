@@ -19,6 +19,7 @@
       git
       godot
       godot-mono
+      gnumake
       google-chrome
       htop
       inkscape
