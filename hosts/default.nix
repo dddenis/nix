@@ -28,7 +28,7 @@ let
 
           users.users = mapUserConfigs hostName (_: _: {
             isNormalUser = true;
-            extraGroups = [ "wheel" ];
+            extraGroups = [ "docker" "wheel" ];
           });
         }
       ];

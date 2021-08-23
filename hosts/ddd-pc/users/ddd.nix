@@ -12,6 +12,7 @@
 
     packages = with pkgs; [
       discord
+      docker-compose
       fd
       filezilla
       firefox-wayland

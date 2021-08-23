@@ -42,4 +42,6 @@
     [ "" "${pkgs.bluez}/bin/bluetoothd --noplugin=sap" ];
 
   time.timeZone = "Europe/Berlin";
+
+  virtualisation.docker.enable = true;
 }
