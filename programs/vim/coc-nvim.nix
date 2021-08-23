@@ -35,6 +35,7 @@ in {
 
       coc-nvim.coc-settings = {
         "diagnostic.enableMessage" = "jump";
+        "diagnostic.maxWindowHeight" = 32;
 
         "list.insertMappings" = { "<C-l>" = "do:defaultaction"; };
         "list.normalMappings" = { "<C-l>" = "do:defaultaction"; };
