@@ -16,7 +16,7 @@
 (defalias
   SFN (tap-hold-next-release 250 spc (layer-toggle spacefn))
 
-  ec (tap-hold-next-release 250 esc lctl)
+  ec (tap-hold-next 250 esc lctl)
 )
 
 #| --------------------------------------------------------------------------
