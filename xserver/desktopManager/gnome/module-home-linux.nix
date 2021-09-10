@@ -19,8 +19,8 @@ in {
         text-scaling-factor = 0.85;
       };
       "org/gnome/desktop/peripherals/keyboard" = {
-        delay = mkUint32 150;
-        repeat-interval = mkUint32 30;
+        delay = mkUint32 300;
+        repeat-interval = mkUint32 40;
       };
       "org/gnome/desktop/session" = { idle-delay = mkUint32 0; };
       "org/gnome/desktop/wm/keybindings" = {
