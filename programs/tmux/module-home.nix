@@ -76,7 +76,7 @@ in {
 
     programs.zsh.shellAliases = {
       mux = tmuxinator;
-      muxinate = "${tmuxinator} start project -n $(basename $PWD)";
+      muxinate = "${tmuxinator} start project -n $(echo $(basename $PWD) | tr .: _)";
     };
 
     xdg.configFile."tmuxinator/project.yml".source = ./project.yml;
