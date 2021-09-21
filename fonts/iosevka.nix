@@ -23,11 +23,6 @@
           css = 700;
         };
       };
-
-      slants = {
-        upright = "normal";
-        italic = "oblique";
-      };
     };
   };
 
