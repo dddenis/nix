@@ -62,5 +62,14 @@
 
   systemd.user.startServices = "sd-switch";
 
+  xdg.mimeApps.defaultApplications = {
+    "application/xhtml+xml" = "firefox.desktop";
+    "text/html" = "firefox.desktop";
+    "text/xml" = "firefox.desktop";
+    "x-scheme-handler/ftp" = "firefox.desktop";
+    "x-scheme-handler/http" = "firefox.desktop";
+    "x-scheme-handler/https" = "firefox.desktop";
+  };
+
   xresources.enable' = true;
 }
