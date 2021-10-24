@@ -11,22 +11,20 @@
     };
 
     packages = with pkgs; [
+      chromium
       discord
       docker-compose
       fd
       filezilla
       firefox-wayland
       git
-      godot
-      godot-mono
       gnumake
-      google-chrome
       htop
       inkscape
-      jetbrains.rider
+      insomnia
       krita
+      lazydocker
       niv
-      postman
       slack
       tdesktop
       xclip
@@ -38,26 +36,23 @@
     atool.enable' = true;
     bat.enable' = true;
     direnv.enable' = true;
-    emacs.enable' = true;
     fzf.enable' = true;
     git.enable' = true;
     lazygit.enable' = true;
     less.enable' = true;
+    mpv.enable = true;
     nix-index.enable' = true;
     nnn.enable' = true;
     ripgrep.enable' = true;
     spotify.enable' = true;
     tmux.enable' = true;
-    unityhub.enable' = true;
     vim.enable' = true;
     vscode.enable' = true;
     zsh.enable' = true;
   };
 
   services = {
-    flameshot.enable = true;
     kmonad.enable' = true;
-    sxhkd.enable' = true;
   };
 
   systemd.user.startServices = "sd-switch";
