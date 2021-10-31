@@ -3,9 +3,9 @@
 buildRubyGem rec {
   name = "${gemName}-${version}";
   gemName = "shopify-cli";
-  version = "2.4.0";
+  version = "2.6.5";
   source.sha256 =
-    "962a4d8ea0f656646511b0f04300f48abb4072fa858d649061dbf5399735d73e";
+    "Eq55IGAUbYmJ22+v0OtE9wJLu62WcdzcE0dKMg09FKA=";
 
   buildFlags = [ "--skip-cli-build" ];
 
