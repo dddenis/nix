@@ -36,6 +36,7 @@ let
 
   darwinSystem = hostName:
     inputs.darwin.lib.darwinSystem {
+      system = "x86_64-darwin";
       specialArgs = { inherit lib; };
 
       modules = [
