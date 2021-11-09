@@ -62,8 +62,10 @@ in {
       };
       "org/gnome/shell" = {
         enabled-extensions = [
+          "caffeine@patapon.info"
           "drive-menu@gnome-shell-extensions.gcampax.github.com"
           "instantworkspaceswitcher@amalantony.net"
+          "just-perfection-desktop@just-perfection"
           "launch-new-instance@gnome-shell-extensions.gcampax.github.com"
           "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
         ];
