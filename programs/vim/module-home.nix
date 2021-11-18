@@ -13,6 +13,7 @@ let
 
 in {
   imports = [
+    ./asterisk.nix
     ./bufkill.nix
     ./coc-nvim.nix
     ./floaterm.nix
@@ -45,6 +46,7 @@ in {
     programs.vim = {
       leader = "Space";
 
+      asterisk.enable' = true;
       bufkill.enable' = true;
       coc-nvim.enable' = true;
       floaterm.enable' = true;
@@ -118,9 +120,6 @@ in {
 
         inoremap <expr> <C-l> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-l>"
         inoremap <expr> <Tab> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<Tab>"
-
-        nnoremap c* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``cgn
-        nnoremap c# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``cgN
       '';
 
       plugins = with pkgs.vimPlugins; [
