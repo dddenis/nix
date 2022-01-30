@@ -120,6 +120,8 @@ in {
 
         inoremap <expr> <C-l> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-l>"
         inoremap <expr> <Tab> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<Tab>"
+
+        autocmd VimResized * wincmd =
       '';
 
       plugins = with pkgs.vimPlugins; [
