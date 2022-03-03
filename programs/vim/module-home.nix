@@ -17,6 +17,7 @@ in {
     ./bufkill.nix
     ./coc-nvim.nix
     ./floaterm.nix
+    ./fzf.nix
     ./go.nix
     ./hardtime.nix
     ./haskell.nix
@@ -50,13 +51,14 @@ in {
       bufkill.enable' = true;
       coc-nvim.enable' = true;
       floaterm.enable' = true;
+      fzf.enable' = true;
       go.enable' = true;
       hardtime.enable' = true;
       haskell.enable' = true;
       lightline.enable' = true;
       nix.enable' = true;
-      sql.enable' = true;
       rust.enable' = true;
+      sql.enable' = true;
       tmux.enable' = true;
       yaml.enable' = true;
     };

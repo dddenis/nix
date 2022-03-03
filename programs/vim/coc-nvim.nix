@@ -8,7 +8,7 @@ let
 
 in {
   imports =
-    [ ./coc-diagnostic.nix ./coc-lists.nix ./coc-sh.nix ./coc-tsserver.nix ];
+    [ ./coc-diagnostic.nix ./coc-sh.nix ./coc-tsserver.nix ];
 
   options.programs.vim.coc-nvim = {
     enable' = lib.mkEnableOption "vim.coc-nvim";
@@ -29,7 +29,6 @@ in {
   config = lib.mkIf cfg.enable' {
     programs.vim = {
       coc-diagnostic.enable' = true;
-      coc-lists.enable' = true;
       coc-sh.enable' = true;
       coc-tsserver.enable' = true;
 
@@ -118,7 +117,6 @@ in {
         nnoremap <silent> <${leader}>sl :<C-u>CocList lists<CR>
         nnoremap <silent> <${leader}>se :<C-u>CocList extensions<CR>
         nnoremap <silent> <${leader}>sc :<C-u>CocList commands<CR>
-        nnoremap <silent> <${leader}>fr :<C-u>CocList mru<CR>
         nnoremap <silent> <${leader}>sj :<C-u>CocNext<CR>
         nnoremap <silent> <${leader}>sk :<C-u>CocPrev<CR>
         nnoremap <silent> <${leader}>' :<C-u>CocListResume<CR>
