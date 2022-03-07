@@ -21,6 +21,7 @@ in {
           git = {
             branchLogCmd = "${logCmd} {{branchName}} --";
             allBranchesLogCmd = "${logCmd} --all";
+            skipHookPrefix = "--wip-- [skip ci]";
 
             paging = {
               colorArg = "always";
@@ -28,7 +29,10 @@ in {
             };
           };
 
-          gui.showCommandLog = false;
+          gui = {
+            mouseEvents = false;
+            showCommandLog = false;
+          };
         };
       };
 
