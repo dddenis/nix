@@ -71,7 +71,13 @@ in {
         ];
         favorite-apps = [ ];
       };
-      "org/gnome/shell/keybindings" = { toggle-overview = [ "<Super>space" ]; };
+      "org/gnome/shell/keybindings" = {
+        switch-to-application-1 = [ ];
+        switch-to-application-2 = [ ];
+        switch-to-application-3 = [ ];
+        switch-to-application-4 = [ ];
+        toggle-overview = [ "<Super>space" ];
+      };
     };
 
     home.packages = with pkgs; [
