@@ -2,6 +2,7 @@
   inputs = {
     devshell.url = "github:numtide/devshell";
     flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
 
   outputs = { self, devshell, flake-utils, nixpkgs }:
@@ -11,8 +12,6 @@
       name = "devshell";
       preOverlays = [ devshell.overlay ];
       systems = flake-utils.lib.defaultSystems;
-
-      config.allowUnfree = true;
 
       shell = { pkgs }:
         pkgs.devshell.mkShell {

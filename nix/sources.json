@@ -1,9 +1,0 @@
-{
-    "kmonad": {
-        "sha256": "13vs7xq9clgg6pd9gr49h5ljgyg0kc63qd3ghh3dvmi3rkkmi7l3",
-        "type": "file",
-        "url": "https://github.com/david-janssen/kmonad/releases/download/0.4.1/kmonad-0.4.1-linux",
-        "url_template": "https://github.com/david-janssen/kmonad/releases/download/<version>/kmonad-<version>-linux",
-        "version": "0.4.1"
-    }
-}

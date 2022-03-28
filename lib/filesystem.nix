@@ -18,33 +18,30 @@ in rec {
         (lib.concatStringsSep ".")
       ];
 
-  findFilesRec = { path, regex ? "default.nix" }:
+  findFilesRec = { path, regex ? ".*", excludeDirs ? [ ] }:
     let
-      f = name: value:
-        if builtins.isAttrs value then
+      processEntry = name: value:
+        let
+          joinedPath = joinPath path name;
+          isInExcludeDirs = builtins.elem path excludeDirs;
+          matchesRegex = builtins.match regex name != null;
+
+        in if builtins.isAttrs value then
           findFilesRec {
-            path = joinPath path name;
-            inherit regex;
+            path = joinedPath;
+            inherit regex excludeDirs;
           }
-        else if builtins.match regex name == null then
+        else if isInExcludeDirs || !matchesRegex then
           [ ]
         else
-          [ (joinPath path name) ];
+          [ joinedPath ];
 
-    in lib.flatten (lib.mapAttrsToList f (readDirRec path));
-
-  importDirRec = { path, regex ? "default.nix" }:
-    let
-      f = filePath: if dirOf filePath == path then null else import filePath;
-      imports = map f (findFilesRec { inherit path regex; });
-
-    in lib.remove null imports;
+    in lib.flatten (lib.mapAttrsToList processEntry (readDirRec path));
 
   readDirRec = path:
     let
       processEntry = name: type:
         let entryPath = joinPath path name;
-
         in if type == "directory" then readDirRec entryPath else entryPath;
 
     in builtins.mapAttrs processEntry (builtins.readDir path);

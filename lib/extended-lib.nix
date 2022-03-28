@@ -1,3 +1,3 @@
 nixpkgsLib:
 
-nixpkgsLib.extend (self: super: import ./. { lib = super; })
+nixpkgsLib.extend (_: prev: import ./. { lib = prev; })
