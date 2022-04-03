@@ -3,11 +3,11 @@
 let
   inherit (outputs) lib;
 
-  nixosSystem = configurationPath:
+  nixosSystem = system: configurationPath:
     let hostName = toString (lib.baseDirOf configurationPath);
 
     in lib.nameValuePair hostName (inputs.nixos.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
 
       specialArgs = { inherit lib inputs; };
 
@@ -40,8 +40,7 @@ let
       ];
     });
 
-in builtins.listToAttrs (map nixosSystem (lib.findFilesRec {
-  path = ./.;
-  regex = "default.nix";
-  excludeDirs = [ ./. ];
-}))
+in (builtins.listToAttrs
+  (map (nixosSystem "aarch64-linux") [ ./ddd-kontist/default.nix ]))
+// (builtins.listToAttrs
+  (map (nixosSystem "x86_64-linux") [ ./ddd-pc/default.nix ]))

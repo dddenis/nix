@@ -3,7 +3,7 @@
 {
   imports = lib.findFilesRec {
     path = ./.;
-    regex = "^.*\\.nix$";
+    regex = "^[^_].*\\.nix$";
     excludeDirs = [ ./. ];
   };
 

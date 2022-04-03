@@ -4,7 +4,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
     };
-    nixos.url = "nixpkgs/nixos-unstable";
+    nixos.url = "nixpkgs/e802ed865654ca2b63ead628b95c5323a28edee5";
   };
 
   outputs = inputs@{ self, nixos, ... }: {
