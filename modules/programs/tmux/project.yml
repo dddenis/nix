@@ -8,4 +8,4 @@ windows:
       panes:
         -
         -
-  - git: lazygit
+  - git: TERM=screen-256color lazygit

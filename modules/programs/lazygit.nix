@@ -4,7 +4,7 @@ let
   cfg = config.programs.lazygit;
 
   delta = "${pkgs.delta}/bin/delta";
-  lazygit = "${pkgs.lazygit}/bin/lazygit";
+  lazygit = "TERM=screen-256color ${pkgs.lazygit}/bin/lazygit";
 
   logCmd =
     "git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'";
