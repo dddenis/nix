@@ -11,7 +11,7 @@ in {
         set noshowmode
 
         let g:lightline = {
-          \ 'colorscheme': 'gruvbox',
+          \ 'colorscheme': 'gruvbox_material',
           \ 'active': {
           \   'left': [
           \     [ 'mode', 'paste' ],

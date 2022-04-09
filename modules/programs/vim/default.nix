@@ -57,8 +57,7 @@ in {
 
       extraConfig = lib.mkBefore ''
         set termguicolors
-        let g:gruvbox_italic=1
-        colorscheme gruvbox
+        colorscheme gruvbox-material
 
         set nobackup
         set nowritebackup
@@ -110,7 +109,7 @@ in {
       '';
 
       plugins = with pkgs.vimPlugins; [
-        gruvbox-community
+        gruvbox-material
         quickfix-reflector-vim
         vim-abolish
         vim-commentary
