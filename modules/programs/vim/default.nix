@@ -35,6 +35,7 @@ in {
       coc-nvim.enable' = true;
       floaterm.enable' = true;
       fzf.enable' = true;
+      git.enable' = true;
       go.enable' = true;
       hardtime.enable' = true;
       haskell.enable' = true;
