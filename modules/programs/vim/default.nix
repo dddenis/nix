@@ -116,6 +116,7 @@ in {
         vim-commentary
         vim-polyglot
         vim-surround
+        vim-unimpaired
       ];
     };
 
