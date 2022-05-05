@@ -94,6 +94,8 @@ in {
         set hidden
         nnoremap <silent> <${leader}>` :b#<CR>
         nnoremap <${leader}>fs :w<CR>
+        nnoremap <silent> <${leader}>dw :windo diffthis<CR>
+        nnoremap <silent> <${leader}>do :diffoff!<CR>
 
         set completeopt=menu,preview,noinsert
         set wildmode=longest:full,full
