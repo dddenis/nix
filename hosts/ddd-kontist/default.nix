@@ -55,6 +55,7 @@
     lazygit.enable' = true;
     less.enable' = true;
     nnn.enable' = true;
+    psql.enable' = true;
     ripgrep.enable' = true;
     st.enable' = true;
     tmux.enable' = true;
