@@ -78,8 +78,7 @@
       ${pkgs.xorg.xset}/bin/xset r rate 200 40
       ${pkgs.xorg.xrandr}/bin/xrandr -s '3840x2160'
     '';
-    windowManager.i3.enable = true;
-    windowManager.i3.configFile = ./i3-config;
+    windowManager.i3.enable' = true;
   };
 
   users.mutableUsers = false;
