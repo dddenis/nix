@@ -8,7 +8,7 @@ config:
    *
    * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
    */
-  static char *font = "monospace:size=8:antialias=true:autohint=true";
+  static char *font = "monospace:size=9:antialias=true:autohint=true";
   static int borderpx = 2;
 
   /*

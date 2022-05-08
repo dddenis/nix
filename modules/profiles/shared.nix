@@ -10,6 +10,8 @@ in {
   options.profiles.shared.enable = lib.mkEnableOption "shared profile";
 
   config = lib.mkIf config.profiles.shared.enable {
+    hardware.enableAllFirmware = true;
+
     boot.cleanTmpDir = true;
     boot.loader.efi.canTouchEfiVariables = true;
     boot.loader.systemd-boot.editor = false;

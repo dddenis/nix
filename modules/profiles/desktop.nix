@@ -10,10 +10,7 @@
     boot.loader.systemd-boot.configurationLimit = 10;
     boot.loader.timeout = null;
 
-    hardware = {
-      enableAllFirmware = true;
-      pulseaudio.enable = false;
-    };
+    hardware.pulseaudio.enable = false;
 
     security.rtkit.enable = true;
 
