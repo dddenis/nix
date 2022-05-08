@@ -1,8 +1,8 @@
 NIXADDR ?= localhost
 NIXPORT ?= 22
 NIXUSER ?= ddd
-NIXBLOCKDEVICE ?= nvme0n1
-NIXCONFIG ?= ddd-kontist
+NIXBLOCKDEVICE ?= vda
+NIXCONFIG ?= ddd-kontist-utm
 
 SSH_CMD=ssh -o PubkeyAuthentication=no -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p$(NIXPORT)
 

@@ -4,7 +4,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
     };
-    nixos.url = "nixpkgs/e802ed865654ca2b63ead628b95c5323a28edee5";
+    nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = inputs@{ self, nixos, ... }: {
@@ -15,7 +15,7 @@
       outputs = self;
     };
 
-    stateVersion = "21.11";
+    stateVersion = "22.05";
 
     templates = import ./templates { inherit (self) lib; };
   };

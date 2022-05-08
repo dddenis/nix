@@ -40,7 +40,8 @@ let
       ];
     });
 
-in (builtins.listToAttrs
-  (map (nixosSystem "aarch64-linux") [ ./ddd-kontist/default.nix ]))
-// (builtins.listToAttrs
+in (builtins.listToAttrs (map (nixosSystem "aarch64-linux") [
+  ./ddd-kontist-utm/default.nix
+  ./ddd-kontist-vmware/default.nix
+])) // (builtins.listToAttrs
   (map (nixosSystem "x86_64-linux") [ ./ddd-pc/default.nix ]))
