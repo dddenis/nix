@@ -1,10 +1,12 @@
 {
   inputs = {
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixos";
-    };
     nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixos";
+
+    coc-nvim.url = "github:neoclide/coc.nvim/v0.0.81";
+    coc-nvim.flake = false;
   };
 
   outputs = inputs@{ self, nixos, ... }: {

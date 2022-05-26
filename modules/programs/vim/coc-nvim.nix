@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 let
   inherit (lib) types;
   inherit (config.programs.vim) leader;
 
   cfg = config.programs.vim.coc-nvim;
+
+  coc-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "coc.nvim";
+    version = inputs.coc-nvim.rev;
+    src = inputs.coc-nvim;
+  };
 
 in {
   options.programs.vim.coc-nvim = {
