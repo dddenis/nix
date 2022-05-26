@@ -6,6 +6,8 @@ in {
   options.programs.zsh.enable' = lib.mkEnableOption "zsh";
 
   config = lib.mkIf cfg.enable' {
+    environment.pathsToLink = [ "/share/zsh" ];
+
     hm.programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
