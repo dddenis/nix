@@ -36,6 +36,8 @@ let
             configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
             stateVersion = outputs.stateVersion;
           };
+
+          hm.home.stateVersion = outputs.stateVersion;
         }
       ];
     });
