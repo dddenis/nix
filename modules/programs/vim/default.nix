@@ -43,6 +43,7 @@ in {
       nix.enable' = true;
       rust.enable' = true;
       sql.enable' = true;
+      terraform.enable' = true;
       tmux.enable' = true;
       yaml.enable' = true;
     };
