@@ -1,7 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
 
 let
-  inherit (lib) types;
+  inherit (lib) attrsets options types;
   inherit (config.programs.vim) leader;
 
   cfg = config.programs.vim.coc-nvim;
@@ -21,7 +21,12 @@ in {
       default = [ ];
     };
 
-    coc-settings = lib.mkOption { type = types.attrs; };
+    coc-settings = lib.mkOption {
+      type = types.attrs // {
+        merge = _: values:
+          attrsets.recursiveUpdateAll (options.getValues values);
+      };
+    };
 
     filetypeMap = lib.mkOption {
       type = with lib.types; attrsOf string;
