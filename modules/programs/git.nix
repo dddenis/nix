@@ -28,6 +28,7 @@ in {
 
       extraConfig = {
         fetch.prune = true;
+        merge.conflictStyle = "diff3";
         pull.rebase = true;
       };
     };
