@@ -1,8 +1,10 @@
 {
   inputs = {
-    nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixos-aarch64.url = "github:NixOS/nixpkgs/nixos-22.05-aarch64";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixos";
 
     coc-nvim.url = "github:neoclide/coc.nvim/v0.0.81";
