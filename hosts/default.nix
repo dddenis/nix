@@ -3,6 +3,10 @@
 let
   inherit (outputs) lib;
 
+  overlay-unstable = _: prev: {
+    unstable = inputs.nixpkgs.legacyPackages.${prev.system};
+  };
+
   nixosSystem = system: nixos: configurationPath:
     let hostName = toString (lib.baseDirOf configurationPath);
 
@@ -30,6 +34,8 @@ let
               nixpkgs.flake = inputs.nixpkgs;
             };
           };
+
+          nixpkgs.overlays = [ overlay-unstable ];
 
           networking = { inherit hostName; };
 
