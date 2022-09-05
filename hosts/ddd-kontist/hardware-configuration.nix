@@ -32,6 +32,6 @@
   # replicates the default behaviour.
   networking.useDHCP = lib.mkDefault false;
   # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
-  networking.interfaces.enp0s9.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp0s8.useDHCP = lib.mkDefault true;
 
 }

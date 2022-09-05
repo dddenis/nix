@@ -3,6 +3,12 @@
 let
   inherit (outputs) lib;
 
+  x86_64-systems =
+    map (nixosSystem "x86_64-linux" inputs.nixos) [ ./ddd-pc/default.nix ];
+
+  aarch64-systems = map (nixosSystem "aarch64-linux" inputs.nixos-aarch64)
+    [ ./ddd-kontist/default.nix ];
+
   overlay-unstable = _: prev: {
     unstable = inputs.nixpkgs.legacyPackages.${prev.system};
   };
@@ -49,9 +55,4 @@ let
       ];
     });
 
-in (builtins.listToAttrs
-  (map (nixosSystem "aarch64-linux" inputs.nixos-aarch64) [
-    ./ddd-kontist-utm/default.nix
-    ./ddd-kontist-vmware/default.nix
-  ])) // (builtins.listToAttrs
-    (map (nixosSystem "x86_64-linux" inputs.nixos) [ ./ddd-pc/default.nix ]))
+in builtins.listToAttrs (x86_64-systems ++ aarch64-systems)
