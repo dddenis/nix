@@ -7,20 +7,24 @@
     home-manager.url = "github:nix-community/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixos";
 
-    coc-nvim.url = "github:neoclide/coc.nvim/v0.0.81";
-    coc-nvim.flake = false;
+    flake-utils.url = "github:numtide/flake-utils";
+
+    neovim.url = "path:./flakes/neovim";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
+    neovim.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = inputs@{ self, nixos, ... }: {
-    lib = import ./lib/extended-lib.nix nixos.lib;
+  outputs = inputs@{ self, nixos, flake-utils, ... }:
+    (rec {
+      lib = import ./lib/extended-lib.nix nixos.lib;
 
-    nixosConfigurations = import ./hosts {
-      inputs = removeAttrs inputs [ "self" ];
-      outputs = self;
-    };
+      nixosConfigurations = import ./hosts {
+        inputs = removeAttrs inputs [ "self" ];
+        outputs = self;
+      };
 
-    stateVersion = "22.05";
+      stateVersion = "22.05";
 
-    templates = import ./templates { inherit (self) lib; };
-  };
+      templates = import ./templates { inherit (self) lib; };
+    });
 }

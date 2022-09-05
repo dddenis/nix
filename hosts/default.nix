@@ -16,7 +16,8 @@ let
   nixosSystem = system: nixos: configurationPath:
     let hostName = toString (lib.baseDirOf configurationPath);
 
-    in lib.nameValuePair hostName (nixos.lib.nixosSystem {
+    in
+    lib.nameValuePair hostName (nixos.lib.nixosSystem {
       inherit system;
 
       specialArgs = { inherit lib inputs; };
@@ -24,6 +25,7 @@ let
       modules = [
         nixos.nixosModules.notDetected
         inputs.home-manager.nixosModules.home-manager
+        inputs.neovim.nixosModules.neovim
         (toString configurationPath)
         ../modules
 
@@ -55,4 +57,5 @@ let
       ];
     });
 
-in builtins.listToAttrs (x86_64-systems ++ aarch64-systems)
+in
+builtins.listToAttrs (x86_64-systems ++ aarch64-systems)

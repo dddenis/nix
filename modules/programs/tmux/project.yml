@@ -2,7 +2,7 @@ name: project
 root: .
 
 windows:
-  - vim: vim
+  - vim: nvim
   - shell:
       layout: even-horizontal
       panes:

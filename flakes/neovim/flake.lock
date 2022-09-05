@@ -15,31 +15,9 @@
         "type": "github"
       }
     },
-    "home-manager": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos"
-        ]
-      },
-      "locked": {
-        "lastModified": 1665996265,
-        "narHash": "sha256-/k9og6LDBQwT+f/tJ5ClcWiUl8kCX5m6ognhsAxOiCY=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "b81e128fc053ab3159d7b464d9b7dedc9d6a6891",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "ref": "release-22.05",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
-          "neovim",
           "rnix-lsp",
           "nixpkgs"
         ]
@@ -63,10 +41,71 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "neovim": "neovim_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "contrib",
+        "lastModified": 1666998807,
+        "narHash": "sha256-95AZQ8vN91sXX8ZVUlVcrKDymsQOj0VYIAw0UzeL2YM=",
+        "owner": "neovim",
+        "repo": "neovim",
+        "rev": "356244d50ba01c63b3ac33057a69462c4029612c",
+        "type": "github"
+      },
+      "original": {
+        "dir": "contrib",
+        "owner": "neovim",
+        "repo": "neovim",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1666869603,
+        "narHash": "sha256-3V53or4Vpu4+LrGfGSh3T2V8+qf5RP6nRuex9GywkwE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2001e2b31c565bcdf7bc13062b8d7cfccaca05b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "rnix-lsp": {
+      "inputs": {
+        "naersk": "naersk",
         "nixpkgs": [
           "nixpkgs"
         ],
+        "utils": [
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1666639010,
+        "narHash": "sha256-SKe5jEBHjjinb5R/fnJElwammKfof6zICc30E/we43Q=",
+        "owner": "nix-community",
+        "repo": "rnix-lsp",
+        "rev": "7339d80b7bf415ea42d790e073fbd69d21d09db4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "rnix-lsp",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "neovim": "neovim",
+        "nixpkgs": "nixpkgs",
         "rnix-lsp": "rnix-lsp",
         "vim-plugin-abolish": "vim-plugin-abolish",
         "vim-plugin-asterisk": "vim-plugin-asterisk",
@@ -99,127 +138,6 @@
         "vim-plugin-tmux-navigator": "vim-plugin-tmux-navigator",
         "vim-plugin-treesitter": "vim-plugin-treesitter",
         "vim-plugin-unimpaired": "vim-plugin-unimpaired"
-      },
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-zqioBalGNF5d02ZEmZybDU5UjfazH7kNF4y/fK/1eXE=",
-        "path": "./flakes/neovim",
-        "type": "path"
-      },
-      "original": {
-        "path": "./flakes/neovim",
-        "type": "path"
-      }
-    },
-    "neovim_2": {
-      "inputs": {
-        "flake-utils": [
-          "neovim",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "neovim",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "dir": "contrib",
-        "lastModified": 1666998807,
-        "narHash": "sha256-95AZQ8vN91sXX8ZVUlVcrKDymsQOj0VYIAw0UzeL2YM=",
-        "owner": "neovim",
-        "repo": "neovim",
-        "rev": "356244d50ba01c63b3ac33057a69462c4029612c",
-        "type": "github"
-      },
-      "original": {
-        "dir": "contrib",
-        "owner": "neovim",
-        "repo": "neovim",
-        "type": "github"
-      }
-    },
-    "nixos": {
-      "locked": {
-        "lastModified": 1666164185,
-        "narHash": "sha256-5v+YB4ijeUfg5LCz9ck4gIpCPhIS+qn02OyPJO48bCE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "c5203abb1329f7ea084c04acda330ca75d5b9fb5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixos-aarch64": {
-      "locked": {
-        "lastModified": 1666215216,
-        "narHash": "sha256-SqcqjDPp/5C1rW2YhE9vqnz9BMuiveybcBL6WaRxIfg=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "451c1a3e32ac73288d0f6fa48d53c9f2c1c5a3d8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.05-aarch64",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1666198336,
-        "narHash": "sha256-VTrWD8Bb48h2pi57P1++LuvZIgum3gSLiRzZ/8q3rg0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "db25c4da285c5989b39e4ce13dea651a88b7a9d4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "rnix-lsp": {
-      "inputs": {
-        "naersk": "naersk",
-        "nixpkgs": [
-          "neovim",
-          "nixpkgs"
-        ],
-        "utils": [
-          "neovim",
-          "flake-utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1666639010,
-        "narHash": "sha256-SKe5jEBHjjinb5R/fnJElwammKfof6zICc30E/we43Q=",
-        "owner": "nix-community",
-        "repo": "rnix-lsp",
-        "rev": "7339d80b7bf415ea42d790e073fbd69d21d09db4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "rnix-lsp",
-        "type": "github"
-      }
-    },
-    "root": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "home-manager": "home-manager",
-        "neovim": "neovim",
-        "nixos": "nixos",
-        "nixos-aarch64": "nixos-aarch64",
-        "nixpkgs": "nixpkgs"
       }
     },
     "vim-plugin-abolish": {

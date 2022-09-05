@@ -47,7 +47,6 @@ in {
 
     programs = {
       ssh.startAgent = true;
-      vim.defaultEditor = true;
     };
 
     services.journald.extraConfig = ''
