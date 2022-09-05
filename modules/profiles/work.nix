@@ -12,12 +12,13 @@
       extraGroups = [ "docker" ];
 
       packages = with pkgs; [
-        chromium
+        awscli2
         docker-compose
         fd
         firefox
         gnumake
         htop
+        jq
         lazydocker
         xclip
       ];
