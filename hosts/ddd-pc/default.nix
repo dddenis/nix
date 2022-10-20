@@ -91,7 +91,7 @@
       krita
       lazydocker
       slack
-      tdesktop
+      unstable.tdesktop
       xclip
     ];
   };
