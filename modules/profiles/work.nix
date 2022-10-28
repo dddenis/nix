@@ -14,7 +14,6 @@
       packages = with pkgs; [
         awscli2
         docker-compose
-        fd
         firefox
         gnumake
         htop
@@ -34,6 +33,7 @@
       atool.enable' = true;
       bat.enable' = true;
       direnv.enable' = true;
+      fd.enable' = true;
       fzf.enable' = true;
       git.enable' = true;
       lazygit.enable' = true;

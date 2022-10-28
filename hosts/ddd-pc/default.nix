@@ -44,6 +44,7 @@
     atool.enable' = true;
     bat.enable' = true;
     direnv.enable' = true;
+    fd.enable' = true;
     fzf.enable' = true;
     git.enable' = true;
     lazygit.enable' = true;
@@ -82,7 +83,6 @@
     packages = with pkgs; [
       chromium
       docker-compose
-      fd
       firefox-wayland
       gnumake
       htop
