@@ -64,6 +64,9 @@ in {
       users."${config.user.name}" = lib.mkAliasDefinitions options.hm;
     };
 
+    hm.programs.readline.enable = true;
+    hm.programs.readline.variables = { editing-mode = "vi"; };
+
     time.timeZone = "Europe/Berlin";
   };
 }
