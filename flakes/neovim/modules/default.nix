@@ -8,6 +8,7 @@
     ./lsp.nix
     ./neovim.nix
     ./nix.nix
+    ./python.nix
     ./rust.nix
     ./shell.nix
     ./sql.nix
