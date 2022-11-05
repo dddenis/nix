@@ -4,6 +4,15 @@
   config.programs.ddd.neovim.customRC = ''
     map('n', '<leader>gm', '<plug>(MergetoolToggle)')
 
+    mergetool_map_opts = {
+      expr = true,
+      replace_keycodes = false,
+    }
+    map('n', '<leader>gh', '&diff ? "<plug>(MergetoolDiffExchangeLeft)" : "<leader>gh"', mergetool_map_opts)
+    map('n', '<leader>gl', '&diff ? "<plug>(MergetoolDiffExchangeRight)" : "<leader>gl"', mergetool_map_opts)
+    map('n', '<leader>gj', '&diff ? "<plug>(MergetoolDiffExchangeDown)" : "<leader>gj"', mergetool_map_opts)
+    map('n', '<leader>gk', '&diff ? "<plug>(MergetoolDiffExchangeUp)" : "<leader>gk"', mergetool_map_opts)
+
     require'gitsigns'.setup({
       on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
