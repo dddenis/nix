@@ -2,7 +2,8 @@
 
 let cfg = config.programs.git;
 
-in {
+in
+{
   options.programs.git.enable' = lib.mkEnableOption "git";
 
   config = lib.mkIf cfg.enable' {
@@ -28,8 +29,17 @@ in {
 
       extraConfig = {
         fetch.prune = true;
-        merge.conflictStyle = "diff3";
         pull.rebase = true;
+
+        merge = {
+          tool = "vim_mergetool";
+          conflictStyle = "diff3";
+        };
+
+        mergetool."vim_mergetool" = {
+          cmd = ''nvim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"'';
+          trustExitCode = true;
+        };
       };
     };
   };
