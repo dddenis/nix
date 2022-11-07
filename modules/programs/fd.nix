@@ -9,9 +9,5 @@ in
 
   config = lib.mkIf cfg.enable' {
     hm.home.packages = [ pkgs.fd ];
-
-    hm.xdg.configFile."fd/ignore".text = ''
-      .git
-    '';
   };
 }
