@@ -11,7 +11,13 @@ in
       enable = true;
       userName = "Denis Goncharenko";
       userEmail = "dddenjer@gmail.com";
-      ignores = [ ".DS_Store" ".direnv/" ".envrc" ".ignore" ];
+      ignores = [
+        ".direnv/"
+        ".git/"
+        ".DS_Store"
+        ".envrc"
+        ".ignore"
+      ];
 
       delta = {
         enable = true;
