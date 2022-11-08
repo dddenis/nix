@@ -67,6 +67,9 @@ in
           vim.g.mapleader = ' '
           vim.opt.clipboard = 'unnamedplus'
 
+          vim.opt.backup = false
+          vim.opt.writebackup = false
+
           vim.opt.scrolloff = 5
           vim.opt.sidescrolloff = 5
 
