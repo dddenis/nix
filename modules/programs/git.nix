@@ -33,6 +33,11 @@ in
         };
       };
 
+      aliases = {
+        skip = "!git diff --name-only | xargs git update-index --skip-worktree";
+        unskip = "!git ls-files -v | grep -i ^S | cut -c 3- | xargs git update-index --no-skip-worktree";
+      };
+
       extraConfig = {
         fetch.prune = true;
         pull.rebase = true;
