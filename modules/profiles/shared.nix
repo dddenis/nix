@@ -15,9 +15,12 @@ in {
     hardware.enableAllFirmware = true;
 
     boot.cleanTmpDir = true;
+
     boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.systemd-boot.editor = false;
+
     boot.loader.systemd-boot.enable = true;
+    boot.loader.systemd-boot.editor = false;
+    boot.loader.systemd-boot.configurationLimit = 10;
 
     networking.useDHCP = false;
 

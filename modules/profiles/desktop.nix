@@ -7,7 +7,6 @@
     profiles.shared.enable = true;
 
     boot.kernel.sysctl = { "vm.swappiness" = 60; };
-    boot.loader.systemd-boot.configurationLimit = 10;
     boot.loader.timeout = null;
 
     hardware.pulseaudio.enable = false;
