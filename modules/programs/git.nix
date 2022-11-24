@@ -47,9 +47,13 @@ in
           conflictStyle = "diff3";
         };
 
-        mergetool."vim_mergetool" = {
-          cmd = ''nvim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"'';
-          trustExitCode = true;
+        mergetool = {
+          keepBackup = false;
+
+          vim_mergetool = {
+            cmd = ''nvim -f -c "MergetoolStart" "$MERGED" "$BASE" "$LOCAL" "$REMOTE"'';
+            trustExitCode = true;
+          };
         };
       };
     };
