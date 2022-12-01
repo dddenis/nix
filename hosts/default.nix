@@ -3,27 +3,29 @@
 let
   inherit (outputs) lib;
 
-  x86_64-systems =
-    map (nixosSystem "x86_64-linux" inputs.nixos) [ ./ddd-pc/default.nix ];
+  x86_64-systems = map (nixosSystem "x86_64-linux") [
+    ./ddd-pc/default.nix
+  ];
 
-  aarch64-systems = map (nixosSystem "aarch64-linux" inputs.nixos-aarch64)
-    [ ./ddd-kontist/default.nix ];
+  aarch64-systems = map (nixosSystem "aarch64-linux") [
+    ./ddd-kontist/default.nix
+  ];
 
   overlay-unstable = _: prev: {
     unstable = inputs.nixpkgs.legacyPackages.${prev.system};
   };
 
-  nixosSystem = system: nixos: configurationPath:
+  nixosSystem = system: configurationPath:
     let hostName = toString (lib.baseDirOf configurationPath);
 
     in
-    lib.nameValuePair hostName (nixos.lib.nixosSystem {
+    lib.nameValuePair hostName (inputs.nixos.lib.nixosSystem {
       inherit system;
 
       specialArgs = { inherit lib inputs; };
 
       modules = [
-        nixos.nixosModules.notDetected
+        inputs.nixos.nixosModules.notDetected
         inputs.home-manager.nixosModules.home-manager
         inputs.neovim.nixosModules.neovim
         (toString configurationPath)
@@ -38,7 +40,7 @@ let
 
             registry = {
               config.flake = outputs;
-              nixos.flake = nixos;
+              nixos.flake = inputs.nixos;
               nixpkgs.flake = inputs.nixpkgs;
             };
           };

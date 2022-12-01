@@ -57,7 +57,7 @@ in {
       hm.home = {
         packages = with pkgs; [ file nnn tree ];
         sessionVariables = {
-          NNN_OPTS = "HUadou";
+          NNN_OPTS = "AHUadou";
           NNN_PLUG = lib.concatStringsSep ";"
             (lib.mapAttrsToList (key: plugin: "${key}:${plugin}")
               pluginsConfig);
