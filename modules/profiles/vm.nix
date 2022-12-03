@@ -19,7 +19,7 @@
 
     home.enable' = true;
 
-    hm.xresources.properties = { "Xft.dpi" = 240; };
+    hm.xresources.properties = { "Xft.dpi" = 288; };
 
     programs.ssh.extraConfig = ''
       AddKeysToAgent yes
@@ -29,7 +29,7 @@
 
     services.xserver = {
       enable = true;
-      dpi = 240;
+      dpi = 288;
       xkbOptions = "altwin:swap_alt_win";
       autoRepeatDelay = 220;
       autoRepeatInterval = 40;
