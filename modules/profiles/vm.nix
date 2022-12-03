@@ -6,6 +6,9 @@
   config = lib.mkIf config.profiles.vm.enable {
     profiles.shared.enable = true;
 
+    # Prevent "Error switching console mode" on boot.
+    boot.loader.systemd-boot.consoleMode = "0";
+
     hardware.video.hidpi.enable = true;
 
     security.sudo.wheelNeedsPassword = false;
