@@ -18,7 +18,7 @@ in {
         });
 
         font = {
-          size = 12;
+          size = 13.5;
 
           normal.family = "monospace";
           bold.style = "Bold";
