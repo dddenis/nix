@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 {
   config.programs.ddd.neovim.customRC = ''
@@ -47,7 +47,7 @@
     })
   '';
 
-  config.programs.ddd.neovim.plugins = with pkgs.ddd.vimPlugins; [
+  config.programs.ddd.neovim.plugins = with neovimPkgs.vimPlugins; [
     fugitive
     gitsigns
     mergetool

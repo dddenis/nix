@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 {
   config.programs.ddd.neovim.lsp.client.rust_analyzer = {
@@ -7,7 +7,7 @@
     };
   };
 
-  config.programs.ddd.neovim.packages = with pkgs; [
+  config.programs.ddd.neovim.packages = with neovimPkgs; [
     rust-analyzer
   ];
 }

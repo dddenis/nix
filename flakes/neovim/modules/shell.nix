@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 {
   config.programs.ddd.neovim.lsp.client.bashls = { };
@@ -10,7 +10,7 @@
     })''
   ];
 
-  config.programs.ddd.neovim.packages = with pkgs; [
+  config.programs.ddd.neovim.packages = with neovimPkgs; [
     nodePackages.bash-language-server
     shellcheck
     shellharden

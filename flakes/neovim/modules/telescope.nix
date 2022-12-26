@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 {
   config.programs.ddd.neovim.customRC = ''
@@ -51,7 +51,7 @@
     end)
   '';
 
-  config.programs.ddd.neovim.plugins = with pkgs.ddd.vimPlugins; [
+  config.programs.ddd.neovim.plugins = with neovimPkgs.vimPlugins; [
     telescope
     telescope-fzf-native
     telescope-live-grep-args

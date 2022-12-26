@@ -8,10 +8,6 @@
     neovim.inputs.nixpkgs.follows = "nixpkgs";
     neovim.inputs.flake-utils.follows = "flake-utils";
 
-    rnix-lsp.url = "github:nix-community/rnix-lsp";
-    rnix-lsp.inputs.nixpkgs.follows = "nixpkgs";
-    rnix-lsp.inputs.utils.follows = "flake-utils";
-
     vim-plugin-plenary.url = "github:nvim-lua/plenary.nvim";
     vim-plugin-plenary.flake = false;
 
@@ -108,7 +104,7 @@
     vim-plugin-dressing.flake = false;
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, neovim, rnix-lsp, ... }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, neovim, ... }:
     (rec {
       overlays.default = overlays.neovim;
       overlays.neovim = (
@@ -117,24 +113,28 @@
             pkgs = self.packages."${prev.system}";
           in
           {
-            ddd = (prev.ddd or { }) // {
-              neovim-unwrapped = pkgs.neovim-unwrapped;
-              rnix-lsp = pkgs.rnix-lsp;
+            neovim-unwrapped = pkgs.neovim-unwrapped;
 
-              vimPlugins = prev.lib.attrsets.mapAttrs'
+            vimPlugins = (prev.vimPlugins or { }) // (
+              prev.lib.attrsets.mapAttrs'
                 (name: value: {
                   inherit value;
                   name = prev.lib.strings.removePrefix "vim-plugin-" name;
                 })
-                (final.lib.ddd.filterPlugins pkgs);
-            };
+                (final.lib.ddd.filterPlugins pkgs)
+            );
           }
           // (import ./lib.nix final prev)
       );
 
       nixosModules.default = nixosModules.neovim;
-      nixosModules.neovim = {
+      nixosModules.neovim = { config, ... }: {
         imports = [ ./modules ];
+
+        config._module.args.neovimPkgs = import nixpkgs {
+          inherit (config.nixpkgs) system config;
+          overlays = [ self.overlays.default ];
+        };
       };
     }
     // flake-utils.lib.eachDefaultSystem (system:
@@ -160,7 +160,6 @@
             neovim-unwrapped = neovim.packages."${system}".neovim;
             neovim = eval.config.programs.ddd.neovim.finalPackage;
             vimrc = pkgs.writeText ".vimrc" eval.config.programs.ddd.neovim.customRC;
-            rnix-lsp = rnix-lsp.defaultPackage.${system};
           }
           // lib.mapAttrs lib.ddd.buildPlugin (lib.ddd.filterPlugins inputs)
         );

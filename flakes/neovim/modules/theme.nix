@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 {
   config.programs.ddd.neovim.customRC = ''
@@ -6,7 +6,7 @@
     vim.cmd'colorscheme gruvbox-material'
   '';
 
-  config.programs.ddd.neovim.plugins = with pkgs.ddd.vimPlugins; [
+  config.programs.ddd.neovim.plugins = with neovimPkgs.vimPlugins; [
     gruvbox-material
   ];
 }

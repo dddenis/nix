@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, neovimPkgs, ... }:
 
 let
   cfg = config.programs.ddd.neovim.lsp;
@@ -13,8 +13,8 @@ let
       end,
 
       ${lib.optionalString (config.rootDir != "") "root_dir = ${config.rootDir},"}
-      ${lib.optionalString (config.cmd != []) "cmd = ${pkgs.lib.ddd.toLua config.cmd},"}
-      ${lib.optionalString (config.settings != {}) "settings = ${pkgs.lib.ddd.toLua config.settings},"}
+      ${lib.optionalString (config.cmd != []) "cmd = ${neovimPkgs.lib.ddd.toLua config.cmd},"}
+      ${lib.optionalString (config.settings != {}) "settings = ${neovimPkgs.lib.ddd.toLua config.settings},"}
     }
   '';
 
@@ -83,7 +83,7 @@ in
       end)
 
       local format_exclude = ${
-      pkgs.lib.ddd.toLua
+      neovimPkgs.lib.ddd.toLua
         (builtins.listToAttrs
           (map (name: { inherit name; value = true; })
             cfg.format.exclude))
@@ -114,7 +114,7 @@ in
     }
   '';
 
-  config.programs.ddd.neovim.plugins = with pkgs.ddd.vimPlugins; [
+  config.programs.ddd.neovim.plugins = with neovimPkgs.vimPlugins; [
     lsp-signature
     lspconfig
     null-ls

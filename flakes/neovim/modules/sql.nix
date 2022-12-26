@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ neovimPkgs, ... }:
 
 let
-  sqlFormatterConfig = pkgs.writeText "sql-formatter-config" (builtins.toJSON {
-    language = "postgresql";
-    keywordCase = "upper";
-    expressionWidth = 100;
-  });
+  sqlFormatterConfig = neovimPkgs.writeText "sql-formatter-config"
+    (builtins.toJSON {
+      language = "postgresql";
+      expressionWidth = 100;
+    });
 
 in
 {
@@ -17,7 +17,7 @@ in
     ''
   ];
 
-  config.programs.ddd.neovim.packages = with pkgs; [
+  config.programs.ddd.neovim.packages = with neovimPkgs; [
     nodePackages.sql-formatter
   ];
 }

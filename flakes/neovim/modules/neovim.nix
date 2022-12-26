@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, neovimPkgs, ... }:
 
 let
   cfg = config.programs.ddd.neovim;
@@ -18,7 +18,7 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.ddd.neovim-unwrapped;
+      default = neovimPkgs.neovim-unwrapped;
     };
 
     finalPackage = lib.mkOption {
@@ -44,7 +44,7 @@ in
   };
 
   config.programs.ddd.neovim = {
-    finalPackage = pkgs.wrapNeovim cfg.package {
+    finalPackage = neovimPkgs.wrapNeovim cfg.package {
       inherit (cfg) viAlias vimAlias;
 
       configure.customRC = ''
@@ -152,7 +152,7 @@ in
       '';
     };
 
-    plugins = with pkgs.ddd.vimPlugins; [
+    plugins = with neovimPkgs.vimPlugins; [
       abolish
       asterisk
       autopairs
