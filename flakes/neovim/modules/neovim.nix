@@ -162,6 +162,7 @@ in
       floaterm
       plenary
       repeat
+      sleuth
       surround
       tmux-navigator
       unimpaired

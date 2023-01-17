@@ -70,6 +70,7 @@
         "vim-plugin-null-ls": "vim-plugin-null-ls",
         "vim-plugin-plenary": "vim-plugin-plenary",
         "vim-plugin-repeat": "vim-plugin-repeat",
+        "vim-plugin-sleuth": "vim-plugin-sleuth",
         "vim-plugin-surround": "vim-plugin-surround",
         "vim-plugin-telescope": "vim-plugin-telescope",
         "vim-plugin-telescope-fzf-native": "vim-plugin-telescope-fzf-native",
@@ -80,7 +81,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-qs121vuBD1Sx3+tdln4Cmk/CD/hefQubc/V7+gZFVog=",
+        "narHash": "sha256-pLAAP0gtcSjdkvq1vA30x1Ta+iwY48wvjEkQFW1kT0o=",
         "path": "./flakes/neovim",
         "type": "path"
       },
@@ -553,6 +554,22 @@
       "original": {
         "owner": "tpope",
         "repo": "vim-repeat",
+        "type": "github"
+      }
+    },
+    "vim-plugin-sleuth": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673378030,
+        "narHash": "sha256-ClltfSVuoNoq5EiWRVBsGz1mrr7FbafGDdgsavLgFVE=",
+        "owner": "tpope",
+        "repo": "vim-sleuth",
+        "rev": "1cc4557420f215d02c4d2645a748a816c220e99b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tpope",
+        "repo": "vim-sleuth",
         "type": "github"
       }
     },
