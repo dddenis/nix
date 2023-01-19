@@ -2,6 +2,7 @@
   imports = [
     ./completion.nix
     ./git.nix
+    ./go.nix
     ./haskell.nix
     ./lsp.nix
     ./neovim.nix
