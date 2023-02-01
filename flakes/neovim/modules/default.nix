@@ -1,5 +1,6 @@
 {
   imports = [
+    ./astro.nix
     ./completion.nix
     ./git.nix
     ./go.nix
