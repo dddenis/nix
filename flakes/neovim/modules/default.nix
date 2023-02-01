@@ -4,6 +4,7 @@
     ./git.nix
     ./go.nix
     ./haskell.nix
+    ./json.nix
     ./lsp.nix
     ./neovim.nix
     ./nix.nix
