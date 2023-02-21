@@ -7,9 +7,7 @@ let
     ./ddd-pc/default.nix
   ];
 
-  aarch64-systems = map (nixosSystem "aarch64-linux") [
-    ./ddd-kontist/default.nix
-  ];
+  aarch64-systems = map (nixosSystem "aarch64-linux") [ ];
 
   overlay-unstable = _: prev: {
     unstable = inputs.nixpkgs.legacyPackages.${prev.system};
