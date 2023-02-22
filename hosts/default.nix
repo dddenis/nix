@@ -32,7 +32,6 @@ let
         {
           nix = {
             nixPath = [
-              "nixos-config=${toString configurationPath}"
               "nixpkgs=${inputs.nixpkgs}"
             ];
 

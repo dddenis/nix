@@ -2,18 +2,15 @@
 
 let cfg = config.home;
 
-in {
+in
+{
   options.home = {
     enable' = lib.mkEnableOption "home";
-
-    devPath = lib.mkOption {
-      type = lib.types.path;
-      readOnly = true;
-    };
 
     configPath = lib.mkOption {
       type = lib.types.path;
       readOnly = true;
+      default = "${config.user.home}/.nix";
     };
 
     bookmarks = lib.mkOption {
@@ -23,10 +20,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable' {
-    home = rec {
-      devPath = config.user.home + "/dev";
-      configPath = devPath + "/dddenis/nix";
-      bookmarks = { nix = configPath; };
+    home = {
+      bookmarks = { nix = cfg.configPath; };
     };
 
     # TODO
