@@ -32,35 +32,15 @@
   };
 
   fonts = {
-    fonts = with pkgs; [ iosevka-ddd-font iosevka-nerd-font ];
+    fonts = with pkgs; [ ddd.iosevka-font ddd.iosevka-nerd-font ];
 
     fontconfig.defaultFonts = {
       monospace = lib.mkBefore [ "Iosevka DDD" "Iosevka Nerd Font Mono" ];
     };
   };
 
-  programs = {
-    alacritty.enable' = true;
-    atool.enable' = true;
-    bat.enable' = true;
-    direnv.enable' = true;
-    fd.enable' = true;
-    fzf.enable' = true;
-    git.enable' = true;
-    lazygit.enable' = true;
-    less.enable' = true;
-    nnn.enable' = true;
-    ripgrep.enable' = true;
-    spotify.enable' = true;
-    tmux.enable' = true;
-    vim.enable' = true;
-    zsh.enable' = true;
-  };
-
   services = {
     gnome.at-spi2-core.enable = true;
-    kmonad.enable' = true;
-    safeeyes.enable' = true;
 
     xserver = {
       enable = true;
@@ -68,17 +48,21 @@
       layout = "us,ru";
       xkbModel = "hhk";
       xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
-
-      desktopManager.gnome.enable' = true;
     };
+  };
+
+  ddd.services = {
+    kmonad.enable = true;
+    xserver.desktopManager.gnome.enable = true;
   };
 
   systemd.services.bluetooth.serviceConfig.ExecStart =
     [ "" "${pkgs.bluez}/bin/bluetoothd --noplugin=sap" ];
 
-  user = {
+  users.users.ddd = {
     name = "ddd";
-    extraGroups = [ "docker" ];
+    isNormalUser = true;
+    extraGroups = [ "docker" "wheel" ];
 
     packages = with pkgs; [
       chromium
@@ -96,9 +80,30 @@
     ];
   };
 
-  home.enable' = true;
+  home-manager.users.ddd.ddd.programs = {
+    alacritty.enable = true;
+    atool.enable = true;
+    bat.enable = true;
+    direnv.enable = true;
+    fd.enable = true;
+    fzf.enable = true;
+    git.enable = true;
+    lazygit.enable = true;
+    less.enable = true;
+    nnn.enable = true;
+    ripgrep.enable = true;
+    spotify.enable = true;
+    tmux.enable = true;
+    vim.enable = true;
+    zsh.enable = true;
+  };
 
-  hm.xdg.mimeApps.defaultApplications = {
+  home-manager.users.ddd.ddd.services = {
+    safeeyes.enable = true;
+    xserver.desktopManager.gnome.enable = true;
+  };
+
+  home-manager.users.ddd.xdg.mimeApps.defaultApplications = {
     "application/xhtml+xml" = "firefox.desktop";
     "text/html" = "firefox.desktop";
     "text/xml" = "firefox.desktop";

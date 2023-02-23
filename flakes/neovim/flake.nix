@@ -135,7 +135,7 @@
         imports = [ ./modules ];
 
         config._module.args.neovimPkgs = import nixpkgs {
-          inherit (config.nixpkgs) system config;
+          system = "x86_64-linux";
           overlays = [ self.overlays.default ];
         };
       };

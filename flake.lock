@@ -37,6 +37,28 @@
         "type": "github"
       }
     },
+    "kmonad": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "dir": "nix",
+        "lastModified": 1673185501,
+        "narHash": "sha256-uEtWPpl9nH7QqochHo1z+giPga1zXR1Ko3dOXHIapFY=",
+        "owner": "kmonad",
+        "repo": "kmonad",
+        "rev": "3413f1be996142c8ef4f36e246776a6df7175979",
+        "type": "github"
+      },
+      "original": {
+        "dir": "nix",
+        "owner": "kmonad",
+        "repo": "kmonad",
+        "type": "github"
+      }
+    },
     "neovim": {
       "inputs": {
         "flake-utils": [
@@ -81,7 +103,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ElTApmuFqR9O6WVGei75a4myHnJTfUjwEvkhw/9AM8g=",
+        "narHash": "sha256-uoG3ZYBIFNa4qfGI+fFLtNY00VENp6msTKldRjaRsLE=",
         "path": "./flakes/neovim",
         "type": "path"
       },
@@ -153,6 +175,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "kmonad": "kmonad",
         "neovim": "neovim",
         "nixos": "nixos",
         "nixpkgs": "nixpkgs"

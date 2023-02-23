@@ -1,0 +1,20 @@
+{
+  imports = [
+    ./alacritty.nix
+    ./atool.nix
+    ./bat.nix
+    ./direnv.nix
+    ./fd.nix
+    ./fzf.nix
+    ./git.nix
+    ./lazygit.nix
+    ./less.nix
+    ./nnn
+    ./psql.nix
+    ./ripgrep.nix
+    ./spotify.nix
+    ./tmux
+    ./vim.nix
+    ./zsh
+  ];
+}
