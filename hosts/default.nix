@@ -5,6 +5,7 @@ let
 
   systemConfigs = {
     x86_64-linux = [
+      ./ddd-complyance/default.nix
       ./ddd-pc/default.nix
     ];
   };
@@ -25,7 +26,7 @@ let
     lib.nameValuePair hostName (inputs.nixos.lib.nixosSystem {
       inherit system;
 
-      specialArgs = { inherit lib; };
+      specialArgs = { inherit lib inputs; };
 
       modules = [
         inputs.nixos.nixosModules.notDetected
