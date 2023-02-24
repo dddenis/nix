@@ -25,8 +25,6 @@ in
     boot.loader.systemd-boot.editor = false;
     boot.loader.systemd-boot.configurationLimit = 10;
 
-    networking.useDHCP = false;
-
     nix = {
       extraOptions = ''
         experimental-features = nix-command flakes

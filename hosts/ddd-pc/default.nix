@@ -26,11 +26,6 @@
 
   virtualisation.docker.enable = true;
 
-  networking.interfaces = {
-    enp34s0.useDHCP = true;
-    wlo1.useDHCP = true;
-  };
-
   fonts = {
     fonts = with pkgs; [ ddd.iosevka-font ddd.iosevka-nerd-font ];
 
