@@ -5,7 +5,6 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     neovim.url = "github:neovim/neovim?dir=contrib";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
     neovim.inputs.flake-utils.follows = "flake-utils";
 
     vim-plugin-plenary.url = "github:nvim-lua/plenary.nvim";
