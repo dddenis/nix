@@ -3,6 +3,7 @@
 let
   overlays = {
     iosevka = import ./iosevka.nix;
+    spotify = import ./spotify.nix;
     unstable = import ./unstable.nix { inherit nixpkgs; };
   };
 
