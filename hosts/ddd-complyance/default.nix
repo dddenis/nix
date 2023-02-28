@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-10th-gen
+    inputs.ipu6.nixosModules.default
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -16,6 +17,9 @@
       allowDiscards = true;
     };
   };
+
+  hardware.ipu6.enable = true;
+  hardware.ipu6.ipuVersion = "ipu6ep";
 
   hardware.bluetooth = {
     enable = true;

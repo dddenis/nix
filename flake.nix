@@ -16,6 +16,10 @@
     neovim.url = "path:./flakes/neovim";
     neovim.inputs.nixpkgs.follows = "nixos";
     neovim.inputs.flake-utils.follows = "flake-utils";
+
+    ipu6.url = "path:./flakes/ipu6";
+    ipu6.inputs.nixpkgs.follows = "nixos";
+    ipu6.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = inputs@{ self, nixos, nixpkgs, flake-utils, ... }:
