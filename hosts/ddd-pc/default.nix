@@ -85,7 +85,7 @@
     git.enable = true;
     lazygit.enable = true;
     less.enable = true;
-    nnn.enable = true;
+    lf.enable = true;
     ripgrep.enable = true;
     spotify.enable = true;
     tmux.enable = true;
