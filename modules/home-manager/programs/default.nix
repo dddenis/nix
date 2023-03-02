@@ -10,7 +10,6 @@
     ./lazygit.nix
     ./less.nix
     ./lf
-    ./nnn
     ./psql.nix
     ./ripgrep.nix
     ./spotify.nix
