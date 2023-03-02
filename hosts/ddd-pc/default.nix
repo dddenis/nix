@@ -19,7 +19,11 @@
   '';
 
   hardware = {
-    bluetooth.enable = true;
+    bluetooth = {
+      enable = true;
+      disabledPlugins = [ "sap" ];
+    };
+
     cpu.amd.updateMicrocode = true;
     opengl.driSupport32Bit = true;
   };
@@ -50,9 +54,6 @@
     kmonad.enable = true;
     xserver.desktopManager.gnome.enable = true;
   };
-
-  systemd.services.bluetooth.serviceConfig.ExecStart =
-    [ "" "${pkgs.bluez}/bin/bluetoothd --noplugin=sap" ];
 
   users.users.ddd = {
     name = "ddd";
