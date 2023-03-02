@@ -111,9 +111,6 @@ in
           map(''', 'g*', '<plug>(asterisk-gz*)')
           map(''', 'g*', '<plug>(asterisk-gz#)')
 
-          vim.g.floaterm_opener = 'edit'
-          map('n', '<leader>.', ':FloatermNew lf<cr>')
-
           map('n', '[d', function() vim.diagnostic.goto_prev() end)
           map('n', ']d', function() vim.diagnostic.goto_next() end)
           map('n', '[e', function()
@@ -159,7 +156,6 @@ in
       bufdelete
       comment
       dressing
-      floaterm
       plenary
       repeat
       sleuth

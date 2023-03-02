@@ -2,6 +2,7 @@
   imports = [
     ./astro.nix
     ./completion.nix
+    ./floaterm.nix
     ./git.nix
     ./go.nix
     ./haskell.nix
