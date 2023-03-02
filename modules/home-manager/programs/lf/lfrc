@@ -1,0 +1,75 @@
+# vim:ft=vim
+
+set shellopts "-eu"
+set ifs "\n"
+set scrolloff 10
+set autoquit on
+set hidden on
+set incsearch on
+set incfilter on
+set drawbox on
+
+%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
+
+cmd open
+map <enter> open
+
+map gh
+map n
+map N
+map ?
+map ~ cd ~
+map D delete
+map / filter
+
+cmd mkfile %{{
+    printf "File Name: "
+    read fileName
+    touch "$fileName"
+    lf -remote "send $id select '$fileName'"
+}}
+map nf mkfile
+
+cmd mkdir %{{
+    printf "Directory Name: "
+    read dirName
+    mkdir -p -- "$dirName"
+    lf -remote "send $id select '$dirName'"
+}}
+map nd mkdir
+
+cmd yank-path $printf '%s' "$fx" | xclip -selection clipboard
+map Yp yank-path
+
+cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -selection clipboard
+map Yd yank-dirname
+
+cmd yank-basename $basename -a -- $fx | head -c-1 | xclip -selection clipboard
+map Yb yank-basename
+
+# y (select for copy) and P to paste soft-link
+# d (select for cut) and P to paste hard-link
+cmd link %{{
+    set -x
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    if [ "$#" -lt 1 ]; then
+        lf -remote "send $id echo no files to link"
+        exit 0
+    fi
+    case "$mode" in
+        # symbolically copy mode is indicating a soft link
+        copy) ln -sr -t . -- "$@";;
+        # while a move mode is indicating a hard link
+        move) ln -t . -- "$@";;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+map P :link
+
+cmd follow_link %{{
+    lf -remote "send $id select '$(readlink $f)'"
+}}
+map gl follow_link
