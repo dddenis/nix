@@ -101,14 +101,21 @@ in
 
         "org/gnome/shell" = {
           enabled-extensions = [
-            "caffeine@patapon.info"
+            "Vitals@CoreCoding.com"
+            "appindicatorsupport@rgcjonas.gmail.com"
             "drive-menu@gnome-shell-extensions.gcampax.github.com"
             "instantworkspaceswitcher@amalantony.net"
-            "just-perfection-desktop@just-perfection"
             "launch-new-instance@gnome-shell-extensions.gcampax.github.com"
             "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
           ];
           favorite-apps = [ ];
+        };
+
+        "org/gnome/shell/extensions/vitals" = {
+          hot-sensors = [
+            "_memory_usage_"
+            "_system_load_1m_"
+          ];
         };
 
         "org/gnome/shell/keybindings" = {
