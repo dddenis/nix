@@ -12,7 +12,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.fzf = {
       enable = true;
-      enableZshIntegration = true;
 
       changeDirWidgetCommand = "${fd} --type d";
       changeDirWidgetOptions = [ "--preview '${tree} -C {} | head -200'" ];

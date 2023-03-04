@@ -37,7 +37,5 @@ in {
         }
       ];
     };
-
-    programs.dircolors.enableZshIntegration = true;
   };
 }
