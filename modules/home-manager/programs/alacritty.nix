@@ -30,6 +30,12 @@ in
         window = {
           decorations = "none";
           startup_mode = "Maximized";
+
+          # Fix maximized startup in Wayland
+          dimensions = {
+            columns = 240;
+            lines = 160;
+          };
         };
       };
     };
