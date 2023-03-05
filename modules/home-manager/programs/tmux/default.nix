@@ -84,5 +84,13 @@ in
     };
 
     xdg.configFile."tmuxinator/project.yml".source = ./project.yml;
+
+    ddd.services.xserver.desktopManager.gnome.keybindings.custom = [
+      {
+        name = "Start tmux";
+        binding = "<Super>Return";
+        command = "${lib.getExe config.programs.alacritty.package} --command ${tmux}";
+      }
+    ];
   };
 }
