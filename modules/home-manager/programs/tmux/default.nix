@@ -8,22 +8,9 @@ let
 
 in
 {
-  options.ddd.programs.tmux = {
-    enable = lib.mkEnableOption "tmux";
-
-    launch = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.writeShellScript "tmux-launch" tmux;
-    };
-  };
+  options.ddd.programs.tmux.enable = lib.mkEnableOption "tmux";
 
   config = lib.mkIf cfg.enable {
-    ddd.programs.tmux = {
-      launch = pkgs.writeShellScript "tmux-attach" ''
-        (${tmux} ls | grep -vq attached && ${tmux} a) || ${tmux}
-      '';
-    };
-
     programs.tmux = {
       enable = true;
 
