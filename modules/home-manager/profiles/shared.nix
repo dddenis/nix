@@ -13,6 +13,7 @@
 
     programs = {
       nix-index.enable = true;
+      zoxide.enable = true;
 
       readline = {
         enable = true;
