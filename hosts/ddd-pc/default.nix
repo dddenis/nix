@@ -28,83 +28,54 @@
     opengl.driSupport32Bit = true;
   };
 
-  virtualisation.docker.enable = true;
-
-  fonts = {
-    fonts = with pkgs; [ ddd.iosevka-font ddd.iosevka-nerd-font ];
-
-    fontconfig.defaultFonts = {
-      monospace = lib.mkBefore [ "Iosevka DDD" "Iosevka Nerd Font Mono" ];
-    };
-  };
-
   services = {
     gnome.at-spi2-core.enable = true;
 
     xserver = {
       enable = true;
-
-      layout = "us,ru";
       xkbModel = "hhk";
-      xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
     };
   };
 
   ddd.services = {
-    kmonad.enable = true;
     xserver.desktopManager.gnome.enable = true;
   };
 
   users.users.ddd = {
     name = "ddd";
     isNormalUser = true;
+    initialPassword = "nixos";
     extraGroups = [ "docker" "wheel" ];
+  };
 
-    packages = with pkgs; [
+  home-manager.users.ddd = {
+    home.packages = with pkgs; [
       chromium
-      docker-compose
       firefox-wayland
-      gnumake
-      htop
       inkscape
-      insomnia
       krita
-      lazydocker
       slack
+
       unstable.tdesktop
-      xclip
     ];
-  };
 
-  home-manager.users.ddd.ddd.programs = {
-    alacritty.enable = true;
-    atool.enable = true;
-    bat.enable = true;
-    direnv.enable = true;
-    fd.enable = true;
-    fzf.enable = true;
-    git.enable = true;
-    lazygit.enable = true;
-    less.enable = true;
-    lf.enable = true;
-    ripgrep.enable = true;
-    spotify.enable = true;
-    tmux.enable = true;
-    vim.enable = true;
-    zsh.enable = true;
-  };
+    ddd = {
+      programs = {
+        spotify.enable = true;
+      };
 
-  home-manager.users.ddd.ddd.services = {
-    safeeyes.enable = true;
-    xserver.desktopManager.gnome.enable = true;
-  };
+      services = {
+        xserver.desktopManager.gnome.enable = true;
+      };
+    };
 
-  home-manager.users.ddd.xdg.mimeApps.defaultApplications = {
-    "application/xhtml+xml" = "firefox.desktop";
-    "text/html" = "firefox.desktop";
-    "text/xml" = "firefox.desktop";
-    "x-scheme-handler/ftp" = "firefox.desktop";
-    "x-scheme-handler/http" = "firefox.desktop";
-    "x-scheme-handler/https" = "firefox.desktop";
+    xdg.mimeApps.defaultApplications = {
+      "application/xhtml+xml" = "firefox.desktop";
+      "text/html" = "firefox.desktop";
+      "text/xml" = "firefox.desktop";
+      "x-scheme-handler/ftp" = "firefox.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+    };
   };
 }

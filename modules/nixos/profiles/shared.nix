@@ -1,4 +1,4 @@
-{ config, lib, options, pkgs, inputs, outputs, ... }:
+{ config, lib, pkgs, inputs, outputs, ... }:
 
 let
   caches = {
@@ -25,12 +25,27 @@ in
     boot.loader.systemd-boot.editor = false;
     boot.loader.systemd-boot.configurationLimit = 10;
 
+    system = {
+      configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
+      stateVersion = outputs.stateVersion;
+    };
+
     nix = {
       extraOptions = ''
         experimental-features = nix-command flakes
         keep-outputs = true
         keep-derivations = true
       '';
+
+      nixPath = [
+        "nixpkgs=${inputs.nixpkgs}"
+      ];
+
+      registry = {
+        config.flake = outputs;
+        nixos.flake = inputs.nixos;
+        nixpkgs.flake = inputs.nixpkgs;
+      };
 
       settings = {
         trusted-users = [ "root" ] ++ normalUserNames;
@@ -39,12 +54,25 @@ in
       };
     };
 
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs = {
+      overlays = [ outputs.overlays.default ];
+      config.allowUnfree = true;
+    };
 
     users.defaultUserShell = pkgs.zsh;
 
     environment.variables = {
       EDITOR = "nvim";
+    };
+
+    virtualisation.docker.enable = true;
+
+    fonts = {
+      fonts = with pkgs; [ ddd.iosevka-font ddd.iosevka-nerd-font ];
+
+      fontconfig.defaultFonts = {
+        monospace = lib.mkBefore [ "Iosevka DDD" "Iosevka Nerd Font Mono" ];
+      };
     };
 
     programs = {
@@ -57,10 +85,19 @@ in
       SystemMaxFileSize=10M
     '';
 
+    services.xserver = {
+      layout = "us,ru";
+      xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
+    };
+
+    ddd.services.kmonad.enable = true;
+
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
       verbose = true;
+      extraSpecialArgs = { inherit inputs; };
+      sharedModules = [ outputs.homeModules.default ];
     };
 
     time.timeZone = "Europe/Berlin";
