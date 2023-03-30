@@ -14,7 +14,7 @@
     kmonad.inputs.nixpkgs.follows = "nixos";
 
     neovim.url = "path:./flakes/neovim";
-    neovim.inputs.nixpkgs.follows = "nixos";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
     neovim.inputs.flake-utils.follows = "flake-utils";
 
     ipu6.url = "path:./flakes/ipu6";
