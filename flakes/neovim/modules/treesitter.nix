@@ -17,7 +17,16 @@
       highlight = {
         enable = true,
       },
+
+      context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
+      },
     }
+
+    require'Comment'.setup({
+      pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+    })
   '';
 
   config.programs.ddd.neovim.packages = with neovimPkgs; [
@@ -25,6 +34,8 @@
   ];
 
   config.programs.ddd.neovim.plugins = with neovimPkgs.vimPlugins; [
+    comment
     treesitter
+    ts-context-commentstring
   ];
 }

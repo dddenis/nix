@@ -81,6 +81,9 @@
     vim-plugin-comment.url = "github:numToStr/Comment.nvim";
     vim-plugin-comment.flake = false;
 
+    vim-plugin-ts-context-commentstring.url = "github:JoosepAlviste/nvim-ts-context-commentstring";
+    vim-plugin-ts-context-commentstring.flake = false;
+
     vim-plugin-sleuth.url = "github:tpope/vim-sleuth";
     vim-plugin-sleuth.flake = false;
 

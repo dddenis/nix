@@ -106,6 +106,7 @@
         "vim-plugin-telescope-live-grep-args": "vim-plugin-telescope-live-grep-args",
         "vim-plugin-tmux-navigator": "vim-plugin-tmux-navigator",
         "vim-plugin-treesitter": "vim-plugin-treesitter",
+        "vim-plugin-ts-context-commentstring": "vim-plugin-ts-context-commentstring",
         "vim-plugin-unimpaired": "vim-plugin-unimpaired"
       }
     },
@@ -602,6 +603,22 @@
       "original": {
         "owner": "nvim-treesitter",
         "repo": "nvim-treesitter",
+        "type": "github"
+      }
+    },
+    "vim-plugin-ts-context-commentstring": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1678029730,
+        "narHash": "sha256-cJ8a6h6mh6v6fzRULPZBbdlbQi97ngjeoc4yzc63rrU=",
+        "owner": "JoosepAlviste",
+        "repo": "nvim-ts-context-commentstring",
+        "rev": "729d83ecb990dc2b30272833c213cc6d49ed5214",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JoosepAlviste",
+        "repo": "nvim-ts-context-commentstring",
         "type": "github"
       }
     },

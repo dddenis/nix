@@ -120,7 +120,6 @@ in
             vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
           end)
 
-          require'Comment'.setup()
           require'nvim-autopairs'.setup()
 
           require'dressing'.setup({
@@ -154,7 +153,6 @@ in
       asterisk
       autopairs
       bufdelete
-      comment
       dressing
       plenary
       repeat
