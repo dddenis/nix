@@ -9,6 +9,10 @@ in
     lib.mkEnableOption "gnome";
 
   config = lib.mkIf cfg.enable {
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
+
     programs.dconf.enable = true;
 
     services = {
