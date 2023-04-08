@@ -1,4 +1,4 @@
-{ config, lib, osConfig, ... }:
+{ config, lib, outputs, ... }:
 
 let cfg = config.home;
 
@@ -19,7 +19,7 @@ in
 
   config = {
     home.bookmarks = { nix = cfg.configPath; };
-    home.stateVersion = osConfig.system.stateVersion;
+    home.stateVersion = outputs.stateVersion;
 
     xdg.enable = true;
   };

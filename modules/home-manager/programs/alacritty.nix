@@ -19,9 +19,9 @@ in
         });
 
         font = {
-          size = 13.5;
+          size = if pkgs.stdenv.isDarwin then 18 else 13.5;
 
-          normal.family = "monospace";
+          normal.family = if pkgs.stdenv.isDarwin then "Iosevka Nerd Font Mono" else "monospace";
           bold.style = "Bold";
           italic.style = "Oblique";
           bold_italic.style = "Bold Oblique";
