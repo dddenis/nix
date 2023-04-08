@@ -31,21 +31,9 @@ in
     };
 
     nix = {
-      extraOptions = ''
-        experimental-features = nix-command flakes
-        keep-outputs = true
-        keep-derivations = true
-      '';
-
       nixPath = [
         "nixpkgs=${inputs.nixpkgs}"
       ];
-
-      registry = {
-        config.flake = outputs;
-        nixos.flake = inputs.nixos;
-        nixpkgs.flake = inputs.nixpkgs;
-      };
 
       settings = {
         trusted-users = [ "root" ] ++ normalUserNames;
@@ -96,7 +84,7 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       verbose = true;
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = { inherit inputs outputs; };
       sharedModules = [ outputs.homeModules.default ];
     };
 

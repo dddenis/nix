@@ -133,11 +133,11 @@
       );
 
       nixosModules.default = nixosModules.neovim;
-      nixosModules.neovim = { config, ... }: {
+      nixosModules.neovim = { config, pkgs, ... }: {
         imports = [ ./modules ];
 
         config._module.args.neovimPkgs = import nixpkgs {
-          system = "x86_64-linux";
+          system = pkgs.stdenv.system;
           overlays = [ self.overlays.default ];
         };
       };

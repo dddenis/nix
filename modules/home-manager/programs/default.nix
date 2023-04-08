@@ -7,6 +7,7 @@
     ./fd.nix
     ./fzf.nix
     ./git.nix
+    ./homebrew.nix
     ./lazygit.nix
     ./less.nix
     ./lf

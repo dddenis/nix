@@ -2,7 +2,8 @@
 
 let cfg = config.ddd.programs.zsh;
 
-in {
+in
+{
   options.ddd.programs.zsh.enable = lib.mkEnableOption "zsh";
 
   config = lib.mkIf cfg.enable {

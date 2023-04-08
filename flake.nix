@@ -35,6 +35,11 @@
         outputs = self;
       };
 
+      homeConfigurations = import ./home {
+        inputs = removeAttrs inputs [ "self" ];
+        outputs = self;
+      };
+
       nixosModules.default = import ./modules/nixos;
 
       homeModules.default = import ./modules/home-manager;

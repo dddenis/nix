@@ -72,6 +72,12 @@ in
 
     xdg.configFile."tmuxinator/project.yml".source = ./project.yml;
 
+    ddd.misc.terminfo.names = [
+      "tmux"
+      "tmux-256color"
+      "tmux-direct"
+    ];
+
     ddd.services.xserver.desktopManager.gnome.keybindings.custom = [
       {
         name = "Start tmux";
