@@ -1,30 +1,27 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
-  config = {
-    home.packages = with pkgs; [
-      docker-compose
-      gnumake
-      insomnia
-      lazydocker
-      wl-clipboard
-      xclip
-    ];
+  config = lib.mkMerge [
+    {
+      home.packages = with pkgs; [
+        docker
+        gnumake
+        lazydocker
+      ];
 
-    programs = {
-      nix-index.enable = true;
-      zoxide.enable = true;
+      programs = {
+        nix-index.enable = true;
+        zoxide.enable = true;
 
-      readline = {
-        enable = true;
-        variables = {
-          editing-mode = "vi";
+        readline = {
+          enable = true;
+          variables = {
+            editing-mode = "vi";
+          };
         };
       };
-    };
 
-    ddd = {
-      programs = {
+      ddd.programs = {
         alacritty.enable = true;
         atool.enable = true;
         bat.enable = true;
@@ -40,10 +37,18 @@
         vim.enable = true;
         zsh.enable = true;
       };
+    }
 
-      services = {
+    (lib.mkIf pkgs.stdenv.isLinux {
+      home.packages = with pkgs; [
+        insomnia
+        wl-clipboard
+        xclip
+      ];
+
+      ddd.services = {
         safeeyes.enable = true;
       };
-    };
-  };
+    })
+  ];
 }
