@@ -21,10 +21,6 @@ in
     home.bookmarks = { nix = cfg.configPath; };
     home.stateVersion = osConfig.system.stateVersion;
 
-    xdg = {
-      enable = true;
-      mimeApps.enable = true;
-      configFile."mimeapps.list".force = true;
-    };
+    xdg.enable = true;
   };
 }
