@@ -13,6 +13,7 @@
     ./psql.nix
     ./ripgrep.nix
     ./spotify.nix
+    ./ssh.nix
     ./tmux
     ./vim.nix
     ./zsh
