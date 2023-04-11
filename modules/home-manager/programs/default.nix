@@ -8,6 +8,7 @@
     ./fzf.nix
     ./git.nix
     ./homebrew.nix
+    ./karabiner.nix
     ./lazygit.nix
     ./less.nix
     ./lf
