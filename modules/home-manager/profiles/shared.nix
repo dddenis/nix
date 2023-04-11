@@ -78,6 +78,7 @@ in
     (lib.mkIf pkgs.stdenv.isDarwin {
       ddd.programs = {
         homebrew.enable = true;
+        karabiner.enable = true;
       };
     })
   ];
