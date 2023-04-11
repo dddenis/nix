@@ -13,10 +13,6 @@
     kmonad.url = "github:kmonad/kmonad?dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixos";
 
-    neovim.url = "path:./flakes/neovim";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
-    neovim.inputs.flake-utils.follows = "flake-utils";
-
     ipu6.url = "path:./flakes/ipu6";
     ipu6.inputs.nixpkgs.follows = "nixos";
     ipu6.inputs.flake-utils.follows = "flake-utils";
