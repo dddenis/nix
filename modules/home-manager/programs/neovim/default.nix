@@ -7,6 +7,7 @@ let
     vimAlias = true;
     wrapRc = false;
     wrapperArgs = ''
+      --set-default CC ${pkgs.stdenv.cc}/bin/gcc \
       --suffix PATH : "${lib.makeBinPath packages}"
     '';
   };

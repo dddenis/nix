@@ -55,6 +55,9 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        dependencies = {
+            { "nvim-treesitter/nvim-treesitter-context", opts = {} },
+        },
         event = { "BufReadPost", "BufNewFile" },
         main = "nvim-treesitter.configs",
         opts = {
