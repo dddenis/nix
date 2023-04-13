@@ -41,7 +41,7 @@ in
     };
 
     programs.tmux.extraConfig = ''
-      set -as terminal-features ",alacritty*:RGB"
+      set -as terminal-overrides ",alacritty*:RGB"
     '';
   };
 }
