@@ -17,6 +17,7 @@
     ./spotify.nix
     ./ssh.nix
     ./tmux
+    ./wezterm
     ./zsh
   ];
 }
