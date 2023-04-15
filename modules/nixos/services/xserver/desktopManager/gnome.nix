@@ -11,6 +11,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1";
+      XCURSOR_THEME = "Adwaita";
     };
 
     programs.dconf.enable = true;
