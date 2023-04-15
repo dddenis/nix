@@ -16,10 +16,8 @@
       };
 
       home.packages = with pkgs; [
-        ddd.iosevka-font
-        ddd.iosevka-nerd-font
-
         gnumake
+        iosevka-bin
         lazydocker
       ];
 

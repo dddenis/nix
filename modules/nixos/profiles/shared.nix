@@ -55,14 +55,6 @@ in
 
     virtualisation.docker.enable = true;
 
-    fonts = {
-      fonts = with pkgs; [ ddd.iosevka-font ddd.iosevka-nerd-font ];
-
-      fontconfig.defaultFonts = {
-        monospace = lib.mkBefore [ "Iosevka DDD" "Iosevka Nerd Font Mono" ];
-      };
-    };
-
     programs = {
       ssh.startAgent = true;
       zsh.enable = true;
