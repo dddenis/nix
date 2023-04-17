@@ -82,7 +82,7 @@ in
       {
         name = "Start tmux";
         binding = "<Super>Return";
-        command = "${lib.getExe config.programs.alacritty.package} --command ${tmux}";
+        command = "${lib.getExe config.ddd.programs.wezterm.package} start ${tmux}";
       }
     ];
   };
