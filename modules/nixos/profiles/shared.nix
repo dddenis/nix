@@ -72,14 +72,6 @@ in
 
     ddd.services.kmonad.enable = true;
 
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      verbose = true;
-      extraSpecialArgs = { inherit inputs outputs; };
-      sharedModules = [ outputs.homeModules.default ];
-    };
-
     time.timeZone = "Europe/Berlin";
   };
 }
