@@ -56,14 +56,11 @@
       krita
       slack
 
+      unstable.spotify
       unstable.tdesktop
     ];
 
     ddd = {
-      programs = {
-        spotify.enable = true;
-      };
-
       services = {
         xserver.desktopManager.gnome.enable = true;
       };
