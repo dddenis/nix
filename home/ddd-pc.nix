@@ -10,6 +10,7 @@
     krita
     slack
 
+    unstable.discord
     unstable.spotify
     unstable.tdesktop
   ];
