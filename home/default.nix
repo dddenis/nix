@@ -7,6 +7,9 @@ let
     aarch64-darwin = [
       ./ddd-complyance.nix
     ];
+    x86_64-linux = [
+      ./ddd-pc.nix
+    ];
   };
 
   homeConfigs = configs:
