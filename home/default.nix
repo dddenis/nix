@@ -34,7 +34,6 @@ let
       modules = [
         outputs.homeModules.default
         config
-        { programs.home-manager.enable = true; }
       ];
     });
 

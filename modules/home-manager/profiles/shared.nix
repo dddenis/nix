@@ -28,6 +28,7 @@ in
       ];
 
       programs = {
+        home-manager.enable = true;
         nix-index.enable = true;
         zoxide.enable = true;
 
