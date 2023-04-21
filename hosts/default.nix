@@ -5,7 +5,6 @@ let
 
   systemConfigs = {
     x86_64-linux = [
-      ./ddd-complyance/default.nix
       ./ddd-pc/default.nix
     ];
   };
