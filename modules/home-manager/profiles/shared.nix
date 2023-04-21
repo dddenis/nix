@@ -58,6 +58,8 @@ in
         wezterm.enable = true;
         zsh.enable = true;
       };
+
+      xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
     }
 
     (lib.mkIf pkgs.stdenv.isLinux {

@@ -2,5 +2,7 @@
 _: prev:
 
 {
-  unstable = nixpkgs.legacyPackages.${prev.system};
+  unstable = import nixpkgs {
+    inherit (prev) system config;
+  };
 }
