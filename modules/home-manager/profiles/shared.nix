@@ -1,5 +1,9 @@
-{ pkgs, lib, inputs, outputs, ... }:
+{ config, pkgs, lib, inputs, outputs, ... }:
 
+let
+  homePath = if pkgs.stdenv.isDarwin then "/Users" else "/home";
+
+in
 {
   config = lib.mkMerge [
     {
@@ -14,6 +18,8 @@
         nixos.flake = inputs.nixos;
         nixpkgs.flake = inputs.nixpkgs;
       };
+
+      home.homeDirectory = "${homePath}/${config.home.username}";
 
       home.packages = with pkgs; [
         gnumake

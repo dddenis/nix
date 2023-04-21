@@ -1,6 +1,5 @@
 {
   home.username = "ddd";
-  home.homeDirectory = "/Users/ddd";
 
   programs.git.includes = [
     {
