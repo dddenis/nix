@@ -10,6 +10,10 @@ let
       --set-default CC ${pkgs.stdenv.cc}/bin/cc \
       --suffix PATH : "${lib.makeBinPath packages}"
     '';
+    packpathDirs.myNeovimPackages = {
+      start = [ ];
+      opt = [ ];
+    };
   };
 
   packages = with pkgs.unstable; [
