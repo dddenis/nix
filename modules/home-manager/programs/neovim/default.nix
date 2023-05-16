@@ -7,7 +7,7 @@ let
     vimAlias = true;
     wrapRc = false;
     wrapperArgs = ''
-      --set-default CC ${pkgs.stdenv.cc}/bin/cc \
+      --set CC ${pkgs.gcc}/bin/gcc \
       --suffix PATH : "${lib.makeBinPath packages}"
     '';
     packpathDirs.myNeovimPackages = {
