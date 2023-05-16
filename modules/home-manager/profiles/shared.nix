@@ -22,6 +22,7 @@ in
       home.homeDirectory = "${homePath}/${config.home.username}";
 
       home.packages = with pkgs; [
+        coreutils
         gnumake
         iosevka-bin
         lazydocker
