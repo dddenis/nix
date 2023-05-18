@@ -25,7 +25,6 @@ in
         coreutils
         gnumake
         iosevka-bin
-        lazydocker
       ];
 
       programs = {
@@ -49,6 +48,7 @@ in
         fd.enable = true;
         fzf.enable = true;
         git.enable = true;
+        lazydocker.enable = true;
         lazygit.enable = true;
         less.enable = true;
         lf.enable = true;

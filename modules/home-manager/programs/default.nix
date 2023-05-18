@@ -9,6 +9,7 @@
     ./git.nix
     ./homebrew.nix
     ./karabiner.nix
+    ./lazydocker
     ./lazygit.nix
     ./less.nix
     ./lf
