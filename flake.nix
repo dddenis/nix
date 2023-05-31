@@ -1,11 +1,11 @@
 {
   inputs = {
-    nixos.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixos.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    home-manager.url = "github:nix-community/home-manager/release-22.11";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixos";
 
     flake-utils.url = "github:numtide/flake-utils";
@@ -42,6 +42,6 @@
 
       templates = import ./templates { inherit (self) lib; };
 
-      stateVersion = "22.11";
+      stateVersion = "23.05";
     });
 }

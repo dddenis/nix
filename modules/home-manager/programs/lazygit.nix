@@ -39,9 +39,5 @@ in
 
       zsh.shellAliases = { gg = lazygit; };
     };
-
-    xdg.configFile."lazygit/config.yml" = lib.mkIf pkgs.stdenv.isDarwin {
-      inherit (config.home.file."Library/Application Support/lazygit/config.yml") source;
-    };
   };
 }
