@@ -31,3 +31,5 @@ vim.opt.shiftwidth = 2
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+vim.opt.wildmode = { "longest:full", "full" }
