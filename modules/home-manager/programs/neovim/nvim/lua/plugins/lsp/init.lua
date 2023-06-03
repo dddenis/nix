@@ -1,3 +1,9 @@
+vim.diagnostic.config({
+    float = {
+        source = true,
+    },
+})
+
 return {
     {
         "neovim/nvim-lspconfig",
