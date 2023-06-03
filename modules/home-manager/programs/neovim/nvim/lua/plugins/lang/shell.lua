@@ -1,3 +1,13 @@
+vim.filetype.add({
+    filename = {
+        [".env"] = "sh.dotenv",
+    },
+    pattern = {
+        [".+%.env"] = "sh.dotenv",
+        ["%.env%..+"] = "sh.dotenv",
+    },
+})
+
 return {
     {
         "neovim/nvim-lspconfig",
