@@ -17,7 +17,7 @@ in
   config = {
     hardware.enableAllFirmware = true;
 
-    boot.cleanTmpDir = true;
+    boot.tmp.cleanOnBoot = true;
 
     boot.loader.efi.canTouchEfiVariables = true;
 
