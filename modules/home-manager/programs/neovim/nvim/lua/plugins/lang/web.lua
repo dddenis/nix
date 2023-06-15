@@ -10,6 +10,12 @@ return {
                     end,
                 },
                 tsserver = {
+                    init_options = {
+                        preferences = {
+                            importModuleSpecifierPreference = "project-relative",
+                        },
+                    },
+
                     on_attach = function()
                         local function organize_imports()
                             vim.lsp.buf.execute_command({
