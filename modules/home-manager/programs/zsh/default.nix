@@ -16,7 +16,13 @@ in
       initExtra = ''
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(''${ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#*forward-char})
         ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char vi-forward-char)
-      '';
+      '' + (lib.optionalString pkgs.stdenv.isDarwin ''
+        # Nix
+        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+        fi
+        # End Nix
+      '');
 
       oh-my-zsh = {
         enable = true;
