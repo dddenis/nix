@@ -1,14 +1,5 @@
 { config, lib, pkgs, inputs, outputs, ... }:
 
-let
-  caches = {
-    "https://cache.iog.io" =
-      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=";
-    "https://nix-community.cachix.org" =
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
-  };
-
-in
 {
   config = {
     hardware.enableAllFirmware = true;
@@ -33,8 +24,6 @@ in
 
       settings = {
         trusted-users = [ "root" "@wheel" ];
-        substituters = builtins.attrNames caches;
-        trusted-public-keys = builtins.attrValues caches;
       };
     };
 

@@ -3,16 +3,26 @@
 let
   homePath = if pkgs.stdenv.isDarwin then "/Users" else "/home";
 
+  caches = {
+    "https://cache.nixos.org" = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=";
+    "https://cache.iog.io" =
+      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=";
+    "https://nix-community.cachix.org" =
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
+  };
+
 in
 {
   config = lib.mkMerge [
     {
       nix.package = lib.mkDefault pkgs.nix;
-      nix.extraOptions = ''
-        experimental-features = nix-command flakes
-        keep-outputs = true
-        keep-derivations = true
-      '';
+      nix.settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        keep-outputs = true;
+        keep-derivations = true;
+        substituters = builtins.attrNames caches;
+        trusted-public-keys = builtins.attrValues caches;
+      };
       nix.registry = {
         config.flake = outputs;
         nixos.flake = inputs.nixos;
