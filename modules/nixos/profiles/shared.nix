@@ -8,10 +8,6 @@ let
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
   };
 
-  normalUserNames =
-    let normalUsers = lib.filterAttrs (_: user: user.isNormalUser) config.users.users;
-    in builtins.attrNames normalUsers;
-
 in
 {
   config = {
@@ -36,7 +32,7 @@ in
       ];
 
       settings = {
-        trusted-users = [ "root" ] ++ normalUserNames;
+        trusted-users = [ "root" "@wheel" ];
         substituters = builtins.attrNames caches;
         trusted-public-keys = builtins.attrValues caches;
       };
