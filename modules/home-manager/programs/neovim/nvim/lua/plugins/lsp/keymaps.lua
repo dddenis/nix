@@ -21,7 +21,7 @@ function M.get()
                 has = "definition",
             },
             { "gD", "<cmd>Telescope lsp_references initial_mode=normal show_line=false<cr>", desc = "References" },
-            { "gt", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto Type Definition" },
+            { "gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto Type Definition" },
             { "K", vim.lsp.buf.hover, desc = "Hover" },
             { "]d", M.diagnostic_goto(true), desc = "Next Diagnostic" },
             { "[d", M.diagnostic_goto(false), desc = "Prev Diagnostic" },
