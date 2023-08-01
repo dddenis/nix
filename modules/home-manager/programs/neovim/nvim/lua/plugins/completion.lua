@@ -23,8 +23,8 @@ return {
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ["<S-k>"] = cmp.mapping.scroll_docs(-4),
-                    ["<S-j>"] = cmp.mapping.scroll_docs(4),
+                    ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-j>"] = cmp.mapping.scroll_docs(4),
                     ["<C-space>"] = cmp.mapping.complete(),
                     ["<tab>"] = cmp.mapping.confirm(),
                 }),
