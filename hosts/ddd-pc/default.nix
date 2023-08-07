@@ -28,6 +28,10 @@
     opengl.driSupport32Bit = true;
   };
 
+  programs = {
+    steam.enable = true;
+  };
+
   services = {
     gnome.at-spi2-core.enable = true;
 
