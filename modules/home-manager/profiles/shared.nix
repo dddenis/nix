@@ -29,6 +29,10 @@ in
         nixpkgs.flake = inputs.nixpkgs;
       };
 
+      home.sessionVariables = {
+        NIX_PATH = "nixos=${inputs.nixos}:nixpkgs=${inputs.nixpkgs}";
+      };
+
       home.homeDirectory = "${homePath}/${config.home.username}";
 
       home.packages = with pkgs; [
