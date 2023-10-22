@@ -1,29 +1,36 @@
 {
   inputs = {
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
-    devshell.inputs.flake-utils.follows = "flake-utils";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
-    let overlay = _: prev: { };
-
-    in
-    flake-utils.lib.simpleFlake {
-      inherit self nixpkgs;
-
-      name = "devshell";
-      systems = flake-utils.lib.defaultSystems;
-
-      preOverlays = [
-        inputs.devshell.overlays.default
-        overlay
+  outputs = { self, nixpkgs, ... }:
+    let
+      systems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
       ];
 
-      shell = { pkgs }:
-        pkgs.devshell.mkShell {
-          motd = "";
-          packages = with pkgs; [ ];
+      overlay = _: prev: { };
+
+      perSystem = f: nixpkgs.lib.genAttrs systems (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ overlay ];
+          };
+
+        in
+        f pkgs
+      );
+
+    in
+    {
+      devShells = perSystem (pkgs: {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [ ];
         };
+      });
     };
 }
