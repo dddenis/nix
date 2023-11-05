@@ -5,10 +5,10 @@ let
 
   configs = {
     aarch64-darwin = [
-      ./ddd-complyance.nix
+      ./ddd-complyance/default.nix
     ];
     x86_64-linux = [
-      ./ddd-pc.nix
+      ./ddd-pc/default.nix
     ];
   };
 
@@ -22,7 +22,10 @@ let
     builtins.listToAttrs (lib.flatten allConfigs);
 
   homeConfig = system: config:
-    lib.nameValuePair (lib.fileName config) (inputs.home-manager.lib.homeManagerConfiguration {
+    let hostName = toString (lib.baseDirOf config);
+
+    in
+    lib.nameValuePair hostName (inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixos {
         inherit system;
         overlays = [ outputs.overlays.default ];
