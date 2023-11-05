@@ -18,4 +18,6 @@
   ddd.services = {
     xserver.desktopManager.gnome.enable = true;
   };
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }

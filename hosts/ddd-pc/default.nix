@@ -51,4 +51,6 @@
     initialPassword = "nixos";
     extraGroups = [ "docker" "wheel" ];
   };
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }
