@@ -1,6 +1,7 @@
 {
   imports = [
     ./home
+    ./hosts
     ./misc
     ./profiles
     ./programs

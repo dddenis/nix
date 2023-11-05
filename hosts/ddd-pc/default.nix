@@ -28,6 +28,9 @@
     opengl.driSupport32Bit = true;
   };
 
+  nix.distributedBuilds = true;
+  nix.settings.builders-use-substitutes = true;
+
   programs = {
     steam.enable = true;
   };
@@ -39,6 +42,10 @@
       enable = true;
       xkbModel = "hhk";
     };
+  };
+
+  ddd.hosts = {
+    abra.enable = true;
   };
 
   ddd.services = {

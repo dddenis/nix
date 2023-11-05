@@ -15,6 +15,10 @@
     unstable.tdesktop
   ];
 
+  ddd.hosts = {
+    abra.enable = true;
+  };
+
   ddd.services = {
     xserver.desktopManager.gnome.enable = true;
   };
