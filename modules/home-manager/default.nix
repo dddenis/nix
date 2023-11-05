@@ -6,5 +6,7 @@
     ./programs
     ./services
     ./theme
+
+    ./secrets.nix
   ];
 }

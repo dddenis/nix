@@ -6,5 +6,7 @@
 
     ./profiles
     ./services
+
+    ./secrets.nix
   ];
 }
