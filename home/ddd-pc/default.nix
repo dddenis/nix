@@ -9,9 +9,9 @@
     inkscape
     krita
     slack
+    spotify
 
     unstable.discord
-    unstable.spotify
     unstable.tdesktop
   ];
 

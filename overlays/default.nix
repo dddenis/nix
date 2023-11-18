@@ -2,7 +2,6 @@
 
 let
   overlays = {
-    spotify = import ./spotify.nix;
     unstable = import ./unstable.nix { inherit nixpkgs; };
   };
 
