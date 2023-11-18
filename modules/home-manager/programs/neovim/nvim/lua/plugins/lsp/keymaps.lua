@@ -30,7 +30,8 @@ function M.get()
             { "<leader>cf", M.format, desc = "Format Document", has = "documentFormatting" },
             { "<leader>cf", M.format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
             { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
-            { "<leader>c.", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
+            { "<leader>c.", vim.lsp.buf.code_action, desc = "Code Action", mode = "n", has = "codeAction" },
+            { "<leader>c.", vim.lsp.buf.code_action, desc = "Code Action", mode = "v", has = "codeAction" },
             { "<leader>c/", source_action, desc = "Source Action", has = "codeAction" },
         }
     end
@@ -42,8 +43,8 @@ function M.on_attach(client, buffer)
     local keymaps = {}
 
     for _, value in ipairs(M.get()) do
-        local keys = Keys.parse(value)
-        if keys[2] == vim.NIL or keys[2] == false then
+        local keys = Keys.parse(value, value.mode)
+        if keys.rhs == vim.NIL or keys.rhs == false then
             keymaps[keys.id] = nil
         else
             keymaps[keys.id] = keys
@@ -56,7 +57,7 @@ function M.on_attach(client, buffer)
             opts.has = nil
             opts.silent = opts.silent ~= false
             opts.buffer = buffer
-            vim.keymap.set(keys.mode or "n", keys[1], keys[2], opts)
+            vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
         end
     end
 end
