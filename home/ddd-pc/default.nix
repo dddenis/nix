@@ -4,11 +4,7 @@
   home.username = "ddd";
 
   home.packages = with pkgs; [
-    chromium
     firefox-wayland
-    inkscape
-    krita
-    slack
     spotify
 
     unstable.discord
