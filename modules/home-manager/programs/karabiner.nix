@@ -142,7 +142,7 @@ let
         ])
       ];
     };
-    devices = [ hhkb ];
+    devices = [ hhkb appleInternalKeyboardIso ];
     selected = true;
   };
 
@@ -167,6 +167,16 @@ let
     simple_modifications = lib.flatten [
       (fromTo "escape" "grave_accent_and_tilde")
       (swap "left_option" "left_command")
+    ];
+  };
+
+  appleInternalKeyboardIso = lib.recursiveUpdate deviceDefaults {
+    identifiers = {
+      product_id = 835;
+      vendor_id = 1452;
+    };
+    simple_modifications = lib.flatten [
+      (swap "non_us_backslash" "grave_accent_and_tilde")
     ];
   };
 
