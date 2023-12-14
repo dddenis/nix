@@ -70,4 +70,8 @@ return {
             end,
         },
     },
+    {
+        "sindrets/diffview.nvim",
+        opts = {},
+    },
 }
