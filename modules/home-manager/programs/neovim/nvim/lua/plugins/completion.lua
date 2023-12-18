@@ -12,6 +12,7 @@ return {
         },
         opts = function()
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
 
             return {
                 completion = {
@@ -26,7 +27,22 @@ return {
                     ["<C-k>"] = cmp.mapping.scroll_docs(-4),
                     ["<C-j>"] = cmp.mapping.scroll_docs(4),
                     ["<C-space>"] = cmp.mapping.complete(),
-                    ["<tab>"] = cmp.mapping.confirm(),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.confirm()
+                        elseif luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
