@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixos.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixos.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixos";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -37,6 +37,6 @@
 
       templates = import ./templates { inherit (self) lib; };
 
-      stateVersion = "23.05";
+      stateVersion = "23.11";
     });
 }
