@@ -22,6 +22,13 @@ return {
         end,
     },
     {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        lazy = true,
+        opts = {
+            enable_autocmd = false,
+        },
+    },
+    {
         "christoomey/vim-tmux-navigator",
         config = function()
             vim.g.tmux_navigator_disable_when_zoomed = 1
@@ -80,10 +87,6 @@ return {
                         ["ic"] = "@class.inner",
                     },
                 },
-            },
-            context_commentstring = {
-                enable = true,
-                enable_autocmd = false,
             },
         },
     },
