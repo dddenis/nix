@@ -24,6 +24,7 @@ let
     nodePackages.prettier
     nodePackages.pyright
     nodePackages.sql-formatter
+    nodePackages.svelte-language-server
     nodePackages.typescript-language-server
     nodePackages.vscode-langservers-extracted
     rnix-lsp

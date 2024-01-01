@@ -9,6 +9,27 @@ return {
                         vim.keymap.set("n", "<leader>ce", "<cmd>EslintFixAll<cr>", { desc = "Fix All" })
                     end,
                 },
+                svelte = {
+                    on_attach = function(client)
+                        vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "TextChangedP" }, {
+                            pattern = { "*.js", "*.ts" },
+                            group = vim.api.nvim_create_augroup("svelte_ondidchangetsorjsfile", { clear = true }),
+                            callback = function(ctx)
+                                client.notify("$/onDidChangeTsOrJsFile", {
+                                    uri = ctx.file,
+                                    changes = {
+                                        {
+                                            text = table.concat(
+                                                vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false),
+                                                "\n"
+                                            ),
+                                        },
+                                    },
+                                })
+                            end,
+                        })
+                    end,
+                },
                 tsserver = {
                     init_options = {
                         preferences = {
