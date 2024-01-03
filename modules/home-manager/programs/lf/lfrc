@@ -39,13 +39,13 @@ cmd mkdir %{{
 }}
 map nd mkdir
 
-cmd yank-path $printf '%s' "$fx" | xclip -selection clipboard
+cmd yank-path $printf '%s' "$fx" | { uname | grep -q "Darwin" && pbcopy || xclip -selection clipboard; }
 map Yp yank-path
 
-cmd yank-dirname $dirname -- "$f" | head -c-1 | xclip -selection clipboard
+cmd yank-dirname $dirname -- "$f" | head -c-1 | { uname | grep -q "Darwin" && pbcopy || xclip -selection clipboard; }
 map Yd yank-dirname
 
-cmd yank-basename $basename -a -- $fx | head -c-1 | xclip -selection clipboard
+cmd yank-basename $basename -a -- $fx | head -c-1 | { uname | grep -q "Darwin" && pbcopy || xclip -selection clipboard; }
 map Yb yank-basename
 
 # y (select for copy) and P to paste soft-link
