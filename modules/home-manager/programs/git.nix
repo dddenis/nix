@@ -55,6 +55,10 @@ in
             trustExitCode = true;
           };
         };
+
+        rebase = {
+          updateRefs = true;
+        };
       };
     };
   };
