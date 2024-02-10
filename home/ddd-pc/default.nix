@@ -4,10 +4,9 @@
   home.username = "ddd";
 
   home.packages = with pkgs; [
-    firefox-wayland
-    spotify
-
     unstable.discord
+    unstable.firefox-wayland
+    unstable.spotify
     unstable.tdesktop
   ];
 
