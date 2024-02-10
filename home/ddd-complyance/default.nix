@@ -9,4 +9,6 @@
       };
     }
   ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }
