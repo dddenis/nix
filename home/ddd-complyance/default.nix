@@ -1,6 +1,10 @@
 {
   home.username = "ddd";
 
+  ddd.hosts = {
+    abra.enable = true;
+  };
+
   programs.git.includes = [
     {
       condition = "hasconfig:remote.*.url:git@github.com:complyance/**";
@@ -9,4 +13,6 @@
       };
     }
   ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }
