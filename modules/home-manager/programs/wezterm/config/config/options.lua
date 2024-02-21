@@ -26,6 +26,8 @@ function M.apply_to_config(config)
     config.enable_tab_bar = false
     config.native_macos_fullscreen_mode = true
 
+    config.audible_bell = "Disabled"
+
     config.check_for_updates = false
 end
 
