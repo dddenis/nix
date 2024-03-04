@@ -62,11 +62,11 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        lazy = false,
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
             { "nvim-treesitter/nvim-treesitter-context", opts = { max_lines = 3 } },
         },
-        event = { "BufReadPost", "BufNewFile" },
         main = "nvim-treesitter.configs",
         opts = {
             auto_install = true,
