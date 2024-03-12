@@ -39,6 +39,8 @@ in
         coreutils
         gnumake
         iosevka-bin
+
+        unstable.ast-grep
       ];
 
       programs = {
