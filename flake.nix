@@ -13,7 +13,7 @@
     kmonad.inputs.nixpkgs.follows = "nixos";
   };
 
-  outputs = inputs@{ self, nixos, nixpkgs, flake-utils, ... }:
+  outputs = inputs@{ self, nixos, nixpkgs, ... }:
     (rec {
       lib = import ./lib/extended-lib.nix nixos.lib;
 
