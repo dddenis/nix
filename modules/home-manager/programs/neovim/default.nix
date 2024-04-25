@@ -19,6 +19,8 @@ let
   packages = with pkgs.unstable; [
     gopls
     lua-language-server
+    nil
+    nixpkgs-fmt
     nodePackages."@astrojs/language-server"
     nodePackages.bash-language-server
     nodePackages.prettier
@@ -27,7 +29,6 @@ let
     nodePackages.svelte-language-server
     nodePackages.typescript-language-server
     nodePackages.vscode-langservers-extracted
-    rnix-lsp
     rust-analyzer
     shellcheck
     shellharden
