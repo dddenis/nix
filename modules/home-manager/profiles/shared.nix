@@ -68,6 +68,7 @@ in
         lazygit.enable = true;
         less.enable = true;
         lf.enable = true;
+        process-compose.enable = true;
         ripgrep.enable = true;
         ssh.enable = true;
         tmux.enable = true;

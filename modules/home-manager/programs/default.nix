@@ -14,6 +14,7 @@
     ./less.nix
     ./lf
     ./neovim
+    ./process-compose
     ./psql.nix
     ./ripgrep.nix
     ./ssh.nix

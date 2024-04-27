@@ -1,0 +1,7 @@
+shortcuts:
+  process_start:
+    shortcut: Ctrl-Z
+  process_stop:
+    shortcut: Ctrl-X
+  quit:
+    shortcut: q
