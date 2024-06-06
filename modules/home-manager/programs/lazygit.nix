@@ -7,7 +7,7 @@ let
   lazygit = "TERM=screen-256color ${pkgs.lazygit}/bin/lazygit";
 
   logCmd =
-    "git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'";
+    "git log --graph --color=always --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'";
 
 in
 {
