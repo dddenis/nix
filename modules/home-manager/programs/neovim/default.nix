@@ -24,11 +24,11 @@ let
     nodePackages."@astrojs/language-server"
     nodePackages.bash-language-server
     nodePackages.prettier
-    nodePackages.pyright
     nodePackages.sql-formatter
     nodePackages.svelte-language-server
     nodePackages.typescript-language-server
     nodePackages.vscode-langservers-extracted
+    pyright
     rust-analyzer
     shellcheck
     shellharden
