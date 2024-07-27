@@ -40,7 +40,7 @@
 
     xserver = {
       enable = true;
-      xkbModel = "hhk";
+      xkb.model = "hhk";
     };
   };
 

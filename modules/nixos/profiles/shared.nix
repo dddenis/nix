@@ -34,6 +34,10 @@
 
     users.defaultUserShell = pkgs.zsh;
 
+    fonts.packages = with pkgs; [
+      iosevka-bin
+    ];
+
     environment.variables = {
       EDITOR = "nvim";
     };
@@ -50,9 +54,9 @@
       SystemMaxFileSize=10M
     '';
 
-    services.xserver = {
+    services.xserver.xkb = {
       layout = "us,ru";
-      xkbOptions = "ctrl:nocaps,grp:alt_space_toggle";
+      options = "ctrl:nocaps,grp:alt_space_toggle";
     };
 
     ddd.services.kmonad.enable = true;

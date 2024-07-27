@@ -6,10 +6,10 @@ let
   neovim = pkgs.unstable.wrapNeovimUnstable pkgs.unstable.neovim-unwrapped {
     vimAlias = true;
     wrapRc = false;
-    wrapperArgs = ''
-      --set CC ${pkgs.gcc}/bin/gcc \
-      --suffix PATH : "${lib.makeBinPath packages}"
-    '';
+    wrapperArgs = lib.concatStringsSep " " [
+      ''--set CC "${pkgs.gcc}/bin/gcc"''
+      ''--suffix PATH : "${lib.makeBinPath packages}"''
+    ];
     packpathDirs.myNeovimPackages = {
       start = [ ];
       opt = [ ];
