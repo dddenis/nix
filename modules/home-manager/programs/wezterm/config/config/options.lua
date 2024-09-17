@@ -6,6 +6,7 @@ local is_darwin = string.find(wezterm.target_triple, "darwin") ~= nil
 
 function M.apply_to_config(config)
     config.term = "wezterm"
+    config.front_end = "WebGpu"
     config.color_scheme = "GruvboxDark"
     config.enable_wayland = false
 
