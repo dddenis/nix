@@ -30,7 +30,7 @@ return {
                         })
                     end,
                 },
-                tsserver = {
+                ts_ls = {
                     init_options = {
                         preferences = {
                             importModuleSpecifierPreference = "project-relative",
