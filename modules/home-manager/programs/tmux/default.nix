@@ -21,6 +21,7 @@ in
       keyMode = "vi";
       shortcut = "a";
       terminal = "tmux-256color";
+      mouse = true;
       tmuxinator.enable = true;
 
       plugins = with pkgs.tmuxPlugins; [ gruvbox ];
@@ -34,6 +35,11 @@ in
 
         bind -T copy-mode-vi v send-keys -X begin-selection
         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -i -selection clipboard"
+
+        # Toggle mouse on/off
+        bind-key m \
+          set-option -gF mouse "#{?mouse,off,on}" \;\
+          display-message "#{?mouse,Mouse: ON,Mouse: OFF}"
 
         version_pat='s/^tmux[^0-9]*([.0-9]+).*/\1/p'
 
