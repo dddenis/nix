@@ -16,7 +16,7 @@ in
         ".git/"
         ".DS_Store"
         ".envrc"
-        ".ignore"
+        ".rgignore"
       ];
 
       delta = {
