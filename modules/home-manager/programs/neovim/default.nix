@@ -10,10 +10,6 @@ let
       ''--set CC "${pkgs.gcc}/bin/gcc"''
       ''--suffix PATH : "${lib.makeBinPath packages}"''
     ];
-    packpathDirs.myNeovimPackages = {
-      start = [ ];
-      opt = [ ];
-    };
   };
 
   packages = with pkgs.unstable; [
