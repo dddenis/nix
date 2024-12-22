@@ -27,7 +27,8 @@ in
       plugins = with pkgs.tmuxPlugins; [ gruvbox ];
 
       extraConfig = lib.mkBefore ''
-        bind q choose-tree -Zs
+        bind q last-window
+        bind w choose-tree -Zs
         bind ` switch-client -l
 
         bind s split-window -v -c '#{pane_current_path}'
