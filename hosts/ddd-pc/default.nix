@@ -25,7 +25,7 @@
     };
 
     cpu.amd.updateMicrocode = true;
-    opengl.driSupport32Bit = true;
+    graphics.enable32Bit = true;
   };
 
   nix.distributedBuilds = true;

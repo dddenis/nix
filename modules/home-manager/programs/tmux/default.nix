@@ -22,6 +22,7 @@ in
       shortcut = "a";
       terminal = "tmux-256color";
       mouse = true;
+      sensibleOnTop = false;
       tmuxinator.enable = true;
 
       plugins = with pkgs.tmuxPlugins; [ gruvbox ];

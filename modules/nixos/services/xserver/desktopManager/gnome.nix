@@ -16,14 +16,14 @@ in
     programs.dconf.enable = true;
 
     services = {
-      udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+      udev.packages = with pkgs; [ gnome-settings-daemon ];
 
       xserver = {
         enable = true;
 
         desktopManager.gnome = {
           enable = true;
-          sessionPath = with pkgs.gnome; [ mutter ];
+          sessionPath = with pkgs; [ mutter ];
         };
 
         displayManager.gdm.enable = true;
