@@ -24,6 +24,7 @@ let
     nodePackages.svelte-language-server
     nodePackages.typescript-language-server
     nodePackages.vscode-langservers-extracted
+    nodejs
     pyright
     rust-analyzer
     shellcheck
