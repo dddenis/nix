@@ -25,7 +25,7 @@ return {
         },
     },
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         opts = function(_, opts)
             local builtins = require("null-ls").builtins
             table.insert(opts.sources, builtins.formatting.stylua)
