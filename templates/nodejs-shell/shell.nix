@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {
     overlays = [
       (_: prev: {
-        nodejs = prev.nodejs-18_x;
+        nodejs = prev.nodejs_22;
       })
     ];
   }
