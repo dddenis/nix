@@ -55,9 +55,8 @@ return {
                     return "<Ignore>"
                 end, { expr = true })
 
-                map({ "n", "v" }, "<leader>gr", gs.reset_hunk)
-                map({ "n", "v" }, "<leader>gs", gs.stage_hunk)
-                map("n", "<leader>gu", gs.undo_stage_hunk)
+                map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<cr>")
+                map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<cr>")
                 map("n", "<leader>gp", gs.preview_hunk)
                 map("n", "<leader>gS", gs.stage_buffer)
                 map("n", "<leader>gR", gs.reset_buffer)
