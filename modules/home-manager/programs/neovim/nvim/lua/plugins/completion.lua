@@ -11,6 +11,9 @@ return {
             "saadparwaiz1/cmp_luasnip",
         },
         opts = function()
+            require("luasnip.loaders.from_lua").lazy_load({
+                paths = { "./lua/snippets" },
+            })
             local cmp = require("cmp")
             local luasnip = require("luasnip")
 
@@ -20,7 +23,7 @@ return {
                 },
                 snippet = {
                     expand = function(args)
-                        require("luasnip").lsp_expand(args.body)
+                        luasnip.lsp_expand(args.body)
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
@@ -46,6 +49,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
+                    { name = "luasnip" },
                 }, {
                     {
                         name = "buffer",
