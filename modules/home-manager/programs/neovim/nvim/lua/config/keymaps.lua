@@ -14,6 +14,24 @@ Map("n", "<leader>fs", "<cmd>w<cr>", { desc = "Save File" })
 Map("n", "<leader>dw", "<cmd>windo diffthis<cr>", { desc = "Diff Windows" })
 Map("n", "<leader>do", "<cmd>diffoff!<cr>", { desc = "Exit Diff" })
 
+local function copy_to_clipboard(fn)
+    return function()
+        vim.fn.setreg("+", fn())
+    end
+end
+local function get_file_path()
+    return vim.api.nvim_buf_get_name(0)
+end
+local function get_file_dirname()
+    return vim.fn.fnamemodify(get_file_path(), ":h")
+end
+local function get_file_basename()
+    return vim.fn.fnamemodify(get_file_path(), ":t")
+end
+Map("n", "<leader>yp", copy_to_clipboard(get_file_path), { desc = "Yank file path" })
+Map("n", "<leader>yd", copy_to_clipboard(get_file_dirname), { desc = "Yank file dirname" })
+Map("n", "<leader>yb", copy_to_clipboard(get_file_basename), { desc = "Yank file basename" })
+
 Map("n", "<leader>1", "1gt", { desc = "Go to tab #1" })
 Map("n", "<leader>2", "2gt", { desc = "Go to tab #2" })
 Map("n", "<leader>3", "3gt", { desc = "Go to tab #3" })
