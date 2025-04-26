@@ -11,6 +11,10 @@
 
     kmonad.url = "github:kmonad/kmonad?dir=nix";
     kmonad.inputs.nixpkgs.follows = "nixos";
+
+    tmux.url = "./flakes/tmux";
+    tmux.inputs.nixpkgs.follows = "nixos";
+    tmux.inputs.home-manager.follows = "home-manager";
   };
 
   outputs = inputs@{ self, nixos, nixpkgs, ... }:

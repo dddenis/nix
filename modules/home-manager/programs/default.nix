@@ -18,7 +18,6 @@
     ./psql.nix
     ./ripgrep.nix
     ./ssh.nix
-    ./tmux
     ./wezterm
     ./zsh
   ];

@@ -1,0 +1,11 @@
+name: project
+root: .
+
+windows:
+  - vim: nvim
+  - shell:
+      layout: even-horizontal
+      panes:
+        -
+        -
+  - git: TERM=screen-256color lazygit

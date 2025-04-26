@@ -2,12 +2,11 @@
 
 # Darwin ships with old ncurses version
 # This module patches and installs terminfo from new ncurses version
-# https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 
 let
   cfg = config.ddd.misc.terminfo;
 
-  terminfo = pkgs.runCommandLocal "tmux-terminfo"
+  terminfo = pkgs.runCommandLocal "terminfo"
     {
       TERMINFO_NAMES = cfg.names;
     }
@@ -28,13 +27,14 @@ in
 {
   options.ddd.misc.terminfo.names = lib.mkOption {
     type = lib.types.listOf lib.types.nonEmptyStr;
+    default = [ ];
   };
 
-  # config = lib.mkIf (pkgs.stdenv.isDarwin && cfg.names != [ ]) {
-  #   home.packages = [ terminfo ];
-  #   home.sessionVariables = {
-  #     TERMINFO_DIRS = terminfoDirs;
-  #   };
-  #   home.file.".terminfo".source = config.lib.file.mkOutOfStoreSymlink terminfoDirs;
-  # };
+  config = lib.mkIf (pkgs.stdenv.isDarwin && cfg.names != [ ]) {
+    home.packages = [ terminfo ];
+    home.sessionVariables = {
+      TERMINFO_DIRS = terminfoDirs;
+    };
+    home.file.".terminfo".source = config.lib.file.mkOutOfStoreSymlink terminfoDirs;
+  };
 }

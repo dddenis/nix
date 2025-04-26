@@ -72,6 +72,7 @@ in
         ripgrep.enable = true;
         ssh.enable = true;
         tmux.enable = true;
+        tmux.tmuxinator.enable = true;
         vim.enable = true;
         wezterm.enable = true;
         zsh.enable = true;

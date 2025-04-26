@@ -81,7 +81,8 @@
         "kmonad": "kmonad",
         "nixos": "nixos",
         "nixpkgs": "nixpkgs",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "tmux": "tmux"
       }
     },
     "sops-nix": {
@@ -102,6 +103,26 @@
         "owner": "Mic92",
         "repo": "sops-nix",
         "type": "github"
+      }
+    },
+    "tmux": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-y8KLiNQDQfoGUB0d7K+pKXpGlMd9PVx3qnksHaHRqB8=",
+        "path": "/nix/store/5bl4fj1s6p3r6cy7p3bigmq8nhm9m2w6-source/flakes/tmux",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/5bl4fj1s6p3r6cy7p3bigmq8nhm9m2w6-source/flakes/tmux",
+        "type": "path"
       }
     }
   },
