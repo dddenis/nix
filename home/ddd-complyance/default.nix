@@ -1,4 +1,6 @@
 {
+  profiles.gui.enable = true;
+
   home.username = "ddd";
 
   ddd.hosts = {

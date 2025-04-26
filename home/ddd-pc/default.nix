@@ -1,9 +1,14 @@
 { pkgs, ... }:
 
 {
+  profiles.gui.enable = true;
+
   home.username = "ddd";
 
   home.packages = with pkgs; [
+    docker
+    insomnia
+
     unstable.discord
     unstable.firefox-wayland
     unstable.spotify
@@ -15,6 +20,7 @@
   };
 
   ddd.services = {
+    safeeyes.enable = true;
     xserver.desktopManager.gnome.enable = true;
   };
 

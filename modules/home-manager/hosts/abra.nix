@@ -11,6 +11,10 @@ in
       config.sops.secrets."ssh/includes/abra".path
     ];
 
+    programs.zsh.shellAliases = {
+      abra = "ssh abra -t tmux a";
+    };
+
     sops.secrets."ssh/includes/abra".path = "${config.home.homeDirectory}/.ssh/includes/abra";
   };
 }

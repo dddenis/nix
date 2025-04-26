@@ -7,6 +7,9 @@ let
     aarch64-darwin = [
       ./ddd-complyance/default.nix
     ];
+    aarch64-linux = [
+      ./abra/default.nix
+    ];
     x86_64-linux = [
       ./ddd-pc/default.nix
     ];
