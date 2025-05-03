@@ -11,7 +11,9 @@ in
       enable = true;
 
       extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''
-        UseKeychain = yes
+        UseKeychain yes
+        AddKeysToAgent yes
+        IdentityFile ~/.ssh/id_ed25519
       '';
     };
   };
