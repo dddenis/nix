@@ -21,7 +21,7 @@ in
         settings = {
           git = {
             branchLogCmd = "${logCmd} {{branchName}} --";
-            allBranchesLogCmd = "${logCmd} --all";
+            allBranchesLogCmds = [ "${logCmd} --all" ];
             skipHookPrefix = "--wip-- [skip ci]";
 
             paging = {

@@ -20,7 +20,7 @@ in
       fileWidgetCommand = "${fd} --type f --hidden --exclude .git";
     };
 
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
       _fzf_compgen_path() {
         ${fd} --hidden --follow --exclude .git . "$1"
       }
