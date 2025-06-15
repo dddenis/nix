@@ -16,6 +16,7 @@ function M.apply_to_config(config)
     })
     config.font_size = 15
     config.dpi = is_darwin and 168 or nil
+    config.warn_about_missing_glyphs = false
 
     config.window_decorations = "RESIZE"
     config.window_close_confirmation = "NeverPrompt"
