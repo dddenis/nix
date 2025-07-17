@@ -20,7 +20,7 @@ local function copy_to_clipboard(fn)
     end
 end
 local function get_file_path()
-    return vim.api.nvim_buf_get_name(0)
+    return vim.fn.expand("%:.")
 end
 local function get_file_dirname()
     return vim.fn.fnamemodify(get_file_path(), ":h")
