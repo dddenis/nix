@@ -29,6 +29,10 @@ let
     set -g status-keys vi
     set -g mode-keys vi
 
+    # highlight active pane
+    set -g window-active-style 'fg=terminal,bg=terminal'
+    set -g window-style 'fg=colour247,bg=colour236'
+
     bind -N "Select pane to the left of the active pane" h select-pane -L
     bind -N "Select pane below the active pane" j select-pane -D
     bind -N "Select pane above the active pane" k select-pane -U
