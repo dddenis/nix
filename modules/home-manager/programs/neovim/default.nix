@@ -13,6 +13,7 @@ let
   };
 
   packages = with pkgs.unstable; [
+    clojure-lsp
     gopls
     lua-language-server
     nil
