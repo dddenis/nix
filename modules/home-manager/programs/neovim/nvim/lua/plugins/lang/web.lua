@@ -6,7 +6,7 @@ return {
                 astro = {},
                 eslint = {
                     on_attach = function()
-                        vim.keymap.set("n", "<leader>ce", "<cmd>EslintFixAll<cr>", { desc = "Fix All" })
+                        vim.keymap.set("n", "<leader>ce", "<cmd>LspEslintFixAll<cr>", { desc = "Fix All" })
                     end,
                 },
                 svelte = {
