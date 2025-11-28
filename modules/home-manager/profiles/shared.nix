@@ -40,6 +40,8 @@ in
       home.homeDirectory = "${homePath}/${config.home.username}";
 
       home.packages = with pkgs; [
+        config.nix.package
+
         coreutils
         gnumake
         iosevka-bin
