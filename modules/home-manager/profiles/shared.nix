@@ -29,6 +29,10 @@ in
         nixpkgs.flake = inputs.nixpkgs;
       };
 
+      home.sessionPath = [
+        "$HOME/.local/bin"
+      ];
+
       home.sessionVariables = {
         NIX_PATH = "nixos=${inputs.nixos}:nixpkgs=${inputs.nixpkgs}";
       };
