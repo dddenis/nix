@@ -3,6 +3,7 @@
     ./alacritty.nix
     ./atool.nix
     ./bat.nix
+    ./delta.nix
     ./direnv.nix
     ./fd.nix
     ./fzf.nix

@@ -10,7 +10,7 @@
   outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
     ({
       overlays.default = _: prev: {
-        inherit (self.packages."${prev.system}")
+        inherit (self.packages."${prev.stdenv.hostPlatform.system}")
           hasura-cli-ext
           hasura-cli
           nhost-cli;

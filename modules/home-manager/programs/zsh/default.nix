@@ -11,7 +11,7 @@ in
       enable = true;
       autosuggestion.enable = true;
       enableCompletion = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
 
       initContent = ''
         ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(''${ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#*forward-char})

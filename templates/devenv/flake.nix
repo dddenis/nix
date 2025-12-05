@@ -35,10 +35,12 @@
 
     in
     {
-      packages = perSystem (pkgs: {
-        devenv-up = self.devShells.${pkgs.system}.default.config.procfileScript;
-        devenv-test = self.devShells.${pkgs.system}.default.config.test;
-      });
+      packages = perSystem (pkgs:
+        let system = pkgs.stdenv.hostPlatform.system;
+        in {
+          devenv-up = self.devShells.${system}.default.config.procfileScript;
+          devenv-test = self.devShells.${system}.default.config.test;
+        });
 
       devShells = perSystem (pkgs:
         {

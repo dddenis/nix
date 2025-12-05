@@ -24,10 +24,10 @@ in
             allBranchesLogCmds = [ "${logCmd} --all" ];
             skipHookPrefix = "--wip-- [skip ci]";
 
-            paging = {
+            pagers = [{
               colorArg = "always";
               pager = "${delta} --paging=never";
-            };
+            }];
           };
 
           gui = {

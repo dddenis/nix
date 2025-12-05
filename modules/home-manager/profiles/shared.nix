@@ -65,6 +65,7 @@ in
       ddd.programs = {
         atool.enable = true;
         bat.enable = true;
+        delta.enable = true;
         direnv.enable = true;
         fd.enable = true;
         fzf.enable = true;
@@ -93,7 +94,7 @@ in
     (lib.mkIf pkgs.stdenv.isDarwin {
       ddd.programs = {
         homebrew.enable = true;
-        karabiner.enable = true;
+        karabiner.enable = false;
       };
     })
   ];
