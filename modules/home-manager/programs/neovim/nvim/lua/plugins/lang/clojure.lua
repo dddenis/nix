@@ -17,6 +17,7 @@ return {
             vim.g["conjure#mapping#doc_word"] = false
             vim.g["conjure#client#clojure#nrepl#mapping#disconnect"] = false
             vim.g["conjure#client#clojure#nrepl#mapping#connect_port_file"] = false
+            vim.g["conjure#client#clojure#nrepl#connection#auto_repl#enabled"] = false
         end,
     },
     {
