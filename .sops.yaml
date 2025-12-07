@@ -1,6 +1,7 @@
 keys:
   - &ddd-pc age14f0us3adgmddwjdlldynce969n9p89tsze6v7ajlt8z44k89psgsue9v4r
   - &ddd-complyance age1yslk8xkm4f259meg0qdv4z6qudzuhjfvd7hpkc4pc9ny9nkzeyrq8ec2x2
+  - &abra age1psl5dg7evqmlf2wg7j4gkvu2htjmrhq0r70mceg5vx2fwjawxs3qhefmt2
 creation_rules:
   - path_regex: ^(home|hosts)/ddd-pc/secrets.yaml$
     key_groups:
@@ -10,3 +11,7 @@ creation_rules:
     key_groups:
       - age:
           - *ddd-complyance
+  - path_regex: ^(home|hosts)/abra/secrets.yaml$
+    key_groups:
+      - age:
+          - *abra

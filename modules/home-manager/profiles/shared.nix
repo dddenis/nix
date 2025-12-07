@@ -64,6 +64,7 @@ in
 
       ddd.programs = {
         atool.enable = true;
+        atuin.enable = true;
         bat.enable = true;
         delta.enable = true;
         direnv.enable = true;

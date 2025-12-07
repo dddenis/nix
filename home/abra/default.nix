@@ -6,4 +6,6 @@
   home.packages = with pkgs; [
     wezterm.terminfo
   ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }

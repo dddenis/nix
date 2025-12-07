@@ -2,6 +2,7 @@
   imports = [
     ./alacritty.nix
     ./atool.nix
+    ./atuin.nix
     ./bat.nix
     ./delta.nix
     ./direnv.nix
