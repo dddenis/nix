@@ -32,6 +32,11 @@ function M.apply_to_config(config)
             mods = "CTRL|SHIFT",
             action = wezterm.action.PasteFrom("Clipboard"),
         },
+        {
+            key = "Enter",
+            mods = "SHIFT",
+            action = wezterm.action({ SendString = "\x1b\r" }),
+        },
     }
 
     if shared.is_darwin then
