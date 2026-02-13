@@ -56,7 +56,9 @@ let
     bind v split-window -h -c '#{pane_current_path}'
 
     bind -T copy-mode-vi v send-keys -X begin-selection
-    bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -i -selection clipboard"
+    bind -T copy-mode-vi y send-keys -X copy-pipe "xclip -i -selection clipboard"
+    bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe "xclip -i -selection clipboard"
+    bind -T copy-mode-vi DoubleClick1Pane select-pane \; send-keys -X select-word \; run-shell -d 0.3 \; send-keys -X copy-pipe "xclip -i -selection clipboard"
 
     # toggle mouse on/off
     bind-key m \
