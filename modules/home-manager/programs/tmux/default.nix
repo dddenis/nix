@@ -4,7 +4,7 @@ let
   cfg = config.ddd.programs.tmux;
 
   tmux = "${pkgs.tmux}/bin/tmux";
-  tmuxinator = "${pkgs.tmuxinator}/bin/tmuxinator";
+  tmuxinator = "${pkgs.unstable.tmuxinator}/bin/tmuxinator";
 
   paneResizeAmount = "5";
   plugins = with pkgs.tmuxPlugins; [ gruvbox ];
@@ -102,7 +102,10 @@ in
   options.ddd.programs.tmux.enable = lib.mkEnableOption "tmux";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.tmux pkgs.tmuxinator ];
+    home.packages = [
+      pkgs.tmux
+      pkgs.unstable.tmuxinator
+    ];
 
     programs.zsh.shellAliases = {
       mux = tmuxinator;
