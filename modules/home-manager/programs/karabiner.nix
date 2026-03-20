@@ -13,7 +13,7 @@ let
 
   fromTo = from: to: {
     from = { key_code = from; };
-    to = { key_code = to; };
+    to = [{ key_code = to; }];
   };
 
   fromToConsumer = from: to: {
@@ -77,47 +77,15 @@ let
   ];
 
   karabinerConfig = {
-    global = {
-      check_for_updates_on_startup = true;
-      show_in_menu_bar = true;
-      show_profile_name_in_menu_bar = false;
-    };
     profiles = [ defaultProfile customProfile ];
   };
 
   defaultProfile = {
     name = "Default profile";
-    complex_modifications = {
-      parameters = {
-        "basic.simultaneous_threshold_milliseconds" = 50;
-        "basic.to_delayed_action_delay_milliseconds" = 500;
-        "basic.to_if_alone_timeout_milliseconds" = 1000;
-        "basic.to_if_held_down_threshold_milliseconds" = 500;
-        "mouse_motion_to_scroll.speed" = 100;
-      };
-      rules = [ ];
-    };
-    devices = [ ];
-    fn_function_keys = [
-      (fromToConsumer "f1" "display_brightness_decrement")
-      (fromToConsumer "f2" "display_brightness_increment")
-      (fromTo "f3" "mission_control")
-      (fromTo "f4" "launchpad")
-      (fromTo "f5" "illumination_decrement")
-      (fromTo "f6" "illumination_increment")
-      (fromToConsumer "f7" "rewind")
-      (fromToConsumer "f8" "play_or_pause")
-      (fromToConsumer "f9" "fastforward")
-      (fromToConsumer "f10" "mute")
-      (fromToConsumer "f11" "volume_decrement")
-      (fromToConsumer "f12" "volume_increment")
-    ];
-    parameters = { delay_milliseconds_before_open_device = 1000; };
     selected = false;
-    simple_modifications = [ ];
     virtual_hid_keyboard = {
       country_code = 0;
-      mouse_key_xy_scale = 100;
+      keyboard_type_v2 = "ansi";
     };
   };
 
@@ -142,32 +110,16 @@ let
         ])
       ];
     };
-    devices = [ hhkb appleInternalKeyboardIso ];
+    devices = [ appleInternalKeyboardIso ];
     selected = true;
   };
 
   deviceDefaults = {
-    disable_built_in_keyboard_if_exists = false;
-    fn_function_keys = [ ];
     identifiers = {
       is_keyboard = true;
-      is_pointing_device = false;
     };
-    ignore = false;
     manipulate_caps_lock_led = true;
     simple_modifications = [ ];
-  };
-
-  hhkb = lib.recursiveUpdate deviceDefaults {
-    identifiers = {
-      product_id = 32;
-      vendor_id = 1278;
-    };
-    manipulate_caps_lock_led = false;
-    simple_modifications = lib.flatten [
-      (fromTo "escape" "grave_accent_and_tilde")
-      (swap "left_option" "left_command")
-    ];
   };
 
   appleInternalKeyboardIso = lib.recursiveUpdate deviceDefaults {
