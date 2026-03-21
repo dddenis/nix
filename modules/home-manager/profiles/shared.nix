@@ -66,6 +66,7 @@ in
         atool.enable = true;
         atuin.enable = true;
         bat.enable = true;
+        claude-code.enable = true;
         delta.enable = true;
         direnv.enable = true;
         fd.enable = true;
