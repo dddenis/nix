@@ -1,7 +1,13 @@
+{ pkgs, ... }:
+
 {
   profiles.gui.enable = true;
 
   home.username = "ddd";
+
+  home.packages = with pkgs; [
+    _1password-cli
+  ];
 
   ddd.hosts = {
     abra.enable = true;
