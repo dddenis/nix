@@ -22,6 +22,12 @@ in
           . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
         fi
         # End Nix
+
+        # Ensure Nix paths are at the front of PATH.
+        # macOS path_helper (/etc/zprofile) reorders PATH so /etc/paths entries
+        # come first, and nix-daemon.sh's __ETC_PROFILE_NIX_SOURCED guard
+        # prevents it from re-prepending in subshells (e.g. tmux panes).
+        path=("$HOME/.nix-profile/bin" "/nix/var/nix/profiles/default/bin" $path)
       '');
 
       oh-my-zsh = {
