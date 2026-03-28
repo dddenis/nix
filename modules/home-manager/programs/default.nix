@@ -20,6 +20,7 @@
     ./process-compose
     ./psql.nix
     ./ripgrep.nix
+    ./safehouse
     ./ssh.nix
     ./tmux
     ./wezterm

@@ -1,0 +1,19 @@
+;; Nix support: store, volume, symlink resolution, and home-manager config
+(allow file-read* (subpath "/nix"))
+(allow file-read* (home-subpath "/.nix"))
+(allow file-read* (home-subpath "/.nix-profile"))
+(allow file-read* file-write* (home-subpath "/.cache/nix"))
+(allow file-read* file-write* (home-subpath "/.local/state/nix"))
+(allow file-read* file-write* (home-subpath "/.local/share/nix"))
+
+;; Nix config (experimental-features, substituters, etc.)
+(allow file-read* (subpath "/etc/nix"))
+(allow file-read* (home-subpath "/.config/nix"))
+
+;; Talk to the nix-daemon over its unix socket
+(allow file-read* file-write* (literal "/nix/var/nix/daemon-socket/socket"))
+(allow network-outbound (literal "/nix/var/nix/daemon-socket/socket"))
+(allow file-read* (home-subpath "/.config/nvim"))
+(allow file-read* file-write* (home-subpath "/.local/state/nvim"))
+(allow file-read* file-write* (home-subpath "/.local/share/nvim"))
+(allow file-read* file-write* (home-subpath "/.cache/nvim"))

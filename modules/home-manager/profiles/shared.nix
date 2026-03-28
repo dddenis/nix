@@ -97,6 +97,7 @@ in
       ddd.programs = {
         homebrew.enable = true;
         karabiner.enable = true;
+        safehouse.enable = true;
       };
     })
   ];
