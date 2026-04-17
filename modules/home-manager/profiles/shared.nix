@@ -44,10 +44,9 @@ in
         config.nix.package
 
         coreutils
+        devenv
         gnumake
         iosevka-bin
-
-        unstable.devenv
       ];
 
       programs = {
