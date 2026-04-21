@@ -17,3 +17,7 @@
 (allow file-read* file-write* (home-subpath "/.local/state/nvim"))
 (allow file-read* file-write* (home-subpath "/.local/share/nvim"))
 (allow file-read* file-write* (home-subpath "/.cache/nvim"))
+
+;; User-installed binaries (claude, hasura, etc.)
+(allow file-read* (home-subpath "/.local/bin"))
+(allow process-exec* (home-subpath "/.local/bin"))
