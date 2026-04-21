@@ -19,18 +19,23 @@ let
     '';
   };
 
+  safe = pkgs.writeShellScriptBin "safe" ''
+    exec ${safehouse}/bin/safehouse --append-profile="$HOME/.config/safehouse/nix.sb" "$@"
+  '';
+
+  claude = pkgs.writeShellScriptBin "claude" ''
+    exec ${safe}/bin/safe "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
+  '';
+
 in
 {
   options.ddd.programs.safehouse.enable = lib.mkEnableOption "agent-safehouse";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ safehouse ];
+    home.packages = [ safehouse safe claude ];
 
     xdg.configFile."safehouse/nix.sb".source =
       config.lib.file.mkOutOfStoreSymlink
         "${config.home.configPath}/modules/home-manager/programs/safehouse/nix.sb";
-
-    programs.zsh.shellAliases.safe = "safehouse --append-profile=~/.config/safehouse/nix.sb";
-    programs.zsh.shellAliases.claude = "safe claude --dangerously-skip-permissions";
   };
 }
