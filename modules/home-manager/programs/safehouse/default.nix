@@ -24,7 +24,7 @@ let
   '';
 
   claude = pkgs.writeShellScriptBin "claude" ''
-    exec ${safe}/bin/safe "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
+    exec ${safe}/bin/safe --enable=clipboard "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
   '';
 
 in
