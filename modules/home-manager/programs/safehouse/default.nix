@@ -27,12 +27,16 @@ let
     exec ${safe}/bin/safe --enable=clipboard "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
   '';
 
+  codex = pkgs.writeShellScriptBin "codex" ''
+    exec ${safe}/bin/safe --enable=clipboard "$HOME/.cache/.bun/bin/codex" --dangerously-bypass-approvals-and-sandbox "$@"
+  '';
+
 in
 {
   options.ddd.programs.safehouse.enable = lib.mkEnableOption "agent-safehouse";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ safehouse safe claude ];
+    home.packages = [ safehouse safe claude codex ];
 
     xdg.configFile."safehouse/nix.sb".source =
       config.lib.file.mkOutOfStoreSymlink
