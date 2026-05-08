@@ -47,6 +47,9 @@ in
         devenv
         gnumake
         iosevka-bin
+
+        unstable.bun
+        unstable.nodejs
       ];
 
       programs = {
