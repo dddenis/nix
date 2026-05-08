@@ -21,3 +21,10 @@
 ;; User-installed binaries (claude, hasura, etc.)
 (allow file-read* (home-subpath "/.local/bin"))
 (allow process-exec* (home-subpath "/.local/bin"))
+
+;; Bun-installed binaries (codex, etc.)
+;; bin/ entries are symlinks into install/global/node_modules, so the whole
+;; cache subtree needs read access for module resolution.
+(allow file-read* (home-subpath "/.cache/.bun"))
+(allow process-exec* (home-subpath "/.cache/.bun/bin"))
+(allow process-exec* (home-subpath "/.cache/.bun/install/global/node_modules"))
