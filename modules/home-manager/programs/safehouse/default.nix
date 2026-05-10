@@ -24,11 +24,21 @@ let
   '';
 
   claude = pkgs.writeShellScriptBin "claude" ''
-    exec ${safe}/bin/safe --enable=clipboard "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
+    agent_browser_args="--no-sandbox"
+    if [ -n "''${AGENT_BROWSER_ARGS:-}" ]; then
+      agent_browser_args="$AGENT_BROWSER_ARGS,$agent_browser_args"
+    fi
+
+    exec ${safe}/bin/safe --enable=agent-browser,clipboard -- "AGENT_BROWSER_ARGS=$agent_browser_args" "$HOME/.local/bin/claude" --dangerously-skip-permissions "$@"
   '';
 
   codex = pkgs.writeShellScriptBin "codex" ''
-    exec ${safe}/bin/safe --enable=clipboard "$HOME/.cache/.bun/bin/codex" --dangerously-bypass-approvals-and-sandbox "$@"
+    agent_browser_args="--no-sandbox"
+    if [ -n "''${AGENT_BROWSER_ARGS:-}" ]; then
+      agent_browser_args="$AGENT_BROWSER_ARGS,$agent_browser_args"
+    fi
+
+    exec ${safe}/bin/safe --enable=agent-browser,clipboard -- "AGENT_BROWSER_ARGS=$agent_browser_args" "$HOME/.cache/.bun/bin/codex" --dangerously-bypass-approvals-and-sandbox "$@"
   '';
 
 in
