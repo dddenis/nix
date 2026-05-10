@@ -19,3 +19,7 @@ trusted_hash = "sha256:533bfc39034a42529b054ac438e364b79caa3c1674a22f4bf260c4173
 
 [hooks.state."/Users/ddd/.codex/hooks.json:stop:0:0"]
 trusted_hash = "sha256:e9dd3718244e74f8e4f241d3334d69223cfc36747ef0aa9529dfa9c34653d7af"
+
+[[skills.config]]
+path = "/Users/ddd/.codex/plugins/cache/openai-curated/superpowers/63976030/skills/finishing-a-development-branch/SKILL.md"
+enabled = false
