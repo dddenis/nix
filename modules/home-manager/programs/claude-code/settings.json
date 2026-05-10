@@ -1,4 +1,8 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "model": "opus[1m]",
   "hooks": {
     "Notification": [
@@ -28,7 +32,7 @@
     "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); dir=$(echo \"$input\" | jq -r '.workspace.current_dir'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); if [ -n \"$remaining\" ]; then printf \"%s | %s | Context: %.1f%% remaining\" \"$model\" \"$dir\" \"$remaining\"; else printf \"%s | %s\" \"$model\" \"$dir\"; fi"
   },
   "enabledPlugins": {
-    "superpowers@superpowers-dev": true
+    "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "superpowers-dev": {
@@ -37,10 +41,6 @@
         "repo": "dddenis/superpowers"
       }
     }
-  },
-  "attribution": {
-    "commit": "",
-    "pr": ""
   },
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
