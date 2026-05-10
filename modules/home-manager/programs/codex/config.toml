@@ -1,0 +1,21 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "context-remaining", "five-hour-limit", "weekly-limit"]
+status_line_use_colors = true
+theme = "gruvbox-dark"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[plugins."superpowers@openai-curated"]
+enabled = true
+
+[hooks.state]
+
+[hooks.state."/Users/ddd/.codex/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:533bfc39034a42529b054ac438e364b79caa3c1674a22f4bf260c4173a68ecae"
+
+[hooks.state."/Users/ddd/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:e9dd3718244e74f8e4f241d3334d69223cfc36747ef0aa9529dfa9c34653d7af"

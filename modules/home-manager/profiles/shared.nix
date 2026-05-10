@@ -70,6 +70,7 @@ in
         atuin.enable = true;
         bat.enable = true;
         claude-code.enable = true;
+        codex.enable = true;
         delta.enable = true;
         direnv.enable = true;
         fd.enable = true;

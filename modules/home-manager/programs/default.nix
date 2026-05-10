@@ -5,6 +5,7 @@
     ./atuin.nix
     ./bat.nix
     ./claude-code
+    ./codex
     ./delta.nix
     ./direnv.nix
     ./fd.nix
