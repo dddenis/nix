@@ -28,3 +28,9 @@
 (allow file-read* (home-subpath "/.cache/.bun"))
 (allow process-exec* (home-subpath "/.cache/.bun/bin"))
 (allow process-exec* (home-subpath "/.cache/.bun/install/global/node_modules"))
+
+;; Audio output for afplay-based hooks.
+(allow mach-lookup
+    (global-name "com.apple.audio.AudioComponentRegistrar")
+    (global-name "com.apple.audio.audiohald")
+)
