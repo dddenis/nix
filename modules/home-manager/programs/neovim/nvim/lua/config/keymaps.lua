@@ -14,6 +14,8 @@ Map("n", "<leader>fs", "<cmd>w<cr>", { desc = "Save File" })
 Map("n", "<leader>dw", "<cmd>windo diffthis<cr>", { desc = "Diff Windows" })
 Map("n", "<leader>do", "<cmd>diffoff!<cr>", { desc = "Exit Diff" })
 
+Map("x", "g<C-i>", "g<C-a>", { desc = "Increment visual selection" })
+
 local function copy_to_clipboard(fn)
     return function()
         vim.fn.setreg("+", fn())
