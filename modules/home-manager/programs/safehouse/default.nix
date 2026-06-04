@@ -54,7 +54,7 @@ let
       done
 
       exec ${safe}/bin/safe \
-        --enable=agent-browser,clipboard \
+        --enable=agent-browser,clipboard,process-control \
         "''${safehouse_args[@]}" \
         -- \
         "AGENT_BROWSER_ARGS=$agent_browser_args" \
