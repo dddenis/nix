@@ -23,3 +23,6 @@ trusted_hash = "sha256:e9dd3718244e74f8e4f241d3334d69223cfc36747ef0aa9529dfa9c34
 [[skills.config]]
 path = "/Users/ddd/.codex/plugins/cache/openai-curated/superpowers/63976030/skills/finishing-a-development-branch/SKILL.md"
 enabled = false
+
+[notice]
+hide_rate_limit_model_nudge = true
