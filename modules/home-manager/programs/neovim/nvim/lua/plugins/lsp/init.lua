@@ -16,7 +16,7 @@ return {
             servers = {},
         },
         config = function(_, opts)
-            vim.lsp.set_log_level("off")
+            vim.lsp.log.set_level("off")
 
             local base_on_attach = {}
 
