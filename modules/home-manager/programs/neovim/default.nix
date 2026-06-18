@@ -18,13 +18,13 @@ let
     lua-language-server
     nil
     nixpkgs-fmt
-    nodePackages."@astrojs/language-server"
-    nodePackages.bash-language-server
-    nodePackages.prettier
-    nodePackages.sql-formatter
-    nodePackages.svelte-language-server
-    nodePackages.typescript-language-server
-    nodePackages.vscode-langservers-extracted
+    astro-language-server
+    bash-language-server
+    prettier
+    sql-formatter
+    svelte-language-server
+    typescript-language-server
+    vscode-langservers-extracted
     nodejs
     pyright
     rust-analyzer

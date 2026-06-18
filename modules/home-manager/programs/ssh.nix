@@ -11,18 +11,18 @@ in
       enable = true;
       enableDefaultConfig = false;
 
-      matchBlocks."*" = {
-        forwardAgent = false;
-        addKeysToAgent = "yes";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        identityFile = "~/.ssh/id_ed25519";
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+      settings."*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "yes";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        IdentityFile = "~/.ssh/id_ed25519";
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
       };
 
       extraConfig = lib.mkIf pkgs.stdenv.isDarwin ''

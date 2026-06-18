@@ -3,6 +3,7 @@ _: prev:
 
 {
   unstable = import nixpkgs {
-    inherit (prev) system config;
+    inherit (prev) config;
+    system = prev.stdenv.hostPlatform.system;
   };
 }
