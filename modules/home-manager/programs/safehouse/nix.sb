@@ -26,6 +26,8 @@
 ;; bin/ entries are symlinks into install/global/node_modules, so the whole
 ;; cache subtree needs read access for module resolution.
 (allow file-read* (home-subpath "/.cache/.bun"))
+;; This machine's Bun install cache lives under ~/.cache/.bun, not ~/.bun.
+(allow file-read* file-write* (home-subpath "/.cache/.bun/install/cache"))
 (allow process-exec* (home-subpath "/.cache/.bun/bin"))
 (allow process-exec* (home-subpath "/.cache/.bun/install/global/node_modules"))
 
