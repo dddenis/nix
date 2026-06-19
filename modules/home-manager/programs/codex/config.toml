@@ -2,7 +2,7 @@ model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 
 [tui]
-status_line = ["model-with-reasoning", "current-dir", "context-remaining", "five-hour-limit", "weekly-limit"]
+status_line = ["model-with-reasoning", "current-dir", "context-remaining", "five-hour-limit", "weekly-limit", "task-progress"]
 status_line_use_colors = true
 theme = "gruvbox-dark"
 
