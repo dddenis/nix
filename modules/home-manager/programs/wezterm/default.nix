@@ -14,5 +14,9 @@ in
     home.packages = [ cfg.package ];
     xdg.configFile."wezterm".source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.configPath}/modules/home-manager/programs/wezterm/config";
+
+    ddd.programs.tmux.extraConfig = lib.mkAfter ''
+      set -as terminal-features ",wezterm*:extkeys"
+    '';
   };
 }

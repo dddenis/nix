@@ -20,6 +20,8 @@ let
     run-shell ${pkgs.tmuxPlugins.sensible.rtp}
 
     set -g default-terminal "tmux-256color"
+    set -s extended-keys on
+    set -s extended-keys-format csi-u
     set -g default-command ""
     setw -g aggressive-resize on
 
@@ -93,13 +95,22 @@ let
     bind-key -T copy-mode-vi C-l select-pane -R
     bind-key -T copy-mode-vi C-\\ select-pane -l
 
+    ${cfg.extraConfig}
+
     # plugins
     ${(lib.concatMapStringsSep "\n\n" importPlugin plugins)}
   '';
 
 in
 {
-  options.ddd.programs.tmux.enable = lib.mkEnableOption "tmux";
+  options.ddd.programs.tmux = {
+    enable = lib.mkEnableOption "tmux";
+    extraConfig = lib.mkOption {
+      type = lib.types.lines;
+      default = "";
+      description = "Additional tmux configuration appended to tmux.conf.";
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     home.packages = [
