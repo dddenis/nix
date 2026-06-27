@@ -15,6 +15,12 @@ in
       force = true;
     };
 
+    home.file.".pi/agent/themes" = {
+      source = config.lib.file.mkOutOfStoreSymlink
+        "${piConfigPath}/themes";
+      force = true;
+    };
+
     home.file.".pi/agent/extensions/openai-limits-statusline" = {
       source = config.lib.file.mkOutOfStoreSymlink
         "${piConfigPath}/extensions/openai-limits-statusline";
