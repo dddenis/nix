@@ -1,0 +1,13 @@
+{
+  "theme": "dark",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "xhigh",
+  "packages": [
+    "git:github.com/obra/superpowers",
+    "npm:pi-web-access"
+  ],
+  "hideThinkingBlock": true,
+  "editorPaddingX": 1,
+  "treeFilterMode": "user-only"
+}
