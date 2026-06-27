@@ -19,6 +19,7 @@
     ./lf
     ./neovim
     ./process-compose
+    ./pi
     ./psql.nix
     ./ripgrep.nix
     ./safehouse
