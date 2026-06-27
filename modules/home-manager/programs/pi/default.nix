@@ -20,5 +20,11 @@ in
         "${piConfigPath}/extensions/openai-limits-statusline";
       force = true;
     };
+
+    home.file.".pi/agent/extensions/attention-hooks" = {
+      source = config.lib.file.mkOutOfStoreSymlink
+        "${piConfigPath}/extensions/attention-hooks";
+      force = true;
+    };
   };
 }
