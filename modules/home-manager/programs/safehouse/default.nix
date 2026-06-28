@@ -64,6 +64,11 @@ let
         esac
       done
 
+      if [ "''${APP_SANDBOX_CONTAINER_ID:-}" = "agent-safehouse" ]; then
+        export AGENT_BROWSER_ARGS="$agent_browser_args"
+        exec "${command}" ${lib.escapeShellArgs commandArgs} "''${agent_args[@]}"
+      fi
+
       if [ "$safehouse_uses_full_env" != 1 ]; then
         safehouse_args=("--env-pass=TMUX,TMUX_PANE" "''${safehouse_args[@]}")
       fi
