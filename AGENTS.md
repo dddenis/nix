@@ -1,0 +1,3 @@
+# General
+
+- use conventional commits
