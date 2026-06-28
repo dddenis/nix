@@ -21,9 +21,9 @@ in
       force = true;
     };
 
-    home.file.".pi/agent/extensions/openai-limits-statusline" = {
+    home.file.".pi/agent/extensions/custom-footer" = {
       source = config.lib.file.mkOutOfStoreSymlink
-        "${piConfigPath}/extensions/openai-limits-statusline";
+        "${piConfigPath}/extensions/custom-footer";
       force = true;
     };
 

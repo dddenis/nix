@@ -10,7 +10,7 @@ import {
 
 const NOW_MS = Date.parse("2026-06-26T16:00:00Z");
 
-describe("openai limits status helpers", () => {
+describe("OpenAI rate limit helpers", () => {
   test("selects the codex bucket from multi-bucket responses", () => {
     const response: AccountRateLimitsResponse = {
       rateLimits: {

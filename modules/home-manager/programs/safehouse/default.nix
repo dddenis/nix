@@ -116,7 +116,7 @@ in
         "${config.home.configPath}/modules/home-manager/programs/safehouse/nix.sb";
 
     xdg.configFile."safehouse/pi-codex-app-server.sb".text = ''
-      ;; Pi's openai-limits-statusline extension spawns `codex app-server`
+      ;; Pi's custom-footer extension spawns `codex app-server`
       ;; to read ChatGPT/Codex subscription usage. The spawned Codex process
       ;; inherits Pi's sandbox profile, so grant only the Codex state/config
       ;; paths it needs here. macOS Security/Trust access is supplied by
