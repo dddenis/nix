@@ -32,6 +32,14 @@ let
 
       safehouse_args=(${lib.escapeShellArgs safehouseArgs})
       agent_args=()
+      safehouse_uses_full_env=0
+
+      for safehouse_arg in "''${safehouse_args[@]}"; do
+        if [ "$safehouse_arg" = "--env" ]; then
+          safehouse_uses_full_env=1
+          break
+        fi
+      done
 
       while [ "$#" -gt 0 ]; do
         case "$1" in
@@ -41,6 +49,9 @@ let
               if [ "$1" = "--" ]; then
                 shift
                 break
+              fi
+              if [ "$1" = "--env" ]; then
+                safehouse_uses_full_env=1
               fi
               safehouse_args+=("$1")
               shift
@@ -52,6 +63,10 @@ let
             ;;
         esac
       done
+
+      if [ "$safehouse_uses_full_env" != 1 ]; then
+        safehouse_args=("--env-pass=TMUX,TMUX_PANE" "''${safehouse_args[@]}")
+      fi
 
       exec ${safe}/bin/safe \
         --enable=agent-browser,clipboard,process-control \
