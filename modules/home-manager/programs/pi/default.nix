@@ -32,5 +32,11 @@ in
         "${piConfigPath}/extensions/attention-hooks";
       force = true;
     };
+
+    home.file.".pi/agent/extensions/history-picker" = {
+      source = config.lib.file.mkOutOfStoreSymlink
+        "${piConfigPath}/extensions/history-picker";
+      force = true;
+    };
   };
 }
