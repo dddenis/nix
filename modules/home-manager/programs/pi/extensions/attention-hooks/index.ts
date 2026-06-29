@@ -6,6 +6,8 @@ import { join } from "node:path";
 
 export const SOUND_FILE_NAME = "vittemacop-alert-notification-pop-cartoon-bubble-pop-pop-up-478078.mp3";
 
+const CONTROL_EVENT_UNSUBSCRIBE_KEY = "__attention_hooks_control_event_unsubscribe__";
+
 type SpawnedProcess = {
   on?: (event: "error", listener: (error: Error) => void) => unknown;
   unref?: () => void;
@@ -27,6 +29,23 @@ export type PlayCompletionSoundOptions = {
   existsSync?: (path: string) => boolean;
   spawn?: SpawnSoundProcess;
 };
+
+type AttentionHooksEnvironment = {
+  PI_SUBAGENT_CHILD?: string;
+};
+
+export type RegisterAttentionHooksOptions = {
+  env?: AttentionHooksEnvironment;
+  playSound?: () => void;
+};
+
+type SubagentControlPayload = {
+  event?: {
+    type?: string;
+  };
+};
+
+type Unsubscribe = () => void;
 
 export function getCompletionSoundPath(homeDir = homedir()): string {
   return join(homeDir, ".pi", "agent", SOUND_FILE_NAME);
@@ -58,10 +77,67 @@ export function playCompletionSound(options: PlayCompletionSoundOptions = {}): v
   }
 }
 
-export default function (pi: ExtensionAPI) {
-  pi.on("agent_end", async (event) => {
-    if (!shouldPlayCompletionSound(event.messages)) return;
+function isSubagentChild(env: AttentionHooksEnvironment): boolean {
+  return env.PI_SUBAGENT_CHILD === "1";
+}
 
-    playCompletionSound();
+export function shouldPlayAgentEndSound(
+  messages: readonly SoundDecisionMessage[],
+  env: AttentionHooksEnvironment = process.env,
+): boolean {
+  if (isSubagentChild(env)) return false;
+
+  return shouldPlayCompletionSound(messages);
+}
+
+export function shouldPlaySubagentControlSound(
+  payload: unknown,
+  env: AttentionHooksEnvironment = process.env,
+): boolean {
+  if (isSubagentChild(env)) return false;
+
+  const controlPayload = payload as SubagentControlPayload | undefined;
+
+  return controlPayload?.event?.type === "needs_attention";
+}
+
+function replaceControlEventSubscription(unsubscribe: Unsubscribe): void {
+  const globalStore = globalThis as Record<string, unknown>;
+  const previousUnsubscribe = globalStore[CONTROL_EVENT_UNSUBSCRIBE_KEY];
+
+  if (typeof previousUnsubscribe === "function") {
+    try {
+      previousUnsubscribe();
+    } catch {
+      // Best effort cleanup for stale handlers from an older reload.
+    }
+  }
+
+  globalStore[CONTROL_EVENT_UNSUBSCRIBE_KEY] = unsubscribe;
+}
+
+export function registerAttentionHooks(
+  pi: Pick<ExtensionAPI, "on" | "events">,
+  options: RegisterAttentionHooksOptions = {},
+): void {
+  const env = options.env ?? process.env;
+  const playSound = options.playSound ?? (() => playCompletionSound());
+
+  pi.on("agent_end", async (event) => {
+    if (!shouldPlayAgentEndSound(event.messages, env)) return;
+
+    playSound();
   });
+
+  replaceControlEventSubscription(
+    pi.events.on("subagent:control-event", (payload) => {
+      if (!shouldPlaySubagentControlSound(payload, env)) return;
+
+      playSound();
+    }),
+  );
+}
+
+export default function (pi: ExtensionAPI) {
+  registerAttentionHooks(pi);
 }
