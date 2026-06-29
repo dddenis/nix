@@ -17,6 +17,11 @@ type SpawnSoundProcess = (
   options: { detached: true; stdio: "ignore" },
 ) => SpawnedProcess;
 
+type SoundDecisionMessage = {
+  role?: string;
+  stopReason?: string;
+};
+
 export type PlayCompletionSoundOptions = {
   homeDir?: string;
   existsSync?: (path: string) => boolean;
@@ -25,6 +30,15 @@ export type PlayCompletionSoundOptions = {
 
 export function getCompletionSoundPath(homeDir = homedir()): string {
   return join(homeDir, ".pi", "agent", SOUND_FILE_NAME);
+}
+
+export function shouldPlayCompletionSound(messages: readonly SoundDecisionMessage[]): boolean {
+  for (let index = messages.length - 1; index >= 0; index--) {
+    const message = messages[index];
+    if (message?.role === "assistant") return message.stopReason !== "aborted";
+  }
+
+  return true;
 }
 
 export function playCompletionSound(options: PlayCompletionSoundOptions = {}): void {
@@ -45,7 +59,9 @@ export function playCompletionSound(options: PlayCompletionSoundOptions = {}): v
 }
 
 export default function (pi: ExtensionAPI) {
-  pi.on("agent_end", async () => {
+  pi.on("agent_end", async (event) => {
+    if (!shouldPlayCompletionSound(event.messages)) return;
+
     playCompletionSound();
   });
 }

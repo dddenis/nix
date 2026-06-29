@@ -1,8 +1,26 @@
 import { describe, expect, test } from "bun:test";
 
-import { SOUND_FILE_NAME, getCompletionSoundPath, playCompletionSound } from "./index";
+import { SOUND_FILE_NAME, getCompletionSoundPath, playCompletionSound, shouldPlayCompletionSound } from "./index";
 
 describe("attention hooks", () => {
+  test("plays when the agent finishes without an aborted assistant message", () => {
+    expect(shouldPlayCompletionSound([{ role: "assistant", stopReason: "stop" }])).toBe(true);
+  });
+
+  test("plays when the agent finishes with an assistant error", () => {
+    expect(shouldPlayCompletionSound([{ role: "assistant", stopReason: "error" }])).toBe(true);
+  });
+
+  test("does not play when the final assistant message was aborted", () => {
+    expect(
+      shouldPlayCompletionSound([
+        { role: "assistant", stopReason: "stop" },
+        { role: "user" },
+        { role: "assistant", stopReason: "aborted" },
+      ]),
+    ).toBe(false);
+  });
+
   test("uses only the Pi agent sound file path", () => {
     const homeDir = "/Users/ddd";
 
