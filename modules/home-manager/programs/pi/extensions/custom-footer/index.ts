@@ -23,12 +23,33 @@ const REFRESH_INTERVAL_MS = 5 * 60_000;
 const MIN_REFRESH_GAP_MS = 30_000;
 const APP_SERVER_TIMEOUT_MS = 20_000;
 const AUTO_COMPACT_ENABLED = true;
+const BACKOFF_BASE_MS = 60_000;
+const BACKOFF_MAX_MS = 15 * 60_000;
+const WARNING_DEBOUNCE_MS = 10 * 60_000;
+const WAKE_REFRESH_DELAY_MS = 45_000;
+
+interface Logger {
+  warn(message: string): void;
+}
+
+type TimerHandle = unknown;
 
 export interface CustomFooterOptions {
   readRateLimits?: () => Promise<AccountRateLimitsResponse>;
   refreshIntervalMs?: number;
   minRefreshGapMs?: number;
+  backoffBaseMs?: number;
+  backoffMaxMs?: number;
+  warningDebounceMs?: number;
+  sleepWakeThresholdMs?: number;
+  wakeRefreshDelayMs?: number;
   now?: () => number;
+  random?: () => number;
+  logger?: Logger;
+  setIntervalFn?: (callback: () => void, ms: number) => TimerHandle;
+  clearIntervalFn?: (handle: TimerHandle) => void;
+  setTimeoutFn?: (callback: () => void, ms: number) => TimerHandle;
+  clearTimeoutFn?: (handle: TimerHandle) => void;
 }
 
 export default function (pi: ExtensionAPI) {
@@ -40,12 +61,30 @@ export function createCustomFooterExtension(options: CustomFooterOptions = {}) {
     const readRateLimits = options.readRateLimits ?? readOpenAIRateLimits;
     const refreshIntervalMs = options.refreshIntervalMs ?? REFRESH_INTERVAL_MS;
     const minRefreshGapMs = options.minRefreshGapMs ?? MIN_REFRESH_GAP_MS;
+    const backoffBaseMs = options.backoffBaseMs ?? BACKOFF_BASE_MS;
+    const backoffMaxMs = options.backoffMaxMs ?? BACKOFF_MAX_MS;
+    const warningDebounceMs = options.warningDebounceMs ?? WARNING_DEBOUNCE_MS;
+    const sleepWakeThresholdMs = options.sleepWakeThresholdMs ?? refreshIntervalMs + 60_000;
+    const wakeRefreshDelayMs = options.wakeRefreshDelayMs ?? WAKE_REFRESH_DELAY_MS;
     const now = options.now ?? Date.now;
+    const random = options.random ?? Math.random;
+    const logger = options.logger ?? console;
+    const setIntervalFn = options.setIntervalFn ?? ((callback, ms) => setInterval(callback, ms));
+    const clearIntervalFn = options.clearIntervalFn ?? ((handle) => clearInterval(handle as ReturnType<typeof setInterval>));
+    const setTimeoutFn = options.setTimeoutFn ?? ((callback, ms) => setTimeout(callback, ms));
+    const clearTimeoutFn = options.clearTimeoutFn ?? ((handle) => clearTimeout(handle as ReturnType<typeof setTimeout>));
 
-    let timer: ReturnType<typeof setInterval> | undefined;
+    let timer: TimerHandle | undefined;
+    let wakeRefreshTimer: TimerHandle | undefined;
+    let lastIntervalTickAt = 0;
     let lastRefreshStartedAt = 0;
+    let backoffUntil = 0;
+    let consecutiveFailures = 0;
     let refreshInFlight: Promise<void> | undefined;
-    let lastStatus = "OpenAI limits loading";
+    let lastStatus = "";
+    let lastSuccessfulStatus: string | undefined;
+    let lastWarningAt = Number.NEGATIVE_INFINITY;
+    let lastWarningMessage: string | undefined;
     let activeTui: Pick<TUI, "requestRender"> | undefined;
 
     const setInlineStatus = (status: string) => {
@@ -53,30 +92,71 @@ export function createCustomFooterExtension(options: CustomFooterOptions = {}) {
       activeTui?.requestRender();
     };
 
-    const refresh = (ctx: ExtensionContext, force = false): Promise<void> => {
+    const staleStatus = () => (lastSuccessfulStatus ? `${lastSuccessfulStatus} stale` : "");
+
+    const warn = (message: string, force = false) => {
+      const currentTime = now();
+      const shouldWarn = force || message !== lastWarningMessage || currentTime - lastWarningAt >= warningDebounceMs;
+      if (!shouldWarn) return;
+
+      lastWarningAt = currentTime;
+      lastWarningMessage = message;
+      logger.warn(`[custom-footer] ${message}`);
+    };
+
+    const refresh = (ctx: ExtensionContext, force = false, warnForce = false): Promise<void> => {
       if (!ctx.hasUI) return Promise.resolve();
 
       const currentTime = now();
       if (!force && currentTime - lastRefreshStartedAt < minRefreshGapMs) {
         return refreshInFlight ?? Promise.resolve();
       }
+      if (!warnForce && currentTime < backoffUntil) {
+        setInlineStatus(staleStatus());
+        return refreshInFlight ?? Promise.resolve();
+      }
       if (refreshInFlight) return refreshInFlight;
 
       lastRefreshStartedAt = currentTime;
-      setInlineStatus("OpenAI limits refreshing");
 
       refreshInFlight = readRateLimits()
-        .then((response) => setInlineStatus(formatRateLimitStatus(response, now())))
+        .then((response) => {
+          const formatted = formatRateLimitStatus(response, now());
+          lastSuccessfulStatus = formatted === "OpenAI limits unavailable" ? lastSuccessfulStatus : formatted;
+          consecutiveFailures = 0;
+          backoffUntil = 0;
+          setInlineStatus(formatted);
+        })
         .catch((error) => {
           const message = error instanceof Error ? error.message : String(error);
-          setInlineStatus("OpenAI limits unavailable");
-          console.warn(`[custom-footer] ${message}`);
+          const jitter = 1 + random() * 0.25;
+          const backoffMs = Math.min(backoffMaxMs, Math.round(backoffBaseMs * 2 ** consecutiveFailures * jitter));
+          consecutiveFailures += 1;
+          backoffUntil = now() + backoffMs;
+          setInlineStatus(staleStatus());
+          warn(message, warnForce);
         })
         .finally(() => {
           refreshInFlight = undefined;
         });
 
       return refreshInFlight;
+    };
+
+    const clearWakeRefreshTimer = () => {
+      if (wakeRefreshTimer === undefined) return;
+      clearTimeoutFn(wakeRefreshTimer);
+      wakeRefreshTimer = undefined;
+    };
+
+    const scheduleRefreshAfterWake = (ctx: ExtensionContext) => {
+      setInlineStatus(staleStatus());
+      if (wakeRefreshTimer !== undefined) return;
+
+      wakeRefreshTimer = setTimeoutFn(() => {
+        wakeRefreshTimer = undefined;
+        void refresh(ctx);
+      }, wakeRefreshDelayMs);
     };
 
     const installFooter = (ctx: ExtensionContext) => {
@@ -100,11 +180,22 @@ export function createCustomFooterExtension(options: CustomFooterOptions = {}) {
     pi.on("session_start", async (_event, ctx) => {
       if (!ctx.hasUI) return;
 
-      if (timer) clearInterval(timer);
+      if (timer !== undefined) clearIntervalFn(timer);
+      clearWakeRefreshTimer();
       installFooter(ctx);
+      lastIntervalTickAt = now();
       void refresh(ctx, true);
 
-      timer = setInterval(() => {
+      timer = setIntervalFn(() => {
+        const currentTime = now();
+        const intervalGapMs = currentTime - lastIntervalTickAt;
+        lastIntervalTickAt = currentTime;
+
+        if (intervalGapMs > sleepWakeThresholdMs) {
+          scheduleRefreshAfterWake(ctx);
+          return;
+        }
+
         void refresh(ctx);
       }, refreshIntervalMs);
     });
@@ -114,16 +205,17 @@ export function createCustomFooterExtension(options: CustomFooterOptions = {}) {
     });
 
     pi.on("session_shutdown", async () => {
-      if (timer) clearInterval(timer);
+      if (timer !== undefined) clearIntervalFn(timer);
       timer = undefined;
+      clearWakeRefreshTimer();
       activeTui = undefined;
     });
 
     pi.registerCommand("custom-footer", {
       description: "Refresh the OpenAI 5-hour and weekly limits shown in the custom footer",
       handler: async (_args, ctx) => {
-        await refresh(ctx, true);
-        ctx.ui.notify(lastStatus, "info");
+        await refresh(ctx, true, true);
+        ctx.ui.notify(lastStatus || "OpenAI limits unavailable", "info");
       },
     });
   };
