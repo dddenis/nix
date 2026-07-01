@@ -2,43 +2,18 @@
   "theme": "gruvbox-material-dark-medium",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "max",
   "packages": [
     "git:github.com/obra/superpowers",
     "npm:pi-web-access",
-    "npm:pi-subagents",
-    "npm:pi-intercom",
-    "npm:@juicesharp/rpiv-todo"
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@tintinweb/pi-subagents"
   ],
   "hideThinkingBlock": true,
+  "lastChangelogVersion": "0.82.1",
   "editorPaddingX": 1,
   "treeFilterMode": "user-only",
-  "subagents": {
-    "agentOverrides": {
-      "context-builder": {
-        "thinking": "xhigh"
-      },
-      "delegate": {
-        "thinking": "xhigh"
-      },
-      "oracle": {
-        "thinking": "xhigh"
-      },
-      "planner": {
-        "thinking": "xhigh"
-      },
-      "researcher": {
-        "thinking": "xhigh"
-      },
-      "reviewer": {
-        "thinking": "xhigh"
-      },
-      "scout": {
-        "thinking": "xhigh"
-      },
-      "worker": {
-        "thinking": "xhigh"
-      }
-    }
+  "terminal": {
+    "showTerminalProgress": true
   }
 }

@@ -1,5 +1,26 @@
-model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
+model = "gpt-6-astra"
+model_reasoning_effort = "max"
+
+[projects."/Users/ddd/dev/dddenis/astrolabe"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/.nix"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/dev/complyance/main/main-2"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/dev/dddenis/tradingview"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/dev/complyance/main/main-1"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/dev/dddenis/pi-extensions"]
+trust_level = "trusted"
+
+[projects."/Users/ddd/dev/dddenis/complyance-kit"]
+trust_level = "trusted"
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "context-remaining", "five-hour-limit", "weekly-limit", "task-progress"]
@@ -8,17 +29,20 @@ theme = "gruvbox-dark"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
-
-[plugins."superpowers@openai-curated"]
-enabled = true
+"gpt-5.6-sol" = 4
+gpt-6-astra = 4
 
 [hooks.state]
 
-[hooks.state."/Users/ddd/.codex/hooks.json:permission_request:0:0"]
-trusted_hash = "sha256:533bfc39034a42529b054ac438e364b79caa3c1674a22f4bf260c4173a68ecae"
+[hooks.state."/Users/ddd/dev/dddenis/astrolabe/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:ac0f9d26f9f7a2a2fd62ea5b54d85752f6ab88589da153c3949e109305a31e21"
 
-[hooks.state."/Users/ddd/.codex/hooks.json:stop:0:0"]
-trusted_hash = "sha256:e9dd3718244e74f8e4f241d3334d69223cfc36747ef0aa9529dfa9c34653d7af"
+[hooks.state."superpowers@personal:hooks/hooks-codex.json:session_start:0:0"]
+trusted_hash = "sha256:687e7af87f0cb59b1bcc71d368e097304b45d84999c90dc97358a22811691a3f"
+
+[hooks.state."/Users/ddd/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:44a5a5d825f21548320c61409c1022948a795f913d438b25ab99e53e3516ec6c"
+enabled = true
 
 [[skills.config]]
 path = "/Users/ddd/.codex/plugins/cache/openai-curated/superpowers/63976030/skills/finishing-a-development-branch/SKILL.md"
@@ -26,3 +50,6 @@ enabled = false
 
 [notice]
 hide_rate_limit_model_nudge = true
+
+[plugins."superpowers@personal"]
+enabled = true
