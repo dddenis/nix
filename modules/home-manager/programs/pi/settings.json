@@ -11,6 +11,7 @@
     "npm:@juicesharp/rpiv-todo"
   ],
   "hideThinkingBlock": true,
+  "lastChangelogVersion": "0.80.3",
   "editorPaddingX": 1,
   "treeFilterMode": "user-only",
   "subagents": {
