@@ -12,5 +12,17 @@
   ],
   "hideThinkingBlock": true,
   "editorPaddingX": 1,
-  "treeFilterMode": "user-only"
+  "treeFilterMode": "user-only",
+  "subagents": {
+    "agentOverrides": {
+      "context-builder": { "thinking": "xhigh" },
+      "delegate": { "thinking": "xhigh" },
+      "oracle": { "thinking": "xhigh" },
+      "planner": { "thinking": "xhigh" },
+      "researcher": { "thinking": "xhigh" },
+      "reviewer": { "thinking": "xhigh" },
+      "scout": { "thinking": "xhigh" },
+      "worker": { "thinking": "xhigh" }
+    }
+  }
 }
