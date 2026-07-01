@@ -1,3 +1,9 @@
+vim.filetype.add({
+    extension = {
+        pcss = "scss",
+    },
+})
+
 return {
     {
         "neovim/nvim-lspconfig",
@@ -25,6 +31,23 @@ return {
                                             ),
                                         },
                                     },
+                                })
+                            end,
+                        })
+
+                        vim.api.nvim_create_autocmd("FileType", {
+                            pattern = "svelte",
+                            callback = function(args)
+                                local function organize_imports()
+                                    vim.lsp.buf.code_action({
+                                        context = { only = { "source.organizeImports" } },
+                                        apply = true,
+                                    })
+                                end
+
+                                vim.keymap.set("n", "<leader>ci", organize_imports, {
+                                    desc = "Organize Imports",
+                                    buffer = args.buf,
                                 })
                             end,
                         })
