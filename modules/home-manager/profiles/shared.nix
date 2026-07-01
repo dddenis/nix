@@ -47,6 +47,7 @@ in
         devenv
         gnumake
         iosevka-bin
+        python3
 
         unstable.bun
         unstable.nodejs
