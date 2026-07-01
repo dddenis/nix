@@ -2,43 +2,54 @@
   "theme": "gruvbox-material-dark-medium",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "max",
   "packages": [
     "git:github.com/obra/superpowers",
     "npm:pi-web-access",
     "npm:pi-subagents",
-    "npm:pi-intercom",
     "npm:@juicesharp/rpiv-todo"
   ],
   "hideThinkingBlock": true,
+  "lastChangelogVersion": "0.81.1",
   "editorPaddingX": 1,
   "treeFilterMode": "user-only",
   "subagents": {
     "agentOverrides": {
       "context-builder": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "delegate": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "oracle": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "planner": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "researcher": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "reviewer": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "scout": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       },
       "worker": {
-        "thinking": "xhigh"
+        "completionGuard": false,
+        "thinking": "max"
       }
     }
+  },
+  "terminal": {
+    "showTerminalProgress": true
   }
 }
