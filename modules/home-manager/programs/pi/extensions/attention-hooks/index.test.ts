@@ -1,11 +1,27 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, test } from "vitest";
+import { it } from "@effect/vitest";
+import { Effect } from "effect";
 
+import { type SpawnedProcess } from "../shared/services";
+import { SharedServicesTest } from "../shared/test-services";
 import * as attentionHooks from "./index";
-import { SOUND_FILE_NAME, getCompletionSoundPath, playCompletionSound, shouldPlayCompletionSound } from "./index";
+import {
+  SOUND_FILE_NAME,
+  getCompletionSoundPath,
+  playCompletionSound,
+  shouldPlayCompletionSound,
+} from "./index";
 
 type TestPi = {
-  on: (event: string, handler: (event: { messages: Array<{ role?: string; stopReason?: string }> }) => unknown) => void;
-  events: { on: (event: string, handler: (payload: unknown) => unknown) => () => void };
+  on: (
+    event: string,
+    handler: (event: {
+      messages: Array<{ role?: string; stopReason?: string }>;
+    }) => unknown,
+  ) => void;
+  events: {
+    on: (event: string, handler: (payload: unknown) => unknown) => () => void;
+  };
 };
 
 type RegisterAttentionHooksForTest = (
@@ -14,8 +30,9 @@ type RegisterAttentionHooksForTest = (
 ) => void;
 
 function getRegisterAttentionHooks(): RegisterAttentionHooksForTest {
-  const registerAttentionHooks = (attentionHooks as { registerAttentionHooks?: RegisterAttentionHooksForTest })
-    .registerAttentionHooks;
+  const registerAttentionHooks = (
+    attentionHooks as { registerAttentionHooks?: RegisterAttentionHooksForTest }
+  ).registerAttentionHooks;
 
   expect(typeof registerAttentionHooks).toBe("function");
 
@@ -24,10 +41,19 @@ function getRegisterAttentionHooks(): RegisterAttentionHooksForTest {
 
 function createPiHarness(): {
   pi: TestPi;
-  emitAgentEnd: (messages: Array<{ role?: string; stopReason?: string }>) => Promise<void>;
+  emitAgentEnd: (
+    messages: Array<{ role?: string; stopReason?: string }>,
+  ) => Promise<void>;
   emitControlEvent: (payload: unknown) => void;
 } {
-  const agentHandlers = new Map<string, Array<(event: { messages: Array<{ role?: string; stopReason?: string }> }) => unknown>>();
+  const agentHandlers = new Map<
+    string,
+    Array<
+      (event: {
+        messages: Array<{ role?: string; stopReason?: string }>;
+      }) => unknown
+    >
+  >();
   const eventHandlers = new Map<string, Array<(payload: unknown) => unknown>>();
 
   return {
@@ -46,22 +72,87 @@ function createPiHarness(): {
             const currentHandlers = eventHandlers.get(event) ?? [];
             eventHandlers.set(
               event,
-              currentHandlers.filter((currentHandler) => currentHandler !== handler),
+              currentHandlers.filter(
+                (currentHandler) => currentHandler !== handler,
+              ),
             );
           };
         },
       },
     },
     async emitAgentEnd(messages) {
-      for (const handler of agentHandlers.get("agent_end") ?? []) await handler({ messages });
+      for (const handler of agentHandlers.get("agent_end") ?? [])
+        await handler({ messages });
     },
     emitControlEvent(payload) {
-      for (const handler of eventHandlers.get("subagent:control-event") ?? []) handler(payload);
+      for (const handler of eventHandlers.get("subagent:control-event") ?? [])
+        handler(payload);
     },
   };
 }
 
 describe("attention hooks", () => {
+  it.effect(
+    "exposes Effect-first decision APIs through EnvironmentService",
+    () =>
+      Effect.gen(function* () {
+        const shared = yield* SharedServicesTest;
+        yield* shared.setEnv("PI_SUBAGENT_CHILD", "1");
+
+        expect(
+          yield* attentionHooks.shouldPlayCompletionSoundEffect([
+            { role: "assistant", stopReason: "stop" },
+          ]),
+        ).toBe(true);
+        expect(
+          yield* attentionHooks.shouldPlayCompletionSoundEffect([
+            { role: "assistant", stopReason: "aborted" },
+          ]),
+        ).toBe(false);
+        expect(
+          yield* attentionHooks.shouldPlayAgentEndSoundEffect([
+            { role: "assistant", stopReason: "stop" },
+          ]),
+        ).toBe(false);
+        expect(
+          yield* attentionHooks.shouldPlaySubagentControlSoundEffect({
+            event: { type: "needs_attention" },
+          }),
+        ).toBe(false);
+      }).pipe(Effect.provide(SharedServicesTest.layer)),
+  );
+
+  it.effect("plays the existing Pi sound through Effect services", () => {
+    const soundPath = `/Users/ddd/.pi/agent/${SOUND_FILE_NAME}`;
+    const child = {
+      on() {},
+      removeAllListeners() {
+        return undefined;
+      },
+      unref() {},
+      killed: false,
+      kill: () => true,
+    } as SpawnedProcess;
+
+    return Effect.gen(function* () {
+      const shared = yield* SharedServicesTest;
+      yield* shared.setHomeDir("/Users/ddd");
+      yield* shared.addExistingPath(soundPath);
+      yield* shared.enqueueSpawnResult(child);
+
+      yield* attentionHooks.playCompletionSoundEffect();
+
+      const state = yield* shared.getState;
+      expect(state.spawnCalls).toEqual([
+        {
+          command: "afplay",
+          args: [soundPath],
+          options: { detached: true, stdio: "ignore" },
+        },
+      ]);
+    }).pipe(Effect.provide(SharedServicesTest.layer));
+  });
+
   test("does not play an agent-end sound from a subagent child process", async () => {
     const registerAttentionHooks = getRegisterAttentionHooks();
     const harness = createPiHarness();
@@ -124,11 +215,15 @@ describe("attention hooks", () => {
   });
 
   test("plays when the agent finishes without an aborted assistant message", () => {
-    expect(shouldPlayCompletionSound([{ role: "assistant", stopReason: "stop" }])).toBe(true);
+    expect(
+      shouldPlayCompletionSound([{ role: "assistant", stopReason: "stop" }]),
+    ).toBe(true);
   });
 
   test("plays when the agent finishes with an assistant error", () => {
-    expect(shouldPlayCompletionSound([{ role: "assistant", stopReason: "error" }])).toBe(true);
+    expect(
+      shouldPlayCompletionSound([{ role: "assistant", stopReason: "error" }]),
+    ).toBe(true);
   });
 
   test("does not play when the final assistant message was aborted", () => {
@@ -144,7 +239,9 @@ describe("attention hooks", () => {
   test("uses only the Pi agent sound file path", () => {
     const homeDir = "/Users/ddd";
 
-    expect(getCompletionSoundPath(homeDir)).toBe(`/Users/ddd/.pi/agent/${SOUND_FILE_NAME}`);
+    expect(getCompletionSoundPath(homeDir)).toBe(
+      `/Users/ddd/.pi/agent/${SOUND_FILE_NAME}`,
+    );
   });
 
   test("does not spawn afplay when the Pi agent sound file is missing", () => {

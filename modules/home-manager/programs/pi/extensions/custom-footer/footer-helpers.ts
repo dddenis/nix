@@ -1,6 +1,11 @@
 import { isAbsolute, relative, resolve, sep } from "node:path";
 
-export type RemainingContextSeverity = "normal" | "warning" | "error" | "unknown";
+import { Effect, Option } from "effect";
+
+import { runSyncEffect } from "../shared/effect-runtime";
+
+export type RemainingContextSeverity =
+  "normal" | "warning" | "error" | "unknown";
 
 export interface ContextUsageLike {
   percent: number | null;
@@ -49,14 +54,22 @@ export function visibleWidth(value: string): number {
   return [...value.replace(ANSI_PATTERN, "")].length;
 }
 
-export function truncateToWidth(value: string, width: number, ellipsis = "..."): string {
+export function truncateToWidth(
+  value: string,
+  width: number,
+  ellipsis = "...",
+): string {
   if (visibleWidth(value) <= width) return value;
   if (width <= 0) return "";
-  if (width <= visibleWidth(ellipsis)) return [...ellipsis].slice(0, width).join("");
+  if (width <= visibleWidth(ellipsis))
+    return [...ellipsis].slice(0, width).join("");
 
   let result = "";
   let consumed = 0;
-  for (let index = 0; index < value.length && consumed < width - visibleWidth(ellipsis); ) {
+  for (
+    let index = 0;
+    index < value.length && consumed < width - visibleWidth(ellipsis);
+  ) {
     const escapeMatch = value.slice(index).match(/^\x1b\[[0-9;]*m/);
     if (escapeMatch) {
       result += escapeMatch[0];
@@ -81,7 +94,10 @@ export function formatTokens(count: number): string {
   return `${Math.round(count / 1_000_000)}M`;
 }
 
-export function formatCwdForFooter(cwd: string, home: string | undefined): string {
+export function formatCwdForFooter(
+  cwd: string,
+  home: string | undefined,
+): string {
   if (!home) return cwd;
 
   const resolvedCwd = resolve(cwd);
@@ -89,27 +105,36 @@ export function formatCwdForFooter(cwd: string, home: string | undefined): strin
   const relativeToHome = relative(resolvedHome, resolvedCwd);
   const isInsideHome =
     relativeToHome === "" ||
-    (relativeToHome !== ".." && !relativeToHome.startsWith(`..${sep}`) && !isAbsolute(relativeToHome));
+    (relativeToHome !== ".." &&
+      !relativeToHome.startsWith(`..${sep}`) &&
+      !isAbsolute(relativeToHome));
 
   if (!isInsideHome) return cwd;
   return relativeToHome === "" ? "~" : `~${sep}${relativeToHome}`;
 }
 
-export function formatRemainingContextDisplay(
+function formatRemainingContextDisplaySync(
   usage: ContextUsageLike | undefined,
   fallbackContextWindow: number | undefined,
   autoCompactEnabled: boolean,
 ): RemainingContextDisplay {
   const contextWindow = usage?.contextWindow ?? fallbackContextWindow ?? 0;
   const windowText = formatTokens(contextWindow);
-  const contextMetadata = autoCompactEnabled ? `${windowText} auto` : windowText;
+  const contextMetadata = autoCompactEnabled
+    ? `${windowText} auto`
+    : windowText;
 
   if (!usage || usage.percent === null) {
     return { text: `? (${contextMetadata})`, severity: "unknown" };
   }
 
   const remainingPercent = Math.max(0, Math.min(100, 100 - usage.percent));
-  const severity: RemainingContextSeverity = remainingPercent < 10 ? "error" : remainingPercent < 30 ? "warning" : "normal";
+  const severity: RemainingContextSeverity =
+    remainingPercent < 10
+      ? "error"
+      : remainingPercent < 30
+        ? "warning"
+        : "normal";
 
   return {
     text: `${remainingPercent.toFixed(1)}% (${contextMetadata})`,
@@ -117,7 +142,37 @@ export function formatRemainingContextDisplay(
   };
 }
 
-export function summarizeAssistantUsage(entries: AssistantUsageEntry[]): AssistantUsageSummary {
+export function formatRemainingContextDisplayEffect(
+  usage: ContextUsageLike | undefined,
+  fallbackContextWindow: number | undefined,
+  autoCompactEnabled: boolean,
+): Effect.Effect<RemainingContextDisplay> {
+  return Effect.sync(() =>
+    formatRemainingContextDisplaySync(
+      usage,
+      fallbackContextWindow,
+      autoCompactEnabled,
+    ),
+  );
+}
+
+export function formatRemainingContextDisplay(
+  usage: ContextUsageLike | undefined,
+  fallbackContextWindow: number | undefined,
+  autoCompactEnabled: boolean,
+): RemainingContextDisplay {
+  return runSyncEffect(
+    formatRemainingContextDisplayEffect(
+      usage,
+      fallbackContextWindow,
+      autoCompactEnabled,
+    ),
+  );
+}
+
+function summarizeAssistantUsageSync(
+  entries: AssistantUsageEntry[],
+): AssistantUsageSummary {
   const summary: AssistantUsageSummary = {
     input: 0,
     output: 0,
@@ -127,7 +182,8 @@ export function summarizeAssistantUsage(entries: AssistantUsageEntry[]): Assista
   };
 
   for (const entry of entries) {
-    if (entry.type !== "message" || entry.message?.role !== "assistant") continue;
+    if (entry.type !== "message" || entry.message?.role !== "assistant")
+      continue;
 
     const usage = entry.message.usage;
     if (!usage) continue;
@@ -144,13 +200,28 @@ export function summarizeAssistantUsage(entries: AssistantUsageEntry[]): Assista
     summary.cost += usage.cost?.total ?? 0;
 
     const latestPromptTokens = input + cacheRead + cacheWrite;
-    summary.latestCacheHitRate = latestPromptTokens > 0 ? (cacheRead / latestPromptTokens) * 100 : undefined;
+    summary.latestCacheHitRate =
+      latestPromptTokens > 0
+        ? (cacheRead / latestPromptTokens) * 100
+        : undefined;
   }
 
   return summary;
 }
 
-export function formatInlineOpenAIStatus(status: string): string | null {
+export function summarizeAssistantUsageEffect(
+  entries: AssistantUsageEntry[],
+): Effect.Effect<AssistantUsageSummary> {
+  return Effect.sync(() => summarizeAssistantUsageSync(entries));
+}
+
+export function summarizeAssistantUsage(
+  entries: AssistantUsageEntry[],
+): AssistantUsageSummary {
+  return summarizeAssistantUsageSync(entries);
+}
+
+function formatInlineOpenAIStatusSync(status: string): string | null {
   const trimmed = status.trim();
   if (!trimmed) return null;
 
@@ -165,24 +236,60 @@ export function formatInlineOpenAIStatus(status: string): string | null {
   return `| ${trimmed}`;
 }
 
-export function buildUsageStatsParts(summary: AssistantUsageSummary, usingSubscription: boolean): string[] {
+export function formatInlineOpenAIStatusEffect(
+  status: string,
+): Effect.Effect<Option.Option<string>> {
+  return Effect.sync(() =>
+    Option.fromNullable(formatInlineOpenAIStatusSync(status)),
+  );
+}
+
+export function formatInlineOpenAIStatus(status: string): string | null {
+  return formatInlineOpenAIStatusSync(status);
+}
+
+function buildUsageStatsPartsSync(
+  summary: AssistantUsageSummary,
+  usingSubscription: boolean,
+): string[] {
   const parts: string[] = [];
 
   if (summary.input) parts.push(`↑${formatTokens(summary.input)}`);
   if (summary.output) parts.push(`↓${formatTokens(summary.output)}`);
   if (summary.cacheRead) parts.push(`R${formatTokens(summary.cacheRead)}`);
   if (summary.cacheWrite) parts.push(`W${formatTokens(summary.cacheWrite)}`);
-  if ((summary.cacheRead > 0 || summary.cacheWrite > 0) && summary.latestCacheHitRate !== undefined) {
+  if (
+    (summary.cacheRead > 0 || summary.cacheWrite > 0) &&
+    summary.latestCacheHitRate !== undefined
+  ) {
     parts.push(`CH${summary.latestCacheHitRate.toFixed(1)}%`);
   }
   if (summary.cost || usingSubscription) {
-    parts.push(`$${summary.cost.toFixed(3)}${usingSubscription ? " (sub)" : ""}`);
+    parts.push(
+      `$${summary.cost.toFixed(3)}${usingSubscription ? " (sub)" : ""}`,
+    );
   }
 
   return parts;
 }
 
-export function buildStatsLine({
+export function buildUsageStatsPartsEffect(
+  summary: AssistantUsageSummary,
+  usingSubscription: boolean,
+): Effect.Effect<string[]> {
+  return Effect.sync(() =>
+    buildUsageStatsPartsSync(summary, usingSubscription),
+  );
+}
+
+export function buildUsageStatsParts(
+  summary: AssistantUsageSummary,
+  usingSubscription: boolean,
+): string[] {
+  return buildUsageStatsPartsSync(summary, usingSubscription);
+}
+
+function buildStatsLineSync({
   width,
   statsParts,
   modelName,
@@ -201,7 +308,10 @@ export function buildStatsLine({
   let rightSide = modelName;
   if (availableProviderCount > 1 && providerName) {
     const providerRightSide = `(${providerName}) ${modelName}`;
-    if (statsLeftWidth + minPadding + visibleWidth(providerRightSide) <= width) {
+    if (
+      statsLeftWidth + minPadding + visibleWidth(providerRightSide) <=
+      width
+    ) {
       rightSide = providerRightSide;
     }
   }
@@ -210,15 +320,33 @@ export function buildStatsLine({
   const totalNeeded = statsLeftWidth + minPadding + rightSideWidth;
 
   if (totalNeeded <= width) {
-    return statsLeft + " ".repeat(width - statsLeftWidth - rightSideWidth) + rightSide;
+    return (
+      statsLeft +
+      " ".repeat(width - statsLeftWidth - rightSideWidth) +
+      rightSide
+    );
   }
 
   const availableForRight = width - statsLeftWidth - minPadding;
   if (availableForRight > 0) {
     const truncatedRight = truncateToWidth(rightSide, availableForRight, "");
     const truncatedRightWidth = visibleWidth(truncatedRight);
-    return statsLeft + " ".repeat(Math.max(0, width - statsLeftWidth - truncatedRightWidth)) + truncatedRight;
+    return (
+      statsLeft +
+      " ".repeat(Math.max(0, width - statsLeftWidth - truncatedRightWidth)) +
+      truncatedRight
+    );
   }
 
   return statsLeft;
+}
+
+export function buildStatsLineEffect(
+  options: BuildStatsLineOptions,
+): Effect.Effect<string> {
+  return Effect.sync(() => buildStatsLineSync(options));
+}
+
+export function buildStatsLine(options: BuildStatsLineOptions): string {
+  return buildStatsLineSync(options);
 }

@@ -21,21 +21,9 @@ in
       force = true;
     };
 
-    home.file.".pi/agent/extensions/custom-footer" = {
+    home.file.".pi/agent/extensions" = {
       source = config.lib.file.mkOutOfStoreSymlink
-        "${piConfigPath}/extensions/custom-footer";
-      force = true;
-    };
-
-    home.file.".pi/agent/extensions/attention-hooks" = {
-      source = config.lib.file.mkOutOfStoreSymlink
-        "${piConfigPath}/extensions/attention-hooks";
-      force = true;
-    };
-
-    home.file.".pi/agent/extensions/history-picker" = {
-      source = config.lib.file.mkOutOfStoreSymlink
-        "${piConfigPath}/extensions/history-picker";
+        "${piConfigPath}/extensions";
       force = true;
     };
   };

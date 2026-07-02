@@ -3,10 +3,22 @@ import { spawn as defaultSpawn } from "node:child_process";
 import { existsSync as defaultExistsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { Effect, Option, Runtime } from "effect";
 
-export const SOUND_FILE_NAME = "vittemacop-alert-notification-pop-cartoon-bubble-pop-pop-up-478078.mp3";
+import { runSyncEffect } from "../shared/effect-runtime";
+import {
+  EnvironmentService,
+  FileSystemService,
+  HomeDirectoryService,
+  ProcessService,
+  SharedLiveLayer,
+} from "../shared/services";
 
-const CONTROL_EVENT_UNSUBSCRIBE_KEY = "__attention_hooks_control_event_unsubscribe__";
+export const SOUND_FILE_NAME =
+  "vittemacop-alert-notification-pop-cartoon-bubble-pop-pop-up-478078.mp3";
+
+const CONTROL_EVENT_UNSUBSCRIBE_KEY =
+  "__attention_hooks_control_event_unsubscribe__";
 
 type SpawnedProcess = {
   on?: (event: "error", listener: (error: Error) => void) => unknown;
@@ -19,7 +31,7 @@ type SpawnSoundProcess = (
   options: { detached: true; stdio: "ignore" },
 ) => SpawnedProcess;
 
-type SoundDecisionMessage = {
+export type SoundDecisionMessage = {
   role?: string;
   stopReason?: string;
 };
@@ -30,7 +42,7 @@ export type PlayCompletionSoundOptions = {
   spawn?: SpawnSoundProcess;
 };
 
-type AttentionHooksEnvironment = {
+export type AttentionHooksEnvironment = {
   PI_SUBAGENT_CHILD?: string;
 };
 
@@ -47,20 +59,50 @@ type SubagentControlPayload = {
 
 type Unsubscribe = () => void;
 
+type AttentionHooksServices =
+  | EnvironmentService
+  | HomeDirectoryService
+  | FileSystemService
+  | ProcessService;
+
+export function getCompletionSoundPathEffect(): Effect.Effect<
+  string,
+  never,
+  HomeDirectoryService
+> {
+  return Effect.gen(function* () {
+    const home = yield* HomeDirectoryService;
+    return join(yield* home.get(), ".pi", "agent", SOUND_FILE_NAME);
+  });
+}
+
 export function getCompletionSoundPath(homeDir = homedir()): string {
   return join(homeDir, ".pi", "agent", SOUND_FILE_NAME);
 }
 
-export function shouldPlayCompletionSound(messages: readonly SoundDecisionMessage[]): boolean {
-  for (let index = messages.length - 1; index >= 0; index--) {
-    const message = messages[index];
-    if (message?.role === "assistant") return message.stopReason !== "aborted";
-  }
-
-  return true;
+export function shouldPlayCompletionSoundEffect(
+  messages: readonly SoundDecisionMessage[],
+): Effect.Effect<boolean> {
+  return Effect.sync(() => {
+    const lastAssistant = Option.fromNullable(
+      [...messages].reverse().find((message) => message?.role === "assistant"),
+    );
+    return Option.match(lastAssistant, {
+      onNone: () => true,
+      onSome: (message) => message.stopReason !== "aborted",
+    });
+  });
 }
 
-export function playCompletionSound(options: PlayCompletionSoundOptions = {}): void {
+export function shouldPlayCompletionSound(
+  messages: readonly SoundDecisionMessage[],
+): boolean {
+  return runSyncEffect(shouldPlayCompletionSoundEffect(messages));
+}
+
+function playCompletionSoundWithOptions(
+  options: PlayCompletionSoundOptions,
+): void {
   const soundPath = getCompletionSoundPath(options.homeDir ?? homedir());
   const existsSync = options.existsSync ?? defaultExistsSync;
 
@@ -69,7 +111,10 @@ export function playCompletionSound(options: PlayCompletionSoundOptions = {}): v
   const spawn = options.spawn ?? (defaultSpawn as SpawnSoundProcess);
 
   try {
-    const child = spawn("afplay", [soundPath], { detached: true, stdio: "ignore" });
+    const child = spawn("afplay", [soundPath], {
+      detached: true,
+      stdio: "ignore",
+    });
     child.on?.("error", () => undefined);
     child.unref?.();
   } catch {
@@ -77,8 +122,68 @@ export function playCompletionSound(options: PlayCompletionSoundOptions = {}): v
   }
 }
 
+export function playCompletionSoundEffect(): Effect.Effect<
+  void,
+  never,
+  HomeDirectoryService | FileSystemService | ProcessService
+> {
+  return Effect.gen(function* () {
+    const soundPath = yield* getCompletionSoundPathEffect();
+    const fs = yield* FileSystemService;
+    if (!(yield* fs.exists(soundPath))) return;
+
+    const processes = yield* ProcessService;
+    const child = yield* processes
+      .spawn("afplay", [soundPath], { detached: true, stdio: "ignore" })
+      .pipe(Effect.catchAll(() => Effect.succeed(undefined)));
+
+    if (!child) return;
+
+    yield* Effect.try({
+      try: () => {
+        child.on?.("error", () => undefined);
+        child.unref?.();
+      },
+      catch: () => undefined,
+    }).pipe(Effect.catchAll(() => Effect.void));
+  }).pipe(Effect.catchAll(() => Effect.void));
+}
+
+export function playCompletionSound(
+  options?: PlayCompletionSoundOptions,
+): void {
+  if (options !== undefined) {
+    playCompletionSoundWithOptions(options);
+    return;
+  }
+
+  runSyncEffect(
+    playCompletionSoundEffect().pipe(Effect.provide(SharedLiveLayer)),
+  );
+}
+
 function isSubagentChild(env: AttentionHooksEnvironment): boolean {
   return env.PI_SUBAGENT_CHILD === "1";
+}
+
+function isSubagentChildEffect(): Effect.Effect<
+  boolean,
+  never,
+  EnvironmentService
+> {
+  return Effect.gen(function* () {
+    const env = yield* EnvironmentService;
+    return (yield* env.get("PI_SUBAGENT_CHILD")) === "1";
+  });
+}
+
+export function shouldPlayAgentEndSoundEffect(
+  messages: readonly SoundDecisionMessage[],
+): Effect.Effect<boolean, never, EnvironmentService> {
+  return Effect.gen(function* () {
+    if (yield* isSubagentChildEffect()) return false;
+    return yield* shouldPlayCompletionSoundEffect(messages);
+  });
 }
 
 export function shouldPlayAgentEndSound(
@@ -88,6 +193,17 @@ export function shouldPlayAgentEndSound(
   if (isSubagentChild(env)) return false;
 
   return shouldPlayCompletionSound(messages);
+}
+
+export function shouldPlaySubagentControlSoundEffect(
+  payload: unknown,
+): Effect.Effect<boolean, never, EnvironmentService> {
+  return Effect.gen(function* () {
+    if (yield* isSubagentChildEffect()) return false;
+
+    const controlPayload = payload as SubagentControlPayload | undefined;
+    return controlPayload?.event?.type === "needs_attention";
+  });
 }
 
 export function shouldPlaySubagentControlSound(
@@ -116,9 +232,9 @@ function replaceControlEventSubscription(unsubscribe: Unsubscribe): void {
   globalStore[CONTROL_EVENT_UNSUBSCRIBE_KEY] = unsubscribe;
 }
 
-export function registerAttentionHooks(
+function registerAttentionHooksWithOptions(
   pi: Pick<ExtensionAPI, "on" | "events">,
-  options: RegisterAttentionHooksOptions = {},
+  options: RegisterAttentionHooksOptions,
 ): void {
   const env = options.env ?? process.env;
   const playSound = options.playSound ?? (() => playCompletionSound());
@@ -135,6 +251,57 @@ export function registerAttentionHooks(
 
       playSound();
     }),
+  );
+}
+
+export function registerAttentionHooksEffect(
+  pi: Pick<ExtensionAPI, "on" | "events">,
+): Effect.Effect<void, never, AttentionHooksServices> {
+  return Effect.gen(function* () {
+    const runtime = yield* Effect.runtime<AttentionHooksServices>();
+    const runInCapturedContext = <A, E>(
+      program: Effect.Effect<A, E, AttentionHooksServices>,
+    ) =>
+      Runtime.runPromise(runtime)(
+        program.pipe(Effect.catchAll(() => Effect.void)),
+      ) as Promise<void>;
+
+    yield* Effect.sync(() => {
+      pi.on("agent_end", async (event) => {
+        await runInCapturedContext(
+          Effect.gen(function* () {
+            if (!(yield* shouldPlayAgentEndSoundEffect(event.messages))) return;
+            yield* playCompletionSoundEffect();
+          }),
+        );
+      });
+
+      replaceControlEventSubscription(
+        pi.events.on("subagent:control-event", (payload) => {
+          void runInCapturedContext(
+            Effect.gen(function* () {
+              if (!(yield* shouldPlaySubagentControlSoundEffect(payload)))
+                return;
+              yield* playCompletionSoundEffect();
+            }),
+          );
+        }),
+      );
+    });
+  });
+}
+
+export function registerAttentionHooks(
+  pi: Pick<ExtensionAPI, "on" | "events">,
+  options?: RegisterAttentionHooksOptions,
+): void {
+  if (options !== undefined) {
+    registerAttentionHooksWithOptions(pi, options);
+    return;
+  }
+
+  runSyncEffect(
+    registerAttentionHooksEffect(pi).pipe(Effect.provide(SharedLiveLayer)),
   );
 }
 
