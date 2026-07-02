@@ -34,6 +34,37 @@ let
       agent_args=()
       safehouse_uses_full_env=0
 
+      safehouse_has_feature() {
+        local feature="$1"
+        local expect_features=0
+        local safehouse_arg
+        local features
+
+        for safehouse_arg in "''${safehouse_args[@]}"; do
+          if [ "$expect_features" = 1 ]; then
+            case ",$safehouse_arg," in
+              *,"$feature",*) return 0 ;;
+            esac
+            expect_features=0
+            continue
+          fi
+
+          case "$safehouse_arg" in
+            --enable)
+              expect_features=1
+              ;;
+            --enable=*)
+              features="''${safehouse_arg#--enable=}"
+              case ",$features," in
+                *,"$feature",*) return 0 ;;
+              esac
+              ;;
+          esac
+        done
+
+        return 1
+      }
+
       for safehouse_arg in "''${safehouse_args[@]}"; do
         if [ "$safehouse_arg" = "--env" ]; then
           safehouse_uses_full_env=1
@@ -63,6 +94,10 @@ let
             ;;
         esac
       done
+
+      if safehouse_has_feature docker; then
+        safehouse_args+=("--add-dirs-ro=/Applications/OrbStack.app/Contents/MacOS/xbin")
+      fi
 
       if [ "''${APP_SANDBOX_CONTAINER_ID:-}" = "agent-safehouse" ]; then
         export AGENT_BROWSER_ARGS="$agent_browser_args"
