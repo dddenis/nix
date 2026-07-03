@@ -12,7 +12,29 @@ set drawbox
 
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
-cmd open
+cmd open &{{
+    lower="$(printf '%s' "$f" | tr '[:upper:]' '[:lower:]')"
+    case "$lower" in
+        *.csv|*.csv.gz|*.csv.bz2|*.csv.xz|*.tsv|*.tsv.gz|*.tab|*.json|*.jsonl|*.ndjson|*.xlsx|*.xls|*.xlsm|*.ods|*.sqlite|*.sqlite3|*.db|*.parquet|*.pq|*.feather|*.arrow|*.h5|*.hdf5|*.sas7bdat|*.xpt|*.dta|*.sav)
+            lf -remote "send $id \$vd \$fx"
+            ;;
+        *)
+            if [ -n "${OPENER:-}" ]; then
+                for file in $fx; do
+                    $OPENER "$file" >/dev/null 2>&1 &
+                done
+            elif [ "$(uname)" = "Darwin" ]; then
+                for file in $fx; do
+                    open "$file" >/dev/null 2>&1 &
+                done
+            else
+                for file in $fx; do
+                    xdg-open "$file" >/dev/null 2>&1 &
+                done
+            fi
+            ;;
+    esac
+}}
 map <enter> open
 
 map gh
