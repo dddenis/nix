@@ -7,11 +7,7 @@ import type {
 import { Clock, Effect, Layer, Runtime } from "effect";
 
 import { runSyncEffect } from "../shared/effect-runtime";
-import {
-  EnvironmentService,
-  LoggerService,
-  SharedLiveLayer,
-} from "../shared/services";
+import { EnvironmentService, SharedLiveLayer } from "../shared/services";
 import {
   buildStatsLine,
   buildUsageStatsParts,
@@ -38,7 +34,6 @@ const MIN_REFRESH_GAP_MS = 30_000;
 const AUTO_COMPACT_ENABLED = true;
 const BACKOFF_BASE_MS = 60_000;
 const BACKOFF_MAX_MS = 15 * 60_000;
-const WARNING_DEBOUNCE_MS = 10 * 60_000;
 const WAKE_REFRESH_DELAY_MS = 45_000;
 
 const CustomFooterRuntimeLayer = Layer.mergeAll(
@@ -56,26 +51,17 @@ export function customFooterExtensionEffect(
 ): Effect.Effect<
   void,
   never,
-  | EnvironmentService
-  | LoggerService
-  | RateLimitClientService
-  | JitterService
-  | Clock.Clock
+  EnvironmentService | RateLimitClientService | JitterService | Clock.Clock
 > {
   return Effect.gen(function* () {
     const runtime = yield* Effect.runtime<
-      | EnvironmentService
-      | LoggerService
-      | RateLimitClientService
-      | JitterService
-      | Clock.Clock
+      EnvironmentService | RateLimitClientService | JitterService | Clock.Clock
     >();
     const controller = yield* makeRefreshController({
       refreshIntervalMs: REFRESH_INTERVAL_MS,
       minRefreshGapMs: MIN_REFRESH_GAP_MS,
       backoffBaseMs: BACKOFF_BASE_MS,
       backoffMaxMs: BACKOFF_MAX_MS,
-      warningDebounceMs: WARNING_DEBOUNCE_MS,
       sleepWakeThresholdMs: REFRESH_INTERVAL_MS + 60_000,
       wakeRefreshDelayMs: WAKE_REFRESH_DELAY_MS,
       ...controllerConfigOverrides,
@@ -85,7 +71,6 @@ export function customFooterExtensionEffect(
         A,
         E,
         | EnvironmentService
-        | LoggerService
         | RateLimitClientService
         | JitterService
         | Clock.Clock

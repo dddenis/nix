@@ -2,8 +2,6 @@ import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
 import type { TUI } from "@earendil-works/pi-tui";
 import { Clock, Duration, Effect, Fiber, Ref } from "effect";
 
-import { errorToString } from "../shared/effect-runtime";
-import { LoggerService } from "../shared/services";
 import {
   formatRateLimitStatusEffect,
   type AccountRateLimitsResponse,
@@ -15,7 +13,6 @@ export interface RefreshControllerConfig {
   minRefreshGapMs?: number;
   backoffBaseMs?: number;
   backoffMaxMs?: number;
-  warningDebounceMs?: number;
   sleepWakeThresholdMs?: number;
   wakeRefreshDelayMs?: number;
 }
@@ -27,14 +24,14 @@ export interface RefreshController {
   ): Effect.Effect<
     void,
     never,
-    RateLimitClientService | JitterService | LoggerService | Clock.Clock
+    RateLimitClientService | JitterService | Clock.Clock
   >;
   startInterval(
     ctx: ExtensionContext,
   ): Effect.Effect<
     void,
     never,
-    RateLimitClientService | JitterService | LoggerService | Clock.Clock
+    RateLimitClientService | JitterService | Clock.Clock
   >;
   shutdown(): Effect.Effect<void>;
   getStatus(): Effect.Effect<string>;
@@ -49,8 +46,6 @@ interface RefreshState {
   readonly consecutiveFailures: number;
   readonly lastStatus: string;
   readonly lastSuccessfulStatus: string | undefined;
-  readonly lastWarningAt: number;
-  readonly lastWarningMessage: string | undefined;
   readonly activeTui: Pick<TUI, "requestRender"> | undefined;
 }
 
@@ -58,7 +53,6 @@ const DEFAULT_REFRESH_INTERVAL_MS = 5 * 60_000;
 const DEFAULT_MIN_REFRESH_GAP_MS = 30_000;
 const DEFAULT_BACKOFF_BASE_MS = 60_000;
 const DEFAULT_BACKOFF_MAX_MS = 15 * 60_000;
-const DEFAULT_WARNING_DEBOUNCE_MS = 10 * 60_000;
 const DEFAULT_WAKE_REFRESH_DELAY_MS = 45_000;
 
 function initialState(): RefreshState {
@@ -69,8 +63,6 @@ function initialState(): RefreshState {
     consecutiveFailures: 0,
     lastStatus: "",
     lastSuccessfulStatus: undefined,
-    lastWarningAt: Number.NEGATIVE_INFINITY,
-    lastWarningMessage: undefined,
     activeTui: undefined,
   };
 }
@@ -92,15 +84,13 @@ export function makeRefreshController(
 ): Effect.Effect<
   RefreshController,
   never,
-  RateLimitClientService | JitterService | LoggerService | Clock.Clock
+  RateLimitClientService | JitterService | Clock.Clock
 > {
   const refreshIntervalMs =
     config.refreshIntervalMs ?? DEFAULT_REFRESH_INTERVAL_MS;
   const minRefreshGapMs = config.minRefreshGapMs ?? DEFAULT_MIN_REFRESH_GAP_MS;
   const backoffBaseMs = config.backoffBaseMs ?? DEFAULT_BACKOFF_BASE_MS;
   const backoffMaxMs = config.backoffMaxMs ?? DEFAULT_BACKOFF_MAX_MS;
-  const warningDebounceMs =
-    config.warningDebounceMs ?? DEFAULT_WARNING_DEBOUNCE_MS;
   const sleepWakeThresholdMs =
     config.sleepWakeThresholdMs ?? refreshIntervalMs + 60_000;
   const wakeRefreshDelayMs =
@@ -148,17 +138,12 @@ export function makeRefreshController(
         yield* requestRender(tui);
       });
 
-    const applyFailure = (
-      error: Error,
-      warnForce: boolean,
-    ): Effect.Effect<void, never, JitterService | LoggerService> =>
+    const applyFailure = (): Effect.Effect<void, never, JitterService> =>
       Effect.gen(function* () {
         const jitter = yield* JitterService;
-        const logger = yield* LoggerService;
         const multiplier = yield* jitter.nextMultiplier();
         const currentTime = yield* Clock.currentTimeMillis;
-        const message = errorToString(error);
-        const update = yield* Ref.modify(stateRef, (current) => {
+        const tui = yield* Ref.modify(stateRef, (current) => {
           const backoffMs = Math.min(
             backoffMaxMs,
             Math.round(
@@ -166,42 +151,30 @@ export function makeRefreshController(
             ),
           );
           const nextStatus = staleStatus(current);
-          const shouldWarn =
-            warnForce ||
-            message !== current.lastWarningMessage ||
-            currentTime - current.lastWarningAt >= warningDebounceMs;
           return [
-            { tui: current.activeTui, shouldWarn, message },
+            current.activeTui,
             {
               ...current,
               lastStatus: nextStatus,
               consecutiveFailures: current.consecutiveFailures + 1,
               backoffUntil: currentTime + backoffMs,
-              lastWarningAt: shouldWarn ? currentTime : current.lastWarningAt,
-              lastWarningMessage: shouldWarn
-                ? message
-                : current.lastWarningMessage,
             },
           ] as const;
         });
 
-        yield* requestRender(update.tui);
-        if (update.shouldWarn)
-          yield* logger.warn(`[custom-footer] ${update.message}`);
+        yield* requestRender(tui);
       });
 
-    const runRefreshAttempt = (
-      warnForce: boolean,
-    ): Effect.Effect<
+    const runRefreshAttempt = (): Effect.Effect<
       void,
       never,
-      RateLimitClientService | JitterService | LoggerService | Clock.Clock
+      RateLimitClientService | JitterService | Clock.Clock
     > =>
       Effect.gen(function* () {
         const client = yield* RateLimitClientService;
         yield* client.read().pipe(
           Effect.flatMap((response) => applySuccess(response)),
-          Effect.catchAll((error) => applyFailure(error, warnForce)),
+          Effect.catchAll(() => applyFailure()),
         );
       });
 
@@ -238,7 +211,7 @@ export function makeRefreshController(
           lastRefreshStartedAt: currentTime,
         }));
         const fiber = yield* Effect.forkDaemon(
-          runRefreshAttempt(Boolean(options.warnForce)).pipe(
+          runRefreshAttempt().pipe(
             Effect.ensuring(
               Effect.sync(() => {
                 refreshFiber = undefined;
@@ -255,7 +228,7 @@ export function makeRefreshController(
     ): Effect.Effect<
       void,
       never,
-      RateLimitClientService | JitterService | LoggerService | Clock.Clock
+      RateLimitClientService | JitterService | Clock.Clock
     > =>
       Effect.gen(function* () {
         if (wakeDelayFiber) return;
@@ -278,7 +251,7 @@ export function makeRefreshController(
     ): Effect.Effect<
       void,
       never,
-      RateLimitClientService | JitterService | LoggerService | Clock.Clock
+      RateLimitClientService | JitterService | Clock.Clock
     > =>
       Effect.gen(function* () {
         const currentTime = yield* Clock.currentTimeMillis;

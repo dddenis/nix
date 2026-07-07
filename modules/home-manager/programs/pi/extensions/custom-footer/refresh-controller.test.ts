@@ -52,7 +52,7 @@ describe("custom footer refresh controller", () => {
   );
 
   it.effect(
-    "keeps stale status and backs off after a failure using Clock",
+    "keeps stale status silently and backs off after a failure using Clock",
     () =>
       Effect.gen(function* () {
         const footerServices = yield* CustomFooterServicesTest;
@@ -77,9 +77,7 @@ describe("custom footer refresh controller", () => {
         );
 
         const shared = yield* SharedServicesTest;
-        expect((yield* shared.getState).warnings).toEqual([
-          "[custom-footer] 503 Service Unavailable",
-        ]);
+        expect((yield* shared.getState).warnings).toEqual([]);
 
         yield* TestClock.adjust(Duration.millis(1_000));
         yield* controller.refresh(fakeCtx());

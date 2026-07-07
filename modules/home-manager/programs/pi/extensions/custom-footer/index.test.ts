@@ -214,7 +214,7 @@ describe("custom footer extension", () => {
   );
 
   it.effect(
-    "keeps stale rate limits after transient failures and backs off repeated refreshes",
+    "keeps stale rate limits silently after transient failures and backs off repeated refreshes",
     () =>
       Effect.gen(function* () {
         const sharedServices = yield* SharedServicesTest;
@@ -250,9 +250,7 @@ describe("custom footer extension", () => {
           "5h 99% ↺2h | wk 92% ↺5d stale",
         );
         const shared = yield* SharedServicesTest;
-        expect((yield* shared.getState).warnings).toEqual([
-          "[custom-footer] GET https://chatgpt.com/backend-api/wham/usage failed: 503 Service Unavailable",
-        ]);
+        expect((yield* shared.getState).warnings).toEqual([]);
 
         yield* TestClock.adjust(Duration.millis(1_000));
         yield* runEvent(harness.handlers, "turn_end", ctx);
