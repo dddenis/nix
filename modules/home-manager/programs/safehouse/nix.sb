@@ -2,13 +2,16 @@
 (allow file-read* (subpath "/nix"))
 (allow file-read* (home-subpath "/.nix"))
 (allow file-read* (home-subpath "/.nix-profile"))
+(allow file-read* (home-subpath "/.nix-defexpr"))
 (allow file-read* file-write* (home-subpath "/.cache/nix"))
 (allow file-read* file-write* (home-subpath "/.local/state/nix"))
 (allow file-read* file-write* (home-subpath "/.local/share/nix"))
+(allow file-read* file-write* (home-subpath "/.local/share/devenv"))
 
 ;; Nix config (experimental-features, substituters, etc.)
 (allow file-read* (subpath "/etc/nix"))
 (allow file-read* (home-subpath "/.config/nix"))
+(allow file-read* (home-subpath "/.config/nixpkgs"))
 
 ;; Talk to the nix-daemon over its unix socket
 (allow file-read* file-write* (literal "/nix/var/nix/daemon-socket/socket"))
