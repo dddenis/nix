@@ -7,9 +7,9 @@
     boot.kernel.sysctl = { "vm.swappiness" = 60; };
     boot.loader.timeout = null;
 
-    hardware.pulseaudio.enable = false;
-
     security.rtkit.enable = true;
+
+    services.pulseaudio.enable = false;
 
     services.pipewire = {
       enable = true;

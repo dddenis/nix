@@ -16,18 +16,18 @@ in
     programs.dconf.enable = true;
 
     services = {
+      gnome.gcr-ssh-agent.enable = false;
+
       udev.packages = with pkgs; [ gnome-settings-daemon ];
 
-      xserver = {
+      desktopManager.gnome = {
         enable = true;
-
-        desktopManager.gnome = {
-          enable = true;
-          sessionPath = with pkgs; [ mutter ];
-        };
-
-        displayManager.gdm.enable = true;
+        sessionPath = with pkgs; [ mutter ];
       };
+
+      displayManager.gdm.enable = true;
+
+      xserver.enable = true;
     };
   };
 }

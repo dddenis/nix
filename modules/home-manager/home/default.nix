@@ -19,7 +19,7 @@ in
 
   config = {
     home.bookmarks = { nix = cfg.configPath; };
-    home.stateVersion = outputs.stateVersion;
+    home.stateVersion = outputs.lib.stateVersion;
 
     xdg.enable = true;
   };

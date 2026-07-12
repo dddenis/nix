@@ -14,7 +14,7 @@
 
     system = {
       configurationRevision = lib.mkIf (outputs ? rev) outputs.rev;
-      stateVersion = outputs.stateVersion;
+      stateVersion = outputs.lib.stateVersion;
     };
 
     nix = {

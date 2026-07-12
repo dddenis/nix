@@ -15,7 +15,9 @@
 
   outputs = inputs@{ self, nixos, nixpkgs, ... }:
     (rec {
-      lib = import ./lib/extended-lib.nix nixos.lib;
+      lib = (import ./lib/extended-lib.nix nixos.lib) // {
+        stateVersion = "23.11";
+      };
 
       overlays = import ./overlays {
         inherit lib nixpkgs;
@@ -36,7 +38,5 @@
       homeModules.default = import ./modules/home-manager;
 
       templates = import ./templates { inherit (self) lib; };
-
-      stateVersion = "23.11";
     });
 }
