@@ -27,6 +27,7 @@ let
 
     set -g base-index 1
     setw -g pane-base-index 1
+    set -g renumber-windows on
 
     set -g status-keys vi
     set -g mode-keys vi
