@@ -136,6 +136,7 @@ let
     safehouseArgs = [
       "--enable=keychain"
       "--append-profile=${config.xdg.configHome}/safehouse/pi-codex-app-server.sb"
+      "--add-dirs-ro=${config.home.homeDirectory}/dev/dddenis/pi-extensions"
     ];
   };
 

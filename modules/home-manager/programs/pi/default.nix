@@ -20,11 +20,5 @@ in
         "${piConfigPath}/themes";
       force = true;
     };
-
-    home.file.".pi/agent/extensions" = {
-      source = config.lib.file.mkOutOfStoreSymlink
-        "${piConfigPath}/extensions";
-      force = true;
-    };
   };
 }
