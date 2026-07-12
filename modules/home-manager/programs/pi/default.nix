@@ -20,5 +20,11 @@ in
         "${piConfigPath}/themes";
       force = true;
     };
+
+    home.file.".pi/agent/prompts" = {
+      source = config.lib.file.mkOutOfStoreSymlink
+        "${piConfigPath}/prompts";
+      force = true;
+    };
   };
 }
