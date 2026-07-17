@@ -15,7 +15,9 @@
 
 ;; Talk to the nix-daemon over its unix socket
 (allow file-read* file-write* (literal "/nix/var/nix/daemon-socket/socket"))
-(allow network-outbound (literal "/nix/var/nix/daemon-socket/socket"))
+(allow network-outbound
+    (remote unix-socket
+        (path-literal "/nix/var/nix/daemon-socket/socket")))
 (allow file-read* (home-subpath "/.config/nvim"))
 (allow file-read* file-write* (home-subpath "/.local/state/nvim"))
 (allow file-read* file-write* (home-subpath "/.local/share/nvim"))
@@ -23,7 +25,6 @@
 
 ;; User-installed binaries (claude, hasura, etc.)
 (allow file-read* (home-subpath "/.local/bin"))
-(allow process-exec* (home-subpath "/.local/bin"))
 
 ;; Bun-installed binaries (codex, etc.)
 ;; bin/ entries are symlinks into install/global/node_modules, so the whole
@@ -31,8 +32,6 @@
 (allow file-read* (home-subpath "/.cache/.bun"))
 ;; This machine's Bun install cache lives under ~/.cache/.bun, not ~/.bun.
 (allow file-read* file-write* (home-subpath "/.cache/.bun/install/cache"))
-(allow process-exec* (home-subpath "/.cache/.bun/bin"))
-(allow process-exec* (home-subpath "/.cache/.bun/install/global/node_modules"))
 
 ;; Audio output for afplay-based hooks.
 (allow mach-lookup
