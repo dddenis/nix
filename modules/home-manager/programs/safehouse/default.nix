@@ -130,6 +130,12 @@ let
     commandArgs = [ "--dangerously-bypass-approvals-and-sandbox" ];
   };
 
+  opencode = mkAgentWrapper {
+    name = "opencode";
+    command = "$HOME/.cache/.bun/bin/opencode";
+    commandArgs = [ "--auto" ];
+  };
+
   pi = mkAgentWrapper {
     name = "pi";
     command = "$HOME/.cache/.bun/bin/pi";
@@ -145,7 +151,7 @@ in
   options.ddd.programs.safehouse.enable = lib.mkEnableOption "agent-safehouse";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ safehouse safe claude codex pi ];
+    home.packages = [ safehouse safe claude codex opencode pi ];
 
     xdg.configFile."safehouse/nix.sb".source =
       config.lib.file.mkOutOfStoreSymlink
