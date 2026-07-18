@@ -9,7 +9,11 @@ in
   options.ddd.programs.opencode.enable = lib.mkEnableOption "opencode";
 
   config = lib.mkIf cfg.enable {
-    xdg.configFile."opencode/command".source =
-      config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/command";
+    xdg.configFile = {
+      "opencode/command".source =
+        config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/command";
+      "opencode/plugins".source =
+        config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/plugins";
+    };
   };
 }
