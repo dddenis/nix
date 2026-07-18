@@ -10,8 +10,12 @@ in
 
   config = lib.mkIf cfg.enable {
     xdg.configFile = {
+      "opencode/agent".source =
+        config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/agent";
       "opencode/command".source =
         config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/command";
+      "opencode/opencode.jsonc".source =
+        config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/opencode.jsonc";
       "opencode/plugins".source =
         config.lib.file.mkOutOfStoreSymlink "${opencodeConfigPath}/plugins";
     };
