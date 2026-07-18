@@ -80,6 +80,7 @@ in
         lazygit.enable = true;
         less.enable = true;
         lf.enable = true;
+        opencode.enable = true;
         pi.enable = true;
         process-compose.enable = true;
         ripgrep.enable = true;

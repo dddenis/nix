@@ -18,6 +18,7 @@
     ./less.nix
     ./lf
     ./neovim
+    ./opencode
     ./process-compose
     ./pi
     ./psql.nix
