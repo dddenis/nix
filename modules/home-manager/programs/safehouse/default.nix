@@ -23,7 +23,7 @@ let
     exec ${safehouse}/bin/safehouse --append-profile="$HOME/.config/safehouse/nix.sb" "$@"
   '';
 
-  mkAgentWrapper = { name, command, commandArgs ? [ ], safehouseArgs ? [ ] }:
+  mkAgentWrapper = { name, command, commandArgs ? [ ], commandEnv ? [ ], safehouseArgs ? [ ] }:
     pkgs.writeShellScriptBin name ''
       agent_browser_args="--no-sandbox"
       if [ -n "''${AGENT_BROWSER_ARGS:-}" ]; then
@@ -101,6 +101,7 @@ let
 
       if [ "''${APP_SANDBOX_CONTAINER_ID:-}" = "agent-safehouse" ]; then
         export AGENT_BROWSER_ARGS="$agent_browser_args"
+        ${lib.optionalString (commandEnv != [ ]) "export ${lib.escapeShellArgs commandEnv}"}
         exec "${command}" ${lib.escapeShellArgs commandArgs} "''${agent_args[@]}"
       fi
 
@@ -108,11 +109,13 @@ let
         safehouse_args=("--env-pass=TMUX,TMUX_PANE" "''${safehouse_args[@]}")
       fi
 
+      command_env=("AGENT_BROWSER_ARGS=$agent_browser_args" ${lib.escapeShellArgs commandEnv})
+
       exec ${safe}/bin/safe \
         --enable=agent-browser,clipboard,process-control \
         "''${safehouse_args[@]}" \
         -- \
-        "AGENT_BROWSER_ARGS=$agent_browser_args" \
+        "''${command_env[@]}" \
         "${command}" \
         ${lib.escapeShellArgs commandArgs} \
         "''${agent_args[@]}"
@@ -134,6 +137,7 @@ let
     name = "opencode";
     command = "$HOME/.cache/.bun/bin/opencode";
     commandArgs = [ "--auto" ];
+    commandEnv = [ "OPENCODE_ENABLE_EXA=1" ];
   };
 
   pi = mkAgentWrapper {
