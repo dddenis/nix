@@ -9,6 +9,53 @@ let
   paneResizeAmount = "5";
   plugins = with pkgs.tmuxPlugins; [ gruvbox ];
 
+  attentionStatus = pkgs.writeShellScript "tmux-attention-status" ''
+    export LC_ALL=C
+
+    socket_path="$1"
+    server_pid="$2"
+    pane_id="$3"
+    pane_index="$4"
+
+    if [ -z "$socket_path" ]; then
+      exit 0
+    fi
+
+    case "$server_pid" in
+      ""|*[!0-9]*) exit 0 ;;
+    esac
+
+    case "$pane_id" in
+      %*) pane_number="''${pane_id#%}" ;;
+      *) exit 0 ;;
+    esac
+
+    case "$pane_number" in
+      ""|*[!0-9]*) exit 0 ;;
+    esac
+
+    case "$pane_index" in
+      ""|*[!0-9]*) exit 0 ;;
+    esac
+
+    marker_path="$socket_path.tmux-attention-v1-$server_pid-$pane_number"
+
+    if [ -L "$marker_path" ] || [ ! -f "$marker_path" ]; then
+      exit 0
+    fi
+
+    marker_metadata="$(${pkgs.coreutils}/bin/stat -c '%u:%a' -- "$marker_path" 2>/dev/null)" || exit 0
+
+    if [ "$marker_metadata" != "$UID:600" ]; then
+      exit 0
+    fi
+
+    printf ' ⚑P%s' "$pane_index"
+  '';
+
+  attentionStatusFormat =
+    "#{P:#(${attentionStatus} #{q:socket_path} #{pid} #{q:pane_id} #{pane_index})}";
+
   importPlugin = p: ''
     # ${if lib.types.package.check p then p.pname else p.plugin.pname}
     ${p.extraConfig or ""}
@@ -100,6 +147,12 @@ let
 
     # plugins
     ${(lib.concatMapStringsSep "\n\n" importPlugin plugins)}
+
+    # Attention markers. Keep this after plugins because gruvbox replaces
+    # both window status formats when it loads.
+    set -g status-interval 1
+    set-window-option -ag window-status-format '${attentionStatusFormat}'
+    set-window-option -ag window-status-current-format '${attentionStatusFormat}'
   '';
 
 in
