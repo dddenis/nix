@@ -67,7 +67,7 @@ let
     run-shell ${pkgs.tmuxPlugins.sensible.rtp}
 
     set -g default-terminal "tmux-256color"
-    set -s extended-keys on
+    set -s extended-keys always
     set -s extended-keys-format csi-u
     set -g default-command ""
     setw -g aggressive-resize on
