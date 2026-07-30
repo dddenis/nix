@@ -112,7 +112,7 @@ let
       command_env=("AGENT_BROWSER_ARGS=$agent_browser_args" ${lib.escapeShellArgs commandEnv})
 
       exec ${safe}/bin/safe \
-        --enable=agent-browser,clipboard,process-control \
+        --enable=agent-browser,clipboard,keychain,process-control \
         "''${safehouse_args[@]}" \
         -- \
         "''${command_env[@]}" \
@@ -144,7 +144,6 @@ let
     name = "pi";
     command = "$HOME/.cache/.bun/bin/pi";
     safehouseArgs = [
-      "--enable=keychain"
       "--append-profile=${config.xdg.configHome}/safehouse/pi-codex-app-server.sb"
       "--add-dirs-ro=${config.home.homeDirectory}/dev/dddenis/pi-extensions"
     ];
@@ -166,7 +165,7 @@ in
       ;; to read ChatGPT/Codex subscription usage. The spawned Codex process
       ;; inherits Pi's sandbox profile, so grant only the Codex state/config
       ;; paths it needs here. macOS Security/Trust access is supplied by
-      ;; --enable=keychain on the pi wrapper.
+      ;; --enable=keychain on the shared agent wrapper.
       (allow file-read* file-write*
           (home-subpath "/.codex")
           (home-subpath "/.cache/codex")

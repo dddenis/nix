@@ -45,6 +45,7 @@ in
 
         coreutils
         devenv
+        gh
         gnumake
         iosevka-bin
         python3
