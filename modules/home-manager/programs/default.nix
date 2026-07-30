@@ -11,6 +11,7 @@
     ./fd.nix
     ./fzf.nix
     ./git.nix
+    ./herdr
     ./homebrew.nix
     ./karabiner.nix
     ./lazydocker

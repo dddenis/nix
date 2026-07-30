@@ -78,6 +78,7 @@ in
         fd.enable = true;
         fzf.enable = true;
         git.enable = true;
+        herdr.enable = true;
         lazygit.enable = true;
         less.enable = true;
         lf.enable = true;
