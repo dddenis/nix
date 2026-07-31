@@ -1,16 +1,5 @@
 {
   "hooks": {
-    "PermissionRequest": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "sh -c 'afplay ~/.codex/vittemacop-alert-notification-pop-cartoon-bubble-pop-pop-up-478078.mp3 >/dev/null 2>&1 &'"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "hooks": [
@@ -18,16 +7,6 @@
             "type": "command",
             "command": "bash '/Users/ddd/.codex/herdr-agent-state.sh' session",
             "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "sh -c 'afplay ~/.codex/vittemacop-alert-notification-pop-cartoon-bubble-pop-pop-up-478078.mp3 >/dev/null 2>&1 &'"
           }
         ]
       }

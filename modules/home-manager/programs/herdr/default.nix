@@ -11,7 +11,12 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.unstable.herdr ];
 
-    xdg.configFile."herdr/config.toml".source =
-      config.lib.file.mkOutOfStoreSymlink "${herdrConfigPath}/config.toml";
+    xdg.configFile = {
+      "herdr/config.toml".source =
+        config.lib.file.mkOutOfStoreSymlink "${herdrConfigPath}/config.toml";
+      "herdr/notification.mp3".source =
+        config.lib.file.mkOutOfStoreSymlink
+          "${herdrConfigPath}/notification.mp3";
+    };
   };
 }

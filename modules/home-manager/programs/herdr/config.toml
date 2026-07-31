@@ -26,3 +26,7 @@ red = "#ea6962"
 blue = "#7daea3"
 teal = "#89b482"
 peach = "#e78a4e"
+
+[ui.sound]
+enabled = true
+path = "notification.mp3"
