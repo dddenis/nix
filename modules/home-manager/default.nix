@@ -1,5 +1,6 @@
 {
   imports = [
+    ./agents
     ./home
     ./hosts
     ./misc

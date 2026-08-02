@@ -54,6 +54,8 @@ in
         unstable.nodejs
       ];
 
+      ddd.agents.enable = true;
+
       programs = {
         home-manager.enable = true;
         nix-index.enable = true;

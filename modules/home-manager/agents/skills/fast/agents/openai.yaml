@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fast"
+  short_description: "Make a small targeted change quickly"
+  default_prompt: "Use $fast to make this small targeted change: <task>"
+
+policy:
+  allow_implicit_invocation: false
