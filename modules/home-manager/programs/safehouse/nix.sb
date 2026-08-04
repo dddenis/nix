@@ -18,6 +18,19 @@
 (allow network-outbound
     (remote unix-socket
         (path-literal "/nix/var/nix/daemon-socket/socket")))
+
+;; tsx CLI IPC sockets: $TMPDIR/tsx-<uid>/<pid>.pipe
+(allow network-bind network-inbound
+    (local unix-socket
+        (path-regex #"^(/private)?/var/folders/[^/]+/[^/]+/T/tsx-[0-9]+/[0-9]+\.pipe$"))
+    (local unix-socket
+        (path-regex #"^(/private)?/tmp/tsx-[0-9]+/[0-9]+\.pipe$")))
+(allow network-outbound
+    (remote unix-socket
+        (path-regex #"^(/private)?/var/folders/[^/]+/[^/]+/T/tsx-[0-9]+/[0-9]+\.pipe$"))
+    (remote unix-socket
+        (path-regex #"^(/private)?/tmp/tsx-[0-9]+/[0-9]+\.pipe$")))
+
 (allow file-read* (home-subpath "/.config/nvim"))
 (allow file-read* file-write* (home-subpath "/.local/state/nvim"))
 (allow file-read* file-write* (home-subpath "/.local/share/nvim"))
