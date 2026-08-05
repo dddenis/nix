@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.ddd.programs.herdr;
   herdrConfigPath = "${config.home.configPath}/modules/home-manager/programs/herdr";
+  workspaceLastTabPluginPath = "${herdrConfigPath}/plugins/workspace-last-tab";
 
 in
 {
@@ -11,12 +17,15 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.unstable.herdr ];
 
+    home.activation.linkHerdrWorkspaceLastTab = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \
+        ${lib.escapeShellArg workspaceLastTabPluginPath}
+    '';
+
     xdg.configFile = {
-      "herdr/config.toml".source =
-        config.lib.file.mkOutOfStoreSymlink "${herdrConfigPath}/config.toml";
+      "herdr/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${herdrConfigPath}/config.toml";
       "herdr/notification.mp3".source =
-        config.lib.file.mkOutOfStoreSymlink
-          "${herdrConfigPath}/notification.mp3";
+        config.lib.file.mkOutOfStoreSymlink "${herdrConfigPath}/notification.mp3";
     };
   };
 }

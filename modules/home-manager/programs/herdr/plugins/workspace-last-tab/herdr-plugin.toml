@@ -1,0 +1,17 @@
+id = "ddd.workspace-last-tab"
+name = "Workspace Last Tab"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Toggle the two most recently focused tabs in the active workspace."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "toggle"
+title = "Toggle workspace last tab"
+description = "Best-effort focus of the previously active tab in the action workspace."
+contexts = ["workspace"]
+command = ["node", "index.mjs"]
+
+[[events]]
+on = "tab.focused"
+command = ["node", "index.mjs"]

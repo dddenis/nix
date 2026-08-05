@@ -1,10 +1,23 @@
 onboarding = false
 
 [keys]
+detach = "prefix+backspace"
 last_pane = "prefix+`"
 navigate_workspace_down = "j"
 navigate_workspace_up = "k"
 prefix = "ctrl+a"
+
+[[keys.command]]
+key = "prefix+q"
+type = "plugin_action"
+command = "ddd.workspace-last-tab.toggle"
+description = "toggle last tab in workspace"
+
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "ddd.workspace-last-tab.toggle"
+description = "toggle last tab in workspace"
 
 [theme]
 name = "gruvbox"
