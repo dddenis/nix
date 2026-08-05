@@ -2,10 +2,15 @@ onboarding = false
 
 [keys]
 detach = "prefix+backspace"
-last_pane = "prefix+`"
 navigate_workspace_down = "j"
 navigate_workspace_up = "k"
 prefix = "ctrl+a"
+
+[[keys.command]]
+key = "prefix+`"
+type = "plugin_action"
+command = "ddd.workspace-last-workspace.toggle"
+description = "toggle last workspace"
 
 [[keys.command]]
 key = "prefix+q"

@@ -1,0 +1,17 @@
+id = "ddd.workspace-last-workspace"
+name = "Workspace Last Workspace"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Toggle the two most recently focused workspaces."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "toggle"
+title = "Toggle last workspace"
+description = "Best-effort focus of the previously active workspace."
+contexts = ["workspace"]
+command = ["node", "index.mjs"]
+
+[[events]]
+on = "workspace.focused"
+command = ["node", "index.mjs"]
