@@ -31,7 +31,6 @@ in
           };
 
           gui = {
-            mouseEvents = false;
             showCommandLog = false;
           };
         };
