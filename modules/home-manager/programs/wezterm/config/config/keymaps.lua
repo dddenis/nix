@@ -3,6 +3,17 @@ local shared = require("config/shared")
 
 local M = {}
 
+local function send_herdr_key(sequence, fallback_key, fallback_mods)
+    return wezterm.action_callback(function(window, pane)
+        local process = pane:get_foreground_process_name() or ""
+        if process:match("/herdr$") then
+            pane:send_text(sequence)
+        else
+            window:perform_action(wezterm.action.SendKey({ key = fallback_key, mods = fallback_mods }), pane)
+        end
+    end)
+end
+
 local function super_to_ctrl(key)
     return {
         key = key,
@@ -22,6 +33,16 @@ end
 
 function M.apply_to_config(config)
     config.keys = {
+        {
+            key = "Enter",
+            mods = "SHIFT",
+            action = wezterm.action.SendString("\x1b[13;2u"),
+        },
+        {
+            key = "Escape",
+            mods = "NONE",
+            action = send_herdr_key("\x1b[27;1u", "Escape", "NONE"),
+        },
         {
             key = "f",
             mods = "CTRL|SUPER",
