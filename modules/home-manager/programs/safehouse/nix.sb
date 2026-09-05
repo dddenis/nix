@@ -19,6 +19,11 @@
     (remote unix-socket
         (path-literal "/nix/var/nix/daemon-socket/socket")))
 
+;; devenv process-compose sockets: status, logs, and resource metrics.
+(allow network-outbound
+    (remote unix-socket
+        (path-regex #"^(/private)?/tmp/devenv-[0-9a-f]+/pc\.sock$")))
+
 ;; tsx CLI IPC sockets: $TMPDIR/tsx-<uid>/<pid>.pipe
 (allow network-bind network-inbound
     (local unix-socket
