@@ -105,6 +105,11 @@ in
     })
 
     (lib.mkIf pkgs.stdenv.isDarwin {
+      home.packages = with pkgs; [
+        # Use a non-setuid ps so Safehouse can run it.
+        unixtools.ps
+      ];
+
       ddd.programs = {
         homebrew.enable = true;
         karabiner.enable = true;
