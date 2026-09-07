@@ -23,7 +23,15 @@ let
     exec ${safehouse}/bin/safehouse --append-profile="$HOME/.config/safehouse/nix.sb" "$@"
   '';
 
-  mkAgentWrapper = { name, command, commandArgs ? [ ], commandEnv ? [ ], safehouseArgs ? [ ] }:
+  mkAgentWrapper =
+    {
+      name,
+      command,
+      commandArgs ? [ ],
+      commandEnv ? [ ],
+      safehouseArgs ? [ ],
+      herdrSessionRelay ? false,
+    }:
     pkgs.writeShellScriptBin name ''
       agent_browser_args="--no-sandbox"
       if [ -n "''${AGENT_BROWSER_ARGS:-}" ]; then
@@ -111,7 +119,14 @@ let
 
       command_env=("AGENT_BROWSER_ARGS=$agent_browser_args" ${lib.escapeShellArgs commandEnv})
 
-      exec ${safe}/bin/safe \
+      launcher=(${safe}/bin/safe)
+      ${lib.optionalString herdrSessionRelay ''
+        # The relay starts outside Safehouse and exposes only session reports.
+        # -I keeps host Python imports independent of the project and PYTHONPATH.
+        launcher=(${pkgs.python3}/bin/python3 -I ${./herdr-session-relay.py} "''${launcher[@]}")
+      ''}
+
+      exec "''${launcher[@]}" \
         --enable=agent-browser,clipboard,keychain,process-control \
         "''${safehouse_args[@]}" \
         -- \
@@ -131,6 +146,7 @@ let
     name = "codex";
     command = "$HOME/.cache/.bun/bin/codex";
     commandArgs = [ "--dangerously-bypass-approvals-and-sandbox" ];
+    herdrSessionRelay = true;
   };
 
   opencode = mkAgentWrapper {
