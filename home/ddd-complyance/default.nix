@@ -9,6 +9,7 @@
     _1password-cli
 
     unstable.datadog-pup
+    unstable.temporal-cli
   ];
 
   ddd.hosts = {
