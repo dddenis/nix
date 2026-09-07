@@ -7,6 +7,8 @@
 
   home.packages = with pkgs; [
     _1password-cli
+
+    unstable.datadog-pup
   ];
 
   ddd.hosts = {
