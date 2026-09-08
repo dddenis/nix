@@ -8,6 +8,8 @@
   home.packages = with pkgs; [
     _1password-cli
 
+    unstable.awscli2
+    unstable.awsume
     unstable.datadog-pup
     unstable.temporal-cli
   ];
