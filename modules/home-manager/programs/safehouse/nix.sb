@@ -51,6 +51,10 @@
 ;; This machine's Bun install cache lives under ~/.cache/.bun, not ~/.bun.
 (allow file-read* file-write* (home-subpath "/.cache/.bun/install/cache"))
 
+;; PostHog CLI
+(allow file-read* (home-subpath "/.posthog"))
+(allow file-write* (home-subpath "/.posthog/api-cli"))
+
 ;; Audio output for afplay-based hooks.
 (allow mach-lookup
     (global-name "com.apple.audio.AudioComponentRegistrar")
