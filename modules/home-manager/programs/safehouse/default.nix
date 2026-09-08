@@ -20,7 +20,8 @@ let
   };
 
   safe = pkgs.writeShellScriptBin "safe" ''
-    exec ${safehouse}/bin/safehouse --append-profile="$HOME/.config/safehouse/nix.sb" "$@"
+    ${builtins.readFile ./presets.sh}
+    exec ${safehouse}/bin/safehouse --append-profile="$HOME/.config/safehouse/nix.sb" "''${safehouse_args[@]}" "$@"
   '';
 
   mkAgentWrapper =
