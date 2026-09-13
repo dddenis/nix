@@ -45,6 +45,11 @@ blue = "#7daea3"
 teal = "#89b482"
 peach = "#e78a4e"
 
+[ui]
+# Keep pane width stable for Neovim's wrapped lines until the upstream fix ships.
+# https://github.com/herdrdev/herdr/issues/3329
+pane_scrollbars = false
+
 [ui.sound]
 enabled = true
 path = "notification.mp3"
