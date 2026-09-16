@@ -55,6 +55,9 @@
 (allow file-read* (home-subpath "/.posthog"))
 (allow file-write* (home-subpath "/.posthog/api-cli"))
 
+;; Datadog Pup session registry; credentials live in Keychain.
+(allow file-read* (home-subpath "/Library/Application Support/pup"))
+
 ;; Audio output for afplay-based hooks.
 (allow mach-lookup
     (global-name "com.apple.audio.AudioComponentRegistrar")
