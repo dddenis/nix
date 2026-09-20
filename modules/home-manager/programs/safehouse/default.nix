@@ -5,11 +5,11 @@ let
 
   safehouse = pkgs.stdenvNoCC.mkDerivation {
     pname = "agent-safehouse";
-    version = "0.11.1";
+    version = "0.12.0";
 
     src = pkgs.fetchurl {
-      url = "https://github.com/eugene1g/agent-safehouse/releases/download/v0.11.1/safehouse.sh";
-      hash = "sha256-3Zb5LXeuvxQuDuM/OHVLbcbG96EkUSm3Fffe6kiOPXg=";
+      url = "https://github.com/eugene1g/agent-safehouse/releases/download/v0.12.0/safehouse.sh";
+      hash = "sha256-YpjkyOjAZovS952Pjaf2BQccCx8VMo8mMwR4Pbb+KCk=";
     };
 
     dontUnpack = true;

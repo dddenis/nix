@@ -1,7 +1,6 @@
-;; Nix support: store, volume, symlink resolution, and home-manager config
-(allow file-read* (subpath "/nix"))
+;; Safehouse supplies Nix store/profile reads. These additions support Nix
+;; commands, devenv, and this machine's out-of-store home-manager config.
 (allow file-read* (home-subpath "/.nix"))
-(allow file-read* (home-subpath "/.nix-profile"))
 (allow file-read* (home-subpath "/.nix-defexpr"))
 (allow file-read* file-write* (home-subpath "/.cache/nix"))
 (allow file-read* file-write* (home-subpath "/.local/state/nix"))
