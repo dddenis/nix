@@ -19,6 +19,7 @@
     ./less.nix
     ./lf
     ./neovim
+    ./omp
     ./opencode
     ./process-compose
     ./pi

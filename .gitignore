@@ -1,2 +1,3 @@
 .worktrees/
 **/result
+modules/home-manager/programs/omp/config.yml.lock

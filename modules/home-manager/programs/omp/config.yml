@@ -1,0 +1,38 @@
+defaultThinkingLevel: max
+hideThinkingBlock: true
+modelRoles:
+  default: openai-codex/gpt-6-astra
+  dictation: local/parakeet-tdt-0.6b-v3
+  speech: local/kokoro
+theme:
+  dark: gruvbox-material-dark-medium
+symbolPreset: nerd
+composer:
+  shape: band
+setupVersion: 2
+dev:
+  autoqaConsent: denied
+statusLine:
+  preset: custom
+  compactThinkingLevel: true
+  leftSegments:
+    - pi
+    - vim
+    - model
+    - mode
+    - collab
+    - stream
+    - path
+    - git
+    - pr
+    - context_pct
+    - cost
+  rightSegments:
+    - usage
+    - session_name
+  sessionAccent: false
+spelling:
+  autocomplete: false
+stt:
+  enabled: true
+  submitTrigger: never

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.ddd.programs.safehouse;
@@ -150,6 +150,15 @@ let
     herdrSessionRelay = true;
   };
 
+  omp = mkAgentWrapper {
+    name = "omp";
+    command = "${inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.omp}/bin/omp";
+    safehouseArgs = [
+      "--enable=microphone"
+      "--append-profile=${config.xdg.configHome}/safehouse/omp.sb"
+    ];
+  };
+
   opencode = mkAgentWrapper {
     name = "opencode";
     command = "$HOME/.cache/.bun/bin/opencode";
@@ -173,9 +182,44 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ safehouse safe claude codex opencode pi ];
 
+    # Let the OMP module install the wrapper as its only omp executable.
+    programs.omp.package = lib.mkIf config.ddd.programs.omp.enable omp;
+
     xdg.configFile."safehouse/nix.sb".source =
       config.lib.file.mkOutOfStoreSymlink
         "${config.home.configPath}/modules/home-manager/programs/safehouse/nix.sb";
+
+    xdg.configFile."safehouse/omp.sb" = lib.mkIf config.ddd.programs.omp.enable {
+      text = ''
+        ;; OMP config, credentials, sessions, and runtime caches.
+        (allow file-read* file-write*
+            (home-subpath "/.omp")
+            (subpath "${config.home.configPath}/modules/home-manager/programs/omp")
+            (subpath "${config.xdg.dataHome}/omp")
+            (subpath "${config.xdg.stateHome}/omp")
+            (subpath "${config.xdg.cacheHome}/omp")
+        )
+
+        ;; Worker and broker IPC needs socket permissions, not just file access.
+        ;; Keep access scoped to OMP runtime sockets and its temporary probes.
+        (allow network-bind network-inbound
+            (local unix-socket
+                (path-regex (string-append "^" HOME_DIR "/\\.omp/run/.*\\.sock$")))
+            (local unix-socket
+                (path-regex #"^${lib.escapeRegex config.xdg.stateHome}/omp/run/.*\.sock$"))
+            (local unix-socket
+                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|blob-smoke-[^/]+)\.sock$"))
+        )
+        (allow network-outbound
+            (remote unix-socket
+                (path-regex (string-append "^" HOME_DIR "/\\.omp/run/.*\\.sock$")))
+            (remote unix-socket
+                (path-regex #"^${lib.escapeRegex config.xdg.stateHome}/omp/run/.*\.sock$"))
+            (remote unix-socket
+                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|blob-smoke-[^/]+)\.sock$"))
+        )
+      '';
+    };
 
     xdg.configFile."safehouse/pi-codex-app-server.sb".text = ''
       ;; Pi's custom-footer extension spawns `codex app-server`
