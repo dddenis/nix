@@ -12,6 +12,14 @@ set drawbox
 
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
+# q quits normally; Q asks the zsh wrapper to follow the current directory.
+cmd save-dir ${{
+    if [ -n "${LF_CD_FILE:-}" ]; then
+        printf '%s\0' "$PWD" > "$LF_CD_FILE"
+    fi
+}}
+map Q :save-dir; quit
+
 cmd open &{{
     lower="$(printf '%s' "$f" | tr '[:upper:]' '[:lower:]')"
     case "$lower" in
