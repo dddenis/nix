@@ -15,6 +15,7 @@ Map("n", "<leader>dw", "<cmd>windo diffthis<cr>", { desc = "Diff Windows" })
 Map("n", "<leader>do", "<cmd>diffoff!<cr>", { desc = "Exit Diff" })
 
 Map("x", "g<C-i>", "g<C-a>", { desc = "Increment visual selection" })
+Map("x", "p", "P", { desc = "Paste without replacing register" })
 
 local function copy_to_clipboard(fn)
     return function()
