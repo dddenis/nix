@@ -146,7 +146,10 @@ let
   codex = mkAgentWrapper {
     name = "codex";
     command = "$HOME/.cache/.bun/bin/codex";
-    commandArgs = [ "--dangerously-bypass-approvals-and-sandbox" ];
+    commandArgs = [
+      "--dangerously-bypass-approvals-and-sandbox"
+      "--no-daemon"
+    ];
     herdrSessionRelay = true;
   };
 
