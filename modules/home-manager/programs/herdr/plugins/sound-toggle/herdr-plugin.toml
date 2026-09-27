@@ -1,0 +1,13 @@
+id = "ddd.sound-toggle"
+name = "Sound Toggle"
+version = "0.1.0"
+min_herdr_version = "0.8.2"
+description = "Toggle agent sound alerts and reload the running session."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "toggle"
+title = "Toggle sound alerts"
+description = "Persist the sound setting without restarting agents."
+contexts = ["global"]
+command = ["python3", "-I", "toggle.py"]

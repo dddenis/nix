@@ -8,6 +8,7 @@
 let
   cfg = config.ddd.programs.herdr;
   herdrConfigPath = "${config.home.configPath}/modules/home-manager/programs/herdr";
+  soundTogglePluginPath = "${herdrConfigPath}/plugins/sound-toggle";
   workspaceLastTabPluginPath = "${herdrConfigPath}/plugins/workspace-last-tab";
   workspaceLastWorkspacePluginPath = "${herdrConfigPath}/plugins/workspace-last-workspace";
 
@@ -17,6 +18,11 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.unstable.herdr ];
+
+    home.activation.linkHerdrSoundToggle = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \
+        ${lib.escapeShellArg soundTogglePluginPath}
+    '';
 
     home.activation.linkHerdrWorkspaceLastTab = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \

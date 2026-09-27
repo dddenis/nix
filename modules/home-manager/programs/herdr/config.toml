@@ -24,6 +24,12 @@ type = "plugin_action"
 command = "ddd.workspace-last-tab.toggle"
 description = "toggle last tab in workspace"
 
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "ddd.sound-toggle.toggle"
+description = "toggle sound alerts"
+
 [theme]
 name = "gruvbox"
 
