@@ -212,7 +212,7 @@ in
             (local unix-socket
                 (path-regex #"^${lib.escapeRegex config.xdg.stateHome}/omp/run/.*\.sock$"))
             (local unix-socket
-                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|blob-smoke-[^/]+)\.sock$"))
+                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|ida-smoke-[^/]+|blob-smoke-[^/]+|text-predict-smoke-[^/]+/text-predict)\.sock$"))
         )
         (allow network-outbound
             (remote unix-socket
@@ -220,7 +220,7 @@ in
             (remote unix-socket
                 (path-regex #"^${lib.escapeRegex config.xdg.stateHome}/omp/run/.*\.sock$"))
             (remote unix-socket
-                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|blob-smoke-[^/]+)\.sock$"))
+                (path-regex #"^(/private)?(/var/folders/[^/]+/[^/]+/T|/tmp)/omp-(daemon-smoke-[^/]+/run/broker|lsp-mux-smoke-[^/]+|ida-smoke-[^/]+|blob-smoke-[^/]+|text-predict-smoke-[^/]+/text-predict)\.sock$"))
         )
       '';
     };

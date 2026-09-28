@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/v18.2.11/packages/tui/src/theme/theme-schema.json",
+  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/v18.8.0/packages/tui/src/theme/theme-schema.json",
   "name": "gruvbox-material-dark-medium",
   "vars": {
     "bgDim": "#1b1b1b",

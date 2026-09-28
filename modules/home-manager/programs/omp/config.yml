@@ -4,6 +4,10 @@ modelRoles:
   default: openai-codex/gpt-6-astra
   dictation: local/parakeet-tdt-0.6b-v3
   speech: local/kokoro
+# omp 18.8.0's Bedrock credential probe crashes on Safehouse's denied AWS metadata.
+disabledProviders:
+  - amazon-bedrock
+  - bedrock-mantle
 theme:
   dark: gruvbox-material-dark-medium
 symbolPreset: nerd
