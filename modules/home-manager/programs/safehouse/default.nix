@@ -34,6 +34,16 @@ let
       herdrSessionRelay ? false,
     }:
     pkgs.writeShellScriptBin name ''
+      # Capture only restart-safe options before consuming the original argv.
+      # Nested agents belong to their enclosing sandbox, not to the pane launcher.
+      if [ -n "''${HERDR_SOCKET_PATH:-}" ] && [ -n "''${HERDR_PANE_ID:-}" ] \
+        && [ "''${APP_SANDBOX_CONTAINER_ID:-}" != "agent-safehouse" ]; then
+        ${pkgs.python3}/bin/python3 -I -B -c \
+          'import sys; sys.path.insert(0, ${builtins.toJSON "${../herdr/restart}"}); from launch import record_main; sys.exit(record_main())' \
+          ${lib.escapeShellArg name} ${lib.escapeShellArg "${config.home.profileDirectory}/bin/${name}"} \
+          "$$" -- "$@" || true
+      fi
+
       agent_browser_args="--no-sandbox"
       if [ -n "''${AGENT_BROWSER_ARGS:-}" ]; then
         agent_browser_args="$AGENT_BROWSER_ARGS,$agent_browser_args"
