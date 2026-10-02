@@ -32,7 +32,8 @@ statusLine:
     - session_name
   sessionAccent: false
 spelling:
-  autocomplete: false
+  autocomplete: "off"
 stt:
   enabled: true
   submitTrigger: never
+treeFilterMode: user-only
