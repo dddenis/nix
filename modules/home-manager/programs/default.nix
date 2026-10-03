@@ -22,7 +22,6 @@
     ./omp
     ./opencode
     ./process-compose
-    ./pi
     ./psql.nix
     ./ripgrep.nix
     ./safehouse

@@ -179,21 +179,12 @@ let
     commandEnv = [ "OPENCODE_ENABLE_EXA=1" ];
   };
 
-  pi = mkAgentWrapper {
-    name = "pi";
-    command = "$HOME/.cache/.bun/bin/pi";
-    safehouseArgs = [
-      "--append-profile=${config.xdg.configHome}/safehouse/pi-codex-app-server.sb"
-      "--add-dirs-ro=${config.home.homeDirectory}/dev/dddenis/pi-extensions"
-    ];
-  };
-
 in
 {
   options.ddd.programs.safehouse.enable = lib.mkEnableOption "agent-safehouse";
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ safehouse safe claude codex opencode pi ];
+    home.packages = [ safehouse safe claude codex opencode ];
 
     # Let the OMP module install the wrapper as its only omp executable.
     programs.omp.package = lib.mkIf config.ddd.programs.omp.enable omp;
@@ -233,24 +224,5 @@ in
         )
       '';
     };
-
-    xdg.configFile."safehouse/pi-codex-app-server.sb".text = ''
-      ;; Pi's custom-footer extension spawns `codex app-server`
-      ;; to read ChatGPT/Codex subscription usage. The spawned Codex process
-      ;; inherits Pi's sandbox profile, so grant only the Codex state/config
-      ;; paths it needs here. macOS Security/Trust access is supplied by
-      ;; --enable=keychain on the shared agent wrapper.
-      (allow file-read* file-write*
-          (home-subpath "/.codex")
-          (home-subpath "/.cache/codex")
-      )
-
-      (allow file-read*
-          (home-literal "/Library/Preferences/com.openai.codex.plist")
-          (literal "/Library/Preferences/com.openai.codex.plist")
-          (literal "/Library/Managed Preferences/com.openai.codex.plist")
-          (subpath "/etc/codex")
-      )
-    '';
   };
 }

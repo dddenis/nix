@@ -383,7 +383,7 @@ def main(argv=None, *, herdr="herdr", profile_bin=None, lsof="lsof"):
 Saved conversations, working directories and supported launch options are retained.
 Working/blocked/unknown agents and ambiguous launches are skipped. Recipes are
 recorded by the managed agent wrappers; recognized older launches can be recovered.
-Supported managed Safehouse launchers: omp, pi, codex, claude and opencode.
+Supported managed Safehouse launchers: omp, codex, claude and opencode.
 Private recipes live in $XDG_STATE_HOME/herdr/restart, defaulting to
 ~/.local/state/herdr/restart. Agents need working Herdr state/session integrations;
 non-default sockets may require an explicit Safehouse socket profile.

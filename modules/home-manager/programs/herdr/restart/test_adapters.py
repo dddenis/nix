@@ -22,14 +22,11 @@ class OptionsTests(unittest.TestCase):
             ["-m", "gpt-5", "-c", "model_reasoning_effort=high", "-p", "work"],
         )
 
-    def test_pi_resume_is_boolean_not_exact_selector(self):
-        self.assertEqual(restart_options("pi", ["--resume", "old prompt", "--session", "/old.jsonl", "@private.txt", "--model", "model"], "/work"), ["--model", "model"])
-
     def test_omp_profile_and_resources_survive(self):
         self.assertEqual(restart_options("omp", ["--profile", "work", "--config", "./agent.yml", "--add-dir", "../other", "--session", "/old", "@prompt", "do not replay"], "/work"), ["--profile", "work", "--config", "./agent.yml", "--add-dir", "../other"])
 
     def test_unsafe_shapes_fail_closed(self):
-        cases = [("codex", ["exec", "hi"]), ("codex", ["--remote", "ws://host"]), ("codex", ["fork", SESSION_ID]), ("pi", ["--mode", "rpc"]), ("pi", ["--fork", "/old"]), ("omp", ["--unknown-extension", "x"]), ("claude", ["--fork-session"]), ("claude", ["--print", "hi"]), ("opencode", ["attach", "http://localhost"]), ("omp", ["--api-key", "secret"])]
+        cases = [("codex", ["exec", "hi"]), ("codex", ["--remote", "ws://host"]), ("codex", ["fork", SESSION_ID]), ("omp", ["--mode", "rpc"]), ("omp", ["--unknown-extension", "x"]), ("claude", ["--fork-session"]), ("claude", ["--print", "hi"]), ("opencode", ["attach", "http://localhost"]), ("omp", ["--api-key", "secret"])]
         for kind, argv in cases:
             with self.subTest(kind=kind, argv=argv), self.assertRaises(Unsupported):
                 restart_options(kind, argv, "/work")
@@ -77,19 +74,6 @@ class ProcessTests(unittest.TestCase):
             with self.subTest(argv=argv), self.assertRaises(Unsupported):
                 agent_process("codex", {"foreground_processes": [self.process(10, *argv)]})
 
-    def test_pi_entrypoint_does_not_match_arbitrary_cli_script(self):
-        result = agent_process("pi", {"foreground_processes": [self.process(10, "/bin/node", "/node_modules/@earendil-works/pi-coding-agent/dist/cli.js", "--model", "model")]})
-        self.assertEqual(result["agent_args"], ["--model", "model"])
-        with self.assertRaises(Unsupported):
-            agent_process("pi", {"foreground_processes": [self.process(10, "/bin/node", "/tmp/unrelated/cli.js")]})
-
-    def test_pi_configured_bun_launcher_is_recognized(self):
-        result = agent_process("pi", {"foreground_processes": [
-            self.process(10, "/bin/node", str(Path.home() / ".cache/.bun/bin/pi"), "--session", "/saved.jsonl"),
-        ]})
-        self.assertEqual(result["pid"], 10)
-        self.assertEqual(result["agent_args"], ["--session", "/saved.jsonl"])
-
 
 class ResumeTests(unittest.TestCase):
     def test_file_resume_requires_real_header_and_matching_project(self):
@@ -104,8 +88,6 @@ class ResumeTests(unittest.TestCase):
                     resume_arguments("omp", ref, directory)
             path.write_text(json.dumps({"type": "session", "id": SESSION_ID, "cwd": directory}) + "\n")
             self.assertEqual(resume_arguments("omp", ref, directory), ["--session", str(path)])
-            ref["agent"] = "pi"
-            self.assertEqual(resume_arguments("pi", ref, directory), ["--session", str(path)])
 
     def test_omp_title_slot_is_not_the_session_identity(self):
         with tempfile.TemporaryDirectory() as directory:

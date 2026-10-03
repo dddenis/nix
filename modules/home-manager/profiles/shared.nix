@@ -86,7 +86,6 @@ in
         lf.enable = true;
         omp.enable = true;
         opencode.enable = true;
-        pi.enable = true;
         process-compose.enable = true;
         ripgrep.enable = true;
         ssh.enable = true;

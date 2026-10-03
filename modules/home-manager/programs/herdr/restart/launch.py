@@ -14,7 +14,7 @@ import tempfile
 from adapters import Unsupported, agent_process, restart_options
 
 
-KINDS = {"omp", "pi", "codex", "claude", "opencode"}
+KINDS = {"omp", "codex", "claude", "opencode"}
 STORE = r"/nix/store/[a-z0-9]{32}-[^/]+"
 SHELL = re.compile(STORE + r"/bin/(?:ba)?sh\Z")
 SAFEHOUSE = re.compile(r"/nix/store/[a-z0-9]{32}-agent-safehouse-[^/]+/bin/safehouse\Z")
@@ -92,8 +92,6 @@ def _safe_options(args, *, legacy=False, kind=None):
     defaults = {str(config / "safehouse/nix.sb")}
     if kind == "omp":
         defaults.add(str(config / "safehouse/omp.sb"))
-    elif kind == "pi":
-        defaults.add(str(config / "safehouse/pi-codex-app-server.sb"))
     index = 0
     while index < len(args):
         token = args[index]
@@ -126,10 +124,7 @@ def _safe_options(args, *, legacy=False, kind=None):
                 raise Unsupported("runtime relay policy cannot be recorded")
         elif legacy and key == "--append-profile" and value in defaults:
             continue
-        elif legacy and key == "--add-dirs-ro" and value in {
-            "/Applications/OrbStack.app/Contents/MacOS/xbin",
-            str(Path.home() / "dev/dddenis/pi-extensions") if kind == "pi" else "",
-        }:
+        elif legacy and key == "--add-dirs-ro" and value == "/Applications/OrbStack.app/Contents/MacOS/xbin":
             continue
         else:
             result.append(key + "=" + value)

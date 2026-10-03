@@ -16,28 +16,24 @@ class Unsupported(ValueError):
     """A launch cannot be safely reproduced or stopped."""
 
 
-KINDS = frozenset({"omp", "pi", "codex", "claude", "opencode"})
-_COMMON_PI = "--provider --model --models --thinking --tools --session-dir --extension -e"
+KINDS = frozenset({"omp", "codex", "claude", "opencode"})
 _VALUES = {
-    "omp": set((_COMMON_PI + " --config --add-dir --smol --slow --service-tier --hook --trusted-extension --plugin-dir --skills --approval-mode --profile --system-prompt-template").split()),
-    "pi": set((_COMMON_PI + " -t --exclude-tools -xt --skill --prompt-template --theme --name -n").split()),
+    "omp": set("--provider --model --models --thinking --tools --session-dir --extension -e --config --add-dir --smol --slow --service-tier --hook --trusted-extension --plugin-dir --skills --approval-mode --profile --system-prompt-template".split()),
     "codex": set("--config -c --enable --disable --model -m --local-provider --profile -p --sandbox -s --add-dir --ask-for-approval -a".split()),
     "claude": set("--model --fallback-model --effort --agent --settings --setting-sources --permission-mode --system-prompt-file --append-system-prompt-file --name -n".split()),
     "opencode": set("--model -m --agent --log-level".split()),
 }
 _BOOLEANS = {
     "omp": set("--no-tools --no-extensions --no-skills --no-prompt-templates --no-themes --no-title --no-rules --no-lsp --no-pty --allow-home --hide-thinking --verbose".split()),
-    "pi": set("--no-tools -nt --no-builtin-tools -nbt --no-extensions -ne --no-skills -ns --no-prompt-templates -np --no-themes --no-context-files -nc --verbose --approve -a --no-approve -na --offline".split()),
     "codex": set("--oss --strict-config --approve-for-me --dangerously-bypass-hook-trust --search --no-alt-screen".split()),
     "claude": set("--verbose --strict-mcp-config --allow-dangerously-skip-permissions --disable-slash-commands --chrome --no-chrome --ide".split()),
     "opencode": {"--print-logs"},
 }
-_DEFAULTS = {"omp": set(), "pi": set(), "codex": {"--dangerously-bypass-approvals-and-sandbox", "--no-daemon"}, "claude": {"--dangerously-skip-permissions"}, "opencode": {"--auto"}}
-_SELECTORS = {"omp": {"--resume", "-r", "--session"}, "pi": {"--session", "--session-id"}, "codex": set(), "claude": {"--resume", "-r", "--session-id"}, "opencode": {"--session", "-s"}}
-_CONTINUE = {"omp": {"--continue", "-c"}, "pi": {"--continue", "-c", "--resume", "-r"}, "codex": {"--last", "--all"}, "claude": {"--continue", "-c"}, "opencode": {"--continue", "-c"}}
+_DEFAULTS = {"omp": set(), "codex": {"--dangerously-bypass-approvals-and-sandbox", "--no-daemon"}, "claude": {"--dangerously-skip-permissions"}, "opencode": {"--auto"}}
+_SELECTORS = {"omp": {"--resume", "-r", "--session"}, "codex": set(), "claude": {"--resume", "-r", "--session-id"}, "opencode": {"--session", "-s"}}
+_CONTINUE = {"omp": {"--continue", "-c"}, "codex": {"--last", "--all"}, "claude": {"--continue", "-c"}, "opencode": {"--continue", "-c"}}
 _SUBCOMMANDS = {
     "omp": set("agents auth auth-broker auth-gateway bench browser-relay classify collab config completion completions find gallery gc git grep images install login logout models plugin plugins predict ps read render setup shell skill skills ssh stats update usage web-search worker worktree".split()),
-    "pi": set("install remove update list config".split()),
     "codex": set("agents exec e review login logout mcp plugin app-server remote-control app completion update doctor sandbox debug apply a queue archive delete migrate-rollouts unarchive fork cloud exec-server features help".split()),
     "claude": set("agents attach auth auto-mode daemon doctor install mcp plugin remote-control respawn rm self-hosted-runner setup-token stop kill update upgrade".split()),
     "opencode": set("acp agent attach auth completion debug export import mcp models pr run serve session stats upgrade uninstall web github".split()),
@@ -98,7 +94,7 @@ def restart_options(kind: str, argv: list[str], cwd: str) -> list[str]:
             continue
         drop = flag in {"--image", "-i"} and kind == "codex" or flag == "--prompt" and kind == "opencode"
         directory = (kind == "omp" and flag == "--cwd") or (kind == "codex" and flag in {"-C", "--cd"})
-        mode = kind in {"omp", "pi"} and flag == "--mode"
+        mode = kind == "omp" and flag == "--mode"
         # Claude's variadic flags are accepted only in = form: otherwise a trailing
         # prompt and a second config/dir value cannot be distinguished safely.
         variadic = kind == "claude" and flag in {"--add-dir", "--mcp-config", "--plugin-dir", "--allowedTools", "--allowed-tools", "--disallowedTools", "--disallowed-tools", "--tools"}
@@ -139,7 +135,7 @@ def _executable_kind(path):
     name = os.path.basename(path)
     if name in KINDS:
         return name
-    if re.fullmatch(r"\.(omp|pi|codex|claude|opencode)-wrapped", name):
+    if re.fullmatch(r"\.(omp|codex|claude|opencode)-wrapped", name):
         return name[1:-8]
     return None
 
@@ -147,14 +143,12 @@ def _executable_kind(path):
 def _script_kind(path):
     normalized = path.replace("\\", "/")
     name = os.path.basename(normalized)
-    if name in {"codex", "pi"} and normalized == os.path.expanduser(f"~/.cache/.bun/bin/{name}"):
+    if name == "codex" and normalized == os.path.expanduser(f"~/.cache/.bun/bin/{name}"):
         return name
     if "/@openai/codex/" in normalized and normalized.endswith("/bin/codex.js"):
         return "codex"
     if "/@anthropic-ai/claude-code/" in normalized and normalized.endswith("/cli.js"):
         return "claude"
-    if "pi-coding-agent" in normalized and normalized.endswith("/dist/cli.js"):
-        return "pi"
     if normalized.endswith("/coding-agent/src/cli.ts") or normalized.endswith("/coding-agent/dist/cli.js"):
         return "omp"
     return None
@@ -231,7 +225,7 @@ def resume_arguments(kind: str, reference: dict, cwd: str) -> list[str]:
     value = reference.get("value")
     if not isinstance(value, str) or not value or "\0" in value:
         raise Unsupported("missing exact durable session reference")
-    if kind in {"omp", "pi"}:
+    if kind == "omp":
         if reference.get("kind") != "path" or not os.path.isabs(value):
             raise Unsupported(f"{kind}: requires an absolute session file path")
         header = session_header(kind, value)
@@ -319,9 +313,8 @@ def codex_writer_owns_session(pid: int, session_id: str, lsof: str) -> bool:
 def shutdown_keys(kind: str) -> list[str] | None:
     _kind(kind)
     # OMP interactive-mode.ts createSessionTeardown persists drafts and disposes
-    # on SIGTERM. Pi 0.82.1 interactive-mode.js registerSignalHandlers invokes
-    # shutdown({fromSignal:true}), emitting session_shutdown before tty cleanup.
-    if kind in {"omp", "pi"}:
+    # on SIGTERM.
+    if kind == "omp":
         return None
     # Codex: codex-rs/tui/src/chatwidget.rs request_quit_without_confirmation
     # routes double Ctrl+C to ExitMode::ShutdownFirst (not an immediate exit).
