@@ -126,7 +126,7 @@ class Plan:
 
     @property
     def command(self):
-        return f"cd -- {shlex.quote(self.launch['cwd'])} && {shlex.join(self.argv)}"
+        return f" cd -- {shlex.quote(self.launch['cwd'])} && {shlex.join(self.argv)}"
 
 
 def make_plan(client, agent, profile_bin):
@@ -381,6 +381,7 @@ def main(argv=None, *, herdr="herdr", profile_bin=None, lsof="lsof"):
         description="Restart idle/done agents in all running local Herdr sessions after a profile upgrade.",
         epilog="""Activate the new Home Manager generation first, then preview with --dry-run.
 Saved conversations, working directories and supported launch options are retained.
+Restart commands begin with a space to keep them out of Atuin history.
 Working/blocked/unknown agents and ambiguous launches are skipped. Recipes are
 recorded by the managed agent wrappers; recognized older launches can be recovered.
 Supported managed Safehouse launchers: omp, codex, claude and opencode.
