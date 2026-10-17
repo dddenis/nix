@@ -19,6 +19,7 @@ STORE = r"/nix/store/[a-z0-9]{32}-[^/]+"
 SHELL = re.compile(STORE + r"/bin/(?:ba)?sh\Z")
 SAFEHOUSE = re.compile(r"/nix/store/[a-z0-9]{32}-agent-safehouse-[^/]+/bin/safehouse\Z")
 RELAY = re.compile(r"/(?:private/)?tmp/herdr-session-relays-[0-9]+/pane-[\w-]+/relay\.sb\Z")
+RELAY_KINDS = {"codex", "claude", "omp"}
 BASE_FEATURES = {"agent-browser", "clipboard", "keychain", "process-control"}
 FEATURES = BASE_FEATURES | {"docker", "microphone"}
 
@@ -274,7 +275,7 @@ def _legacy(process, kind, pane):
     expected = {"AGENT_BROWSER_ARGS": "--no-sandbox"}
     if kind == "opencode":
         expected["OPENCODE_ENABLE_EXA"] = "1"
-    if kind == "codex" and "HERDR_ENV" in env:
+    if kind in RELAY_KINDS and "HERDR_ENV" in env:
         expected.update(HERDR_ENV="1", HERDR_PANE_ID=pane)
         relay = env.get("HERDR_SOCKET_PATH", "")
         profile = str(Path(relay).with_name("relay.sb"))
@@ -283,7 +284,7 @@ def _legacy(process, kind, pane):
             raise Unsupported("invalid legacy session relay")
         expected["HERDR_SOCKET_PATH"] = relay
     elif relay_profiles:
-        raise Unsupported("relay policy has no matching Codex relay environment")
+        raise Unsupported("relay policy has no matching relay environment")
     if env != expected or not rest:
         raise Unsupported("custom or missing Safehouse command environment")
     command = rest[0]

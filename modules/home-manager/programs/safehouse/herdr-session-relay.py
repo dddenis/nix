@@ -1,4 +1,4 @@
-"""Run Safehouse with a Herdr session-report relay bound to one Codex pane."""
+"""Run Safehouse with a Herdr agent-report relay bound to one agent pane."""
 
 import json
 import os
@@ -17,10 +17,28 @@ import uuid
 MAX_MESSAGE_BYTES = 4096
 IO_TIMEOUT = 0.3
 POLL_INTERVAL = 0.1
-SESSION_SOURCES = {"startup", "resume", "clear", "compact"}
-REPORT_FIELDS = {
-    "pane_id", "source", "agent", "agent_session_id", "seq",
-    "session_start_source",
+SESSION_METHOD = "pane.report_agent_session"
+STATE_METHOD = "pane.report_agent"
+# Claude also reports forks; OMP reports new, fork and resume session switches.
+SESSION_SOURCES = {"startup", "resume", "clear", "compact", "fork", "new"}
+AGENT_STATES = {"idle", "working", "blocked"}
+# Never resume_argv: Herdr would run it outside Safehouse after a restart.
+METHOD_FIELDS = {
+    SESSION_METHOD: {
+        "pane_id", "source", "agent", "agent_session_id", "agent_session_path",
+        "seq", "session_start_source",
+    },
+    STATE_METHOD: {
+        "pane_id", "source", "agent", "agent_session_id", "agent_session_path",
+        "seq", "state", "message",
+    },
+}
+# Each agent's Herdr integration needs only these methods. Session files must
+# sit directly in one project directory below the agent's own session root.
+AGENTS = {
+    "codex": {"methods": {SESSION_METHOD}, "sessions": None},
+    "claude": {"methods": {SESSION_METHOD}, "sessions": ".claude/projects"},
+    "omp": {"methods": {SESSION_METHOD, STATE_METHOD}, "sessions": ".omp/agent/sessions"},
 }
 
 
@@ -51,60 +69,101 @@ def read_message(connection):
     raise ValueError("request too large")
 
 
-def validated_report(request, pane_id):
+def session_reference(params, agent):
+    reference = {}
+    session_id = params.get("agent_session_id")
+    if session_id is not None:
+        if not isinstance(session_id, str) or len(session_id) != 36:
+            raise ValueError("invalid agent session ID")
+        if str(uuid.UUID(session_id)) != session_id:
+            raise ValueError("expected a canonical agent session UUID")
+        reference["agent_session_id"] = session_id
+    session_path = params.get("agent_session_path")
+    if session_path is not None:
+        sessions = AGENTS[agent]["sessions"]
+        if (
+            sessions is None
+            or not isinstance(session_path, str)
+            or os.path.normpath(session_path) != session_path
+            or not session_path.endswith(".jsonl")
+            or Path(session_path).parent.parent != Path.home() / sessions
+            or any(ord(character) < 32 or ord(character) == 127 for character in session_path)
+        ):
+            raise ValueError("session file is outside this agent's session directory")
+        reference["agent_session_path"] = session_path
+    return reference
+
+
+def display_text(text):
+    if not isinstance(text, str):
+        raise ValueError("invalid agent state message")
+    # Herdr draws messages in its TUI; never pass terminal control sequences.
+    return "".join(
+        " " if ord(character) < 32 or 127 <= ord(character) < 160 else character
+        for character in text
+    )
+
+
+def validated_report(request, agent, pane_id):
     if not isinstance(request, dict) or set(request) - {"id", "method", "params"}:
         raise ValueError("invalid request")
     request_id = request.get("id")
     if not isinstance(request_id, str) or len(request_id) > 128:
         raise ValueError("invalid request ID")
-    if request.get("method") != "pane.report_agent_session":
-        raise ValueError("only Codex session reports are allowed")
+    method = request.get("method")
+    if not isinstance(method, str) or method not in AGENTS[agent]["methods"]:
+        raise ValueError(f"only {agent} agent reports are allowed")
     params = request.get("params")
-    if not isinstance(params, dict) or set(params) - REPORT_FIELDS:
-        raise ValueError("invalid session report")
+    if not isinstance(params, dict) or set(params) - METHOD_FIELDS[method]:
+        raise ValueError("invalid agent report")
     if (
         params.get("pane_id") != pane_id
-        or params.get("agent") != "codex"
-        or params.get("source") != "herdr:codex"
+        or params.get("agent") != agent
+        or params.get("source") != f"herdr:{agent}"
     ):
-        raise ValueError("session report does not match this Codex pane")
-    session_id = params.get("agent_session_id")
-    if not isinstance(session_id, str) or len(session_id) != 36:
-        raise ValueError("invalid Codex session ID")
-    if str(uuid.UUID(session_id)) != session_id:
-        raise ValueError("expected a canonical Codex session UUID")
-    source = params.get("session_start_source")
-    if source is not None and (
-        not isinstance(source, str) or source not in SESSION_SOURCES
-    ):
-        raise ValueError("invalid session start source")
-    # Build a new request: never forward a client-selected method, path or seq.
+        raise ValueError(f"agent report does not match this {agent} pane")
+    # Build a new request: never forward a client-selected path, seq or command.
     report = {
         "pane_id": pane_id,
-        "agent": "codex",
-        "source": "herdr:codex",
-        "agent_session_id": session_id,
+        "agent": agent,
+        "source": f"herdr:{agent}",
+        **session_reference(params, agent),
     }
-    if source is not None:
-        report["session_start_source"] = source
-    return request_id, report
+    if method == SESSION_METHOD:
+        if "agent_session_id" not in report and "agent_session_path" not in report:
+            raise ValueError("missing agent session")
+        source = params.get("session_start_source")
+        if source is not None and (
+            not isinstance(source, str) or source not in SESSION_SOURCES
+        ):
+            raise ValueError("invalid session start source")
+        if source is not None:
+            report["session_start_source"] = source
+    else:
+        state = params.get("state")
+        if not isinstance(state, str) or state not in AGENT_STATES:
+            raise ValueError("invalid agent state")
+        report["state"] = state
+        if params.get("message") is not None:
+            report["message"] = display_text(params["message"])
+    return request_id, method, report
 
 
-def forward_report(upstream_path, upstream_identity, report, sequence):
+def forward_report(upstream_path, upstream_identity, method, report, sequence):
     # A relay for the old server must not register against a replacement server.
     if socket_identity(upstream_path) != upstream_identity:
-        raise ValueError("Herdr server socket changed; relaunch Codex")
+        raise ValueError("Herdr server socket changed; relaunch the agent")
     request_id = f"herdr-session-relay:{sequence}"
     request = {
         "id": request_id,
-        "method": "pane.report_agent_session",
+        "method": method,
         "params": {**report, "seq": sequence},
     }
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as upstream:
         upstream.settimeout(IO_TIMEOUT)
         upstream.connect(str(upstream_path))
         if socket_identity(upstream_path) != upstream_identity:
-            raise ValueError("Herdr server socket changed; relaunch Codex")
+            raise ValueError("Herdr server socket changed; relaunch the agent")
         upstream.sendall(json.dumps(request).encode() + b"\n")
         response = read_message(upstream)
     if (
@@ -136,7 +195,7 @@ def policy_text(relay_root, launch_dir, relay_socket, upstream_socket):
 """
 
 
-def run_relay(command, pane_id, upstream_path):
+def run_relay(command, agent, pane_id, upstream_path):
     upstream_identity = socket_identity(upstream_path)
     # Keep Unix socket paths below macOS's 104-byte limit. This parent is shared
     # across launches so every relay policy protects every relay's files.
@@ -191,7 +250,7 @@ def run_relay(command, pane_id, upstream_path):
                     os.execv(sandbox_command[0], sandbox_command)
                 finally:
                     # Successful exec never reaches here. The helper owns normal
-                    # cleanup after Safehouse finishes waiting for Codex to exit.
+                    # cleanup after Safehouse finishes waiting for the agent to exit.
                     try:
                         os.kill(relay_pid, signal.SIGTERM)
                     except ProcessLookupError:
@@ -217,7 +276,7 @@ def run_relay(command, pane_id, upstream_path):
             os.write(ready_write, b"1")
             os.close(ready_write)
             sequence = time.time_ns()
-            last_report = None
+            last_reports = {}
             # Bound even valid, changing reports from an untrusted caller.
             tokens = 4.0
             refill_at = time.monotonic()
@@ -230,10 +289,10 @@ def run_relay(command, pane_id, upstream_path):
                     request_id = None
                     try:
                         request = read_message(connection)
-                        request_id, report = validated_report(request, pane_id)
+                        request_id, method, report = validated_report(request, agent, pane_id)
                         if stopping or os.getppid() != owner_pid:
                             break
-                        if report != last_report:
+                        if report != last_reports.get(method):
                             now = time.monotonic()
                             tokens = min(4.0, tokens + now - refill_at)
                             refill_at = now
@@ -241,8 +300,8 @@ def run_relay(command, pane_id, upstream_path):
                                 raise ValueError("session report rate limit exceeded")
                             tokens -= 1
                             sequence = max(sequence + 1, time.time_ns())
-                            forward_report(upstream_path, upstream_identity, report, sequence)
-                            last_report = report
+                            forward_report(upstream_path, upstream_identity, method, report, sequence)
+                            last_reports[method] = report
                         response = {"id": request_id, "result": {"type": "ok"}}
                     except (OSError, ValueError, RecursionError):
                         response = {
@@ -261,16 +320,16 @@ def run_relay(command, pane_id, upstream_path):
 
 
 def main():
-    command = sys.argv[1:]
-    if not command:
-        raise ValueError("expected the Safehouse command")
+    if len(sys.argv) < 3 or sys.argv[1] not in AGENTS:
+        raise ValueError("expected a supported agent and the Safehouse command")
+    agent, command = sys.argv[1], sys.argv[2:]
     if os.environ.get("HERDR_ENV") != "1":
         os.execv(command[0], command)
     pane_id = os.environ.get("HERDR_PANE_ID", "")
     socket_path = os.environ.get("HERDR_SOCKET_PATH", "")
     if not re.fullmatch(r"w[0-9A-Za-z]+:p[0-9A-Za-z]+", pane_id) or not socket_path:
         raise ValueError("Herdr pane identity or socket path is missing")
-    return run_relay(command, pane_id, Path(socket_path).resolve(strict=True))
+    return run_relay(command, agent, pane_id, Path(socket_path).resolve(strict=True))
 
 
 if __name__ == "__main__":

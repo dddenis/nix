@@ -132,9 +132,9 @@ let
 
       launcher=(${safe}/bin/safe)
       ${lib.optionalString herdrSessionRelay ''
-        # The relay starts outside Safehouse and exposes only session reports.
+        # The relay starts outside Safehouse and exposes only this agent's reports.
         # -I keeps host Python imports independent of the project and PYTHONPATH.
-        launcher=(${pkgs.python3}/bin/python3 -I ${./herdr-session-relay.py} "''${launcher[@]}")
+        launcher=(${pkgs.python3}/bin/python3 -I ${./herdr-session-relay.py} ${lib.escapeShellArg name} "''${launcher[@]}")
       ''}
 
       exec "''${launcher[@]}" \
@@ -151,6 +151,7 @@ let
     name = "claude";
     command = "$HOME/.local/bin/claude";
     commandArgs = [ "--dangerously-skip-permissions" ];
+    herdrSessionRelay = true;
   };
 
   codex = mkAgentWrapper {
@@ -170,6 +171,7 @@ let
       "--enable=microphone"
       "--append-profile=${config.xdg.configHome}/safehouse/omp.sb"
     ];
+    herdrSessionRelay = true;
   };
 
   opencode = mkAgentWrapper {

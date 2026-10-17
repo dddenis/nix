@@ -168,8 +168,30 @@ class LaunchSafetyTests(unittest.TestCase):
         with self.assertRaises(Unsupported):
             launch._legacy(process, "codex", "w1:p2")
         process["argv"] = [arg for arg in process["argv"] if not arg.startswith("HERDR_")]
-        with self.assertRaisesRegex(Unsupported, "no matching Codex"):
+        with self.assertRaisesRegex(Unsupported, "no matching relay"):
             launch._legacy(process, "codex", "w1:p1")
+
+    def test_legacy_claude_and_omp_relays_are_recreated_not_replayed(self):
+        relay = "/private/tmp/herdr-session-relays-501/pane-abcdef/"
+        commands = {
+            "claude": [str(Path.home() / ".local/bin/claude"), "--dangerously-skip-permissions"],
+            "omp": [OMP],
+            "opencode": ["OPENCODE_ENABLE_EXA=1", str(Path.home() / ".cache/.bun/bin/opencode"), "--auto"],
+        }
+        for kind, command in commands.items():
+            with self.subTest(kind=kind):
+                process = {"argv": [BASH, SAFEHOUSE, "--enable=docker",
+                                    "--append-profile=" + relay + "relay.sb", "--",
+                                    "HERDR_ENV=1", "HERDR_PANE_ID=w1:p1",
+                                    "HERDR_SOCKET_PATH=" + relay + "report.sock",
+                                    "AGENT_BROWSER_ARGS=--no-sandbox", *command]}
+                if kind == "opencode":
+                    # OpenCode is not launched behind a relay.
+                    with self.assertRaisesRegex(Unsupported, "no matching relay"):
+                        launch._legacy(process, kind, "w1:p1")
+                    continue
+                safe, _ = launch._legacy(process, kind, "w1:p1")
+                self.assertEqual(safe, ["--enable=docker"])
 
 
 if __name__ == "__main__":
