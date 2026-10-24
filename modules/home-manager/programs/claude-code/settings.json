@@ -1,4 +1,5 @@
 {
+  "syncClaudeAiPlugins": false,
   "attribution": {
     "commit": "",
     "pr": ""
@@ -26,7 +27,6 @@
     "superpowers@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
-  "syncClaudeAiPlugins": false,
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
@@ -37,5 +37,6 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "editorMode": "vim"
+  "editorMode": "vim",
+  "idleCompaction": false
 }
