@@ -151,6 +151,9 @@ let
     name = "claude";
     command = "$HOME/.local/bin/claude";
     commandArgs = [ "--dangerously-skip-permissions" ];
+    safehouseArgs = lib.optionals config.ddd.programs.claude-code.enable [
+      "--append-profile=${config.xdg.configHome}/safehouse/claude.sb"
+    ];
     herdrSessionRelay = true;
   };
 
@@ -194,6 +197,24 @@ in
     xdg.configFile."safehouse/nix.sb".source =
       config.lib.file.mkOutOfStoreSymlink
         "${config.home.configPath}/modules/home-manager/programs/safehouse/nix.sb";
+
+    xdg.configFile."safehouse/claude.sb" = lib.mkIf config.ddd.programs.claude-code.enable {
+      text = ''
+        ;; ~/.claude/settings.json is an out-of-store symlink into this repo.
+        (allow file-read* file-write*
+            (subpath "${config.home.configPath}/modules/home-manager/programs/claude-code")
+        )
+
+        ;; Claude follows one symlink hop and stages its temp file in the
+        ;; read-only home-manager-files store dir. Only EACCES triggers its
+        ;; in-place fallback through the full symlink chain, so let the
+        ;; filesystem deny that create instead of the sandbox (EPERM).
+        ;; Sandbox regexes ignore {n} counts.
+        (allow file-write-create
+            (regex #"^/nix/store/[0-9a-z]+-home-manager-files/\.claude/settings\.json\.tmp\.[0-9]+\.[0-9a-f]+$")
+        )
+      '';
+    };
 
     xdg.configFile."safehouse/omp.sb" = lib.mkIf config.ddd.programs.omp.enable {
       text = ''
