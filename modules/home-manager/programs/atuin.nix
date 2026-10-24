@@ -15,7 +15,7 @@ in
       ];
 
       settings = {
-        sync_address = "https://atuin.mrbl.io";
+        sync_address = "https://atuin.ddden.dev";
         key_path = config.sops.secrets."atuin/key".path;
         inline_height = 20;
         sync.records = true;
