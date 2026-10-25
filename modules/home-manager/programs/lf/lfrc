@@ -9,6 +9,7 @@ set hidden
 set incsearch
 set incfilter
 set drawbox
+set info size
 
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
@@ -104,3 +105,7 @@ cmd follow_link %{{
     lf -remote "send $id select '$(readlink $f)'"
 }}
 map gl follow_link
+
+# Calculate total sizes of all directories in the current directory.
+cmd calcdirsizes :unselect; invert; calcdirsize; unselect
+map S calcdirsizes
