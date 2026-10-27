@@ -24,9 +24,16 @@
     "command": "jq -r '[([.model.display_name, .effort.level // empty] | join(\" \")), .workspace.current_dir, (.context_window.used_percentage // empty | \"ctx \\(floor)%\"), (.rate_limits.five_hour // empty | \"5h \\(.used_percentage | floor)% (\\(.resets_at | strflocaltime(\"%H:%M\")))\"), (.rate_limits.seven_day // empty | \"7d \\(.used_percentage | floor)% (\\(.resets_at | strflocaltime(\"%a %H:%M\")))\")] | join(\" | \")'"
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
+    "superpowers@superpowers-marketplace": true
   },
-  "extraKnownMarketplaces": {},
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  },
   "syntaxHighlightingDisabled": false,
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
