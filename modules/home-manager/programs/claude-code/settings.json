@@ -1,4 +1,5 @@
 {
+  "syncClaudeAiSkills": false,
   "syncClaudeAiPlugins": false,
   "attribution": {
     "commit": "",
