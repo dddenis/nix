@@ -198,6 +198,10 @@ in
       config.lib.file.mkOutOfStoreSymlink
         "${config.home.configPath}/modules/home-manager/programs/safehouse/nix.sb";
 
+    # Store copy, not an out-of-store symlink: an agent sandboxed in this repo
+    # cannot widen SSH agent access for other sessions without a rebuild.
+    xdg.configFile."safehouse/ssh-agent.sb".source = ./ssh-agent.sb;
+
     xdg.configFile."safehouse/claude.sb" = lib.mkIf config.ddd.programs.claude-code.enable {
       text = ''
         ;; ~/.claude/settings.json is an out-of-store symlink into this repo.

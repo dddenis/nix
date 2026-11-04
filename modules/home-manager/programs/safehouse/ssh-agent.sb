@@ -1,0 +1,14 @@
+;; Appended by the safe wrapper only with --enable=ssh. In herdr and WezTerm
+;; panes SSH_AUTH_SOCK is herdr's stable symlink to WezTerm's agent proxy, which
+;; forwards to the macOS ssh-agent that --enable=ssh already opens. Allow both
+;; paths because the connect() check may see either. Read and connect only, so
+;; the sandbox cannot replace the symlink host processes use.
+(allow file-read*
+    (home-literal "/.config/herdr/herdr.sock.agent")
+    (regex (string-append "^" HOME_DIR "/\\.local/share/wezterm/agent\\.[0-9]+$"))
+)
+
+(allow network-outbound
+    (remote unix-socket (home-literal "/.config/herdr/herdr.sock.agent"))
+    (remote unix-socket (path-regex (string-append "^" HOME_DIR "/\\.local/share/wezterm/agent\\.[0-9]+$")))
+)

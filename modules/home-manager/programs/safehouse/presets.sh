@@ -2,8 +2,10 @@
 # built-in feature names are passed through to Safehouse.
 # Usage: safe --enable=aws aws ...
 #        codex --safehouse --enable=aws --
+# --enable=ssh also appends ssh-agent.sb so herdr/WezTerm agent sockets work.
 safehouse_args=()
 safehouse_aws_enabled=0
+safehouse_ssh_enabled=0
 safehouse_uses_full_env=0
 safehouse_command_started=0
 
@@ -18,6 +20,10 @@ safehouse_expand_features() {
     case "${feature,,}" in
       aws)
         safehouse_aws_enabled=1
+        ;;
+      ssh)
+        safehouse_ssh_enabled=1
+        safehouse_args+=("--enable=$feature")
         ;;
       *)
         safehouse_args+=("--enable=$feature")
@@ -80,6 +86,11 @@ while [ "$#" -gt 0 ]; do
       ;;
   esac
 done
+
+if [ "$safehouse_ssh_enabled" = 1 ]; then
+  # Prepend: without --, everything after the command belongs to the command.
+  safehouse_args=("--append-profile=$HOME/.config/safehouse/ssh-agent.sb" "${safehouse_args[@]}")
+fi
 
 if [ "$safehouse_aws_enabled" = 1 ] && [ "$safehouse_uses_full_env" != 1 ]; then
   # --env already inherits these variables and conflicts with --env-pass.
