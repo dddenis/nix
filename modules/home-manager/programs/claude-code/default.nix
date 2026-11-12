@@ -10,6 +10,10 @@ in
   config = lib.mkIf cfg.enable {
     # home.packages = [ pkgs.unstable.claude-code ];
 
+    home.packages = [
+      pkgs.poppler-utils # pdftoppm/pdftotext, used by claude to read PDFs
+    ];
+
     home.file.".claude/settings.json".source =
       config.lib.file.mkOutOfStoreSymlink
         "${config.home.configPath}/modules/home-manager/programs/claude-code/settings.json";
