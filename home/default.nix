@@ -22,7 +22,7 @@ let
     builtins.listToAttrs (lib.flatten allConfigs);
 
   homeConfig = system: config:
-    let hostName = toString (lib.baseDirOf config);
+    let hostName = baseNameOf (dirOf config);
 
     in
     lib.nameValuePair hostName (inputs.home-manager.lib.homeManagerConfiguration {

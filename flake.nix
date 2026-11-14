@@ -14,7 +14,7 @@
 
   outputs = inputs@{ self, nixos, nixpkgs, ... }:
     (rec {
-      lib = (import ./lib/extended-lib.nix nixos.lib) // {
+      lib = nixos.lib // {
         stateVersion = "23.11";
       };
 
