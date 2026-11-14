@@ -1,25 +1,15 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
-let
-  cfg = config.ddd.programs.ripgrep;
-  configPath = "ripgrep/.ripgreprc";
+let cfg = config.ddd.programs.ripgrep;
 
 in
 {
   options.ddd.programs.ripgrep.enable = lib.mkEnableOption "ripgrep";
 
   config = lib.mkIf cfg.enable {
-    home = {
-      packages = [ pkgs.ripgrep ];
-
-      sessionVariables = {
-        RIPGREP_CONFIG_PATH = "${config.xdg.configHome}/${configPath}";
-      };
+    programs.ripgrep = {
+      enable = true;
+      arguments = [ "--type-add" "gql:*.graphql" ];
     };
-
-    xdg.configFile."${configPath}".text = ''
-      --type-add
-      gql:*.graphql
-    '';
   };
 }
