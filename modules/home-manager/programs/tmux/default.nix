@@ -8,7 +8,6 @@
 let
   cfg = config.ddd.programs.tmux;
 
-  tmux = "${pkgs.tmux}/bin/tmux";
   tmuxinator = "${pkgs.unstable.tmuxinator}/bin/tmuxinator";
 
   paneResizeAmount = "5";
@@ -136,14 +135,6 @@ in
       "tmux"
       "tmux-256color"
       "tmux-direct"
-    ];
-
-    ddd.services.xserver.desktopManager.gnome.keybindings.custom = [
-      {
-        name = "Start tmux";
-        binding = "<Super>Return";
-        command = "${lib.getExe config.ddd.programs.wezterm.package} start ${tmux}";
-      }
     ];
   };
 }

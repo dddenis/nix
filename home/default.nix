@@ -10,9 +10,6 @@ let
     aarch64-linux = [
       ./abra/default.nix
     ];
-    x86_64-linux = [
-      ./ddd-pc/default.nix
-    ];
   };
 
   homeConfigs = configs:

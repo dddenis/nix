@@ -10,9 +10,6 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixos";
-
-    kmonad.url = "github:kmonad/kmonad?dir=nix";
-    kmonad.inputs.nixpkgs.follows = "nixos";
   };
 
   outputs = inputs@{ self, nixos, nixpkgs, ... }:
@@ -25,17 +22,10 @@
         inherit lib nixpkgs;
       };
 
-      nixosConfigurations = import ./hosts {
-        inputs = removeAttrs inputs [ "self" ];
-        outputs = self;
-      };
-
       homeConfigurations = import ./home {
         inputs = removeAttrs inputs [ "self" ];
         outputs = self;
       };
-
-      nixosModules.default = import ./modules/nixos;
 
       homeModules.default = import ./modules/home-manager;
 
