@@ -24,9 +24,9 @@ in
             allBranchesLogCmds = [ "${logCmd} --all" ];
             skipHookPrefix = "--wip-- [skip ci]";
 
-            pagers = [{
+            diffRenderers = [{
               colorArg = "always";
-              pager = "${delta} --paging=never";
+              command = "${delta} --paging=never";
             }];
           };
 
