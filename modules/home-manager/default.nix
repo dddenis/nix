@@ -7,7 +7,6 @@
     ./profiles
     ./programs
     ./services
-    ./theme
 
     ./secrets.nix
   ];

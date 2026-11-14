@@ -1,6 +1,5 @@
 {
   imports = [
-    ./alacritty.nix
     ./atool.nix
     ./atuin.nix
     ./bat.nix
@@ -14,7 +13,6 @@
     ./herdr
     ./homebrew.nix
     ./karabiner.nix
-    ./lazydocker
     ./lazygit.nix
     ./less.nix
     ./lf
@@ -22,7 +20,6 @@
     ./omp
     ./opencode
     ./process-compose
-    ./psql.nix
     ./ripgrep.nix
     ./safehouse
     ./ssh.nix
