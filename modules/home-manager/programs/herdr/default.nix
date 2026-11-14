@@ -8,9 +8,6 @@
 let
   cfg = config.ddd.programs.herdr;
   herdrConfigPath = "${config.home.configPath}/modules/home-manager/programs/herdr";
-  soundTogglePluginPath = "${herdrConfigPath}/plugins/sound-toggle";
-  workspaceLastTabPluginPath = "${herdrConfigPath}/plugins/workspace-last-tab";
-  workspaceLastWorkspacePluginPath = "${herdrConfigPath}/plugins/workspace-last-workspace";
   lsof = if pkgs.stdenv.isDarwin then "/usr/sbin/lsof" else "${pkgs.lsof}/bin/lsof";
   restartAgents = pkgs.writeShellScriptBin "herd-restart-agents" ''
     exec ${pkgs.python3}/bin/python3 -I -B -c \
@@ -28,19 +25,11 @@ in
     # Manual after switching generations; --dry-run previews without stopping agents.
     home.packages = [ pkgs.unstable.herdr restartAgents ];
 
-    home.activation.linkHerdrSoundToggle = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \
-        ${lib.escapeShellArg soundTogglePluginPath}
-    '';
-
-    home.activation.linkHerdrWorkspaceLastTab = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \
-        ${lib.escapeShellArg workspaceLastTabPluginPath}
-    '';
-
-    home.activation.linkHerdrWorkspaceLastWorkspace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${pkgs.unstable.herdr}/bin/herdr plugin link \
-        ${lib.escapeShellArg workspaceLastWorkspacePluginPath}
+    home.activation.linkHerdrPlugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      for plugin in sound-toggle workspace-last-tab workspace-last-workspace; do
+        run ${pkgs.unstable.herdr}/bin/herdr plugin link \
+          ${lib.escapeShellArg "${herdrConfigPath}/plugins"}/"$plugin"
+      done
     '';
 
     xdg.configFile = {
