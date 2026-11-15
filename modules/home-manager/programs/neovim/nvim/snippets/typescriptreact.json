@@ -1,0 +1,14 @@
+{
+  "React component": {
+    "prefix": "rc",
+    "body": [
+      "export type ${1}Props = {",
+      "\t$0",
+      "};",
+      "",
+      "export const $1 = (props: ${1}Props) => {",
+      "\treturn <></>;",
+      "};"
+    ]
+  }
+}

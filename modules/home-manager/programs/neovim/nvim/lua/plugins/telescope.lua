@@ -1,3 +1,27 @@
+local function builtin(name, opts)
+    return function()
+        require("telescope.builtin")[name](opts)
+    end
+end
+
+local function grep(opts)
+    require("telescope").extensions.live_grep_args.live_grep_args(opts)
+end
+
+local function grep_word(opts)
+    local word = vim.fn.expand("<cword>")
+    opts = vim.tbl_extend("force", opts or {}, {
+        default_text = vim.trim(require("telescope-live-grep-args.helpers").quote(word)) .. " -F ",
+    })
+    grep(opts)
+end
+
+local function with_buffer_cwd(fn)
+    return function()
+        fn({ cwd = require("telescope.utils").buffer_dir() })
+    end
+end
+
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -6,46 +30,23 @@ return {
             "nvim-telescope/telescope-live-grep-args.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
-        keys = function()
-            local builtin = require("telescope.builtin")
-            local utils = require("telescope.utils")
-            local grep = require("telescope").extensions.live_grep_args.live_grep_args
-            local grep_helpers = require("telescope-live-grep-args.helpers")
-
-            local function with_buffer_cwd(fn)
-                return function(opts, ...)
-                    opts = vim.tbl_extend("force", opts or {}, {
-                        cwd = utils.buffer_dir(),
-                    })
-                    fn(opts, ...)
-                end
-            end
-
-            local function find_files()
-                builtin.find_files({
+        cmd = "Telescope",
+        keys = {
+            {
+                "<leader><leader>",
+                builtin("find_files", {
                     find_command = { "fd", "--type", "f", "--color", "never", "--hidden" },
-                })
-            end
-
-            local function grep_word(opts)
-                local word = vim.fn.expand("<cword>")
-                opts = vim.tbl_extend("force", opts or {}, {
-                    default_text = vim.trim(grep_helpers.quote(word)) .. " -F ",
-                })
-                grep(opts)
-            end
-
-            return {
-                { "<leader><leader>", find_files, desc = "Find Files" },
-                { "<leader>,", builtin.buffers, desc = "Buffers" },
-                { "<leader>fr", builtin.oldfiles, desc = "Recent Files" },
-                { "<leader>/", grep, desc = "Grep Files (root)" },
-                { "<leader>s.", with_buffer_cwd(grep), desc = "Grep Files (cwd)" },
-                { "<leader>sw", grep_word, desc = "Grep Word (root)" },
-                { "<leader>sW", with_buffer_cwd(grep_word), desc = "Grep Word (cwd)" },
-                { "<leader>'", builtin.resume, desc = "Resume Search" },
-            }
-        end,
+                }),
+                desc = "Find Files",
+            },
+            { "<leader>,", builtin("buffers"), desc = "Buffers" },
+            { "<leader>fr", builtin("oldfiles"), desc = "Recent Files" },
+            { "<leader>/", grep, desc = "Grep Files (root)" },
+            { "<leader>s.", with_buffer_cwd(grep), desc = "Grep Files (cwd)" },
+            { "<leader>sw", grep_word, desc = "Grep Word (root)" },
+            { "<leader>sW", with_buffer_cwd(grep_word), desc = "Grep Word (cwd)" },
+            { "<leader>'", builtin("resume"), desc = "Resume Search" },
+        },
         opts = function()
             local lga_actions = require("telescope-live-grep-args.actions")
 

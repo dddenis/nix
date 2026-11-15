@@ -4,7 +4,6 @@ vim.g.maplocalleader = " "
 vim.opt.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
 
-vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.undofile = true
 

@@ -18,34 +18,35 @@ return {
         end,
     },
     {
-        "stevearc/dressing.nvim",
-        lazy = true,
-        dependencies = {
-            "nvim-telescope/telescope.nvim",
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = {
+            -- vim.ui.input
+            input = { enabled = true },
+            -- vim.ui.select, opened on the list so j/k/<cr> work right away
+            picker = {
+                enabled = true,
+                sources = {
+                    select = { focus = "list" },
+                },
+            },
         },
-        init = function()
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.select = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.select(...)
-            end
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.input = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.input(...)
-            end
-        end,
-        opts = function()
-            return {
-                input = {
-                    insert_only = false,
-                },
-                select = {
-                    telescope = require("telescope.themes").get_dropdown({
-                        initial_mode = "normal",
-                    }),
-                },
-            }
-        end,
+        keys = {
+            {
+                "<leader>bd",
+                function()
+                    Snacks.bufdelete()
+                end,
+                desc = "Delete Buffer",
+            },
+            {
+                "<leader>bD",
+                function()
+                    Snacks.bufdelete({ force = true })
+                end,
+                desc = "Delete Buffer (force)",
+            },
+        },
     },
 }

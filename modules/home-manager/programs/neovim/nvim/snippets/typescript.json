@@ -1,0 +1,38 @@
+{
+  "Generator function": {
+    "prefix": "gg",
+    "body": ["function* () {", "\t$0", "}"]
+  },
+  "Effect.gen": {
+    "prefix": "egg",
+    "body": ["Effect.gen(function* () {", "\t$0", "})"]
+  },
+  "Function returning Effect.gen": {
+    "prefix": "fegg",
+    "body": [
+      "function $1($2) {",
+      "\treturn Effect.gen(function* () {",
+      "\t\t$0",
+      "\t});",
+      "}"
+    ]
+  },
+  "yield*": {
+    "prefix": "yy",
+    "body": "yield* $0"
+  },
+  "const yield*": {
+    "prefix": "cyy",
+    "body": "const $1 = yield* $0;"
+  },
+  "Schema struct": {
+    "prefix": "ess",
+    "body": [
+      "const $1 = S.Struct({",
+      "\t$0",
+      "});",
+      "",
+      "export interface $1 extends S.Schema.Type<typeof $1> {}"
+    ]
+  }
+}

@@ -1,13 +1,5 @@
 return {
     {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                clojure_lsp = {},
-            },
-        },
-    },
-    {
         "Olical/conjure",
         ft = { "clojure" },
         lazy = true,
@@ -21,13 +13,24 @@ return {
         end,
     },
     {
+        -- nvim-cmp source, used by blink.cmp through blink.compat
         "PaterJason/cmp-conjure",
         lazy = true,
-        config = function()
-            local cmp = require("cmp")
-            local config = cmp.get_config()
-            table.insert(config.sources, { name = "conjure" })
-            return cmp.setup(config)
-        end,
+        dependencies = {
+            { "saghen/blink.compat", version = "2.*", opts = {} },
+        },
+    },
+    {
+        "saghen/blink.cmp",
+        opts = {
+            sources = {
+                per_filetype = {
+                    clojure = { inherit_defaults = true, "conjure" },
+                },
+                providers = {
+                    conjure = { name = "conjure", module = "blink.compat.source" },
+                },
+            },
+        },
     },
 }

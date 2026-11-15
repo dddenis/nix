@@ -32,28 +32,26 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         opts = {
             on_attach = function(buffer)
-                local gs = package.loaded.gitsigns
-                local map = MapWith({ buffer = buffer })
+                local gs = require("gitsigns")
+                local function map(mode, lhs, rhs)
+                    vim.keymap.set(mode, lhs, rhs, { buffer = buffer })
+                end
 
                 map("n", "]c", function()
                     if vim.wo.diff then
-                        return "]c"
+                        vim.cmd.normal({ "]c", bang = true })
+                    else
+                        gs.nav_hunk("next")
                     end
-                    vim.schedule(function()
-                        gs.next_hunk()
-                    end)
-                    return "<Ignore>"
-                end, { expr = true })
+                end)
 
                 map("n", "[c", function()
                     if vim.wo.diff then
-                        return "[c"
+                        vim.cmd.normal({ "[c", bang = true })
+                    else
+                        gs.nav_hunk("prev")
                     end
-                    vim.schedule(function()
-                        gs.prev_hunk()
-                    end)
-                    return "<Ignore>"
-                end, { expr = true })
+                end)
 
                 map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<cr>")
                 map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<cr>")
@@ -68,9 +66,9 @@ return {
                 map("n", "<leader>gD", function()
                     gs.diffthis("~")
                 end)
-                map("n", "<leader>gtd", gs.toggle_deleted)
+                map("n", "<leader>gtd", gs.preview_hunk_inline)
 
-                map({ "o", "x" }, "ih", "<cmd><C-u>Gitsigns select_hunk<cr>")
+                map({ "o", "x" }, "ih", gs.select_hunk)
             end,
         },
     },

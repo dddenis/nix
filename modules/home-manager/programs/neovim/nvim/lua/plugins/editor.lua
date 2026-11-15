@@ -6,27 +6,21 @@ return {
     "tpope/vim-unimpaired",
     { "windwp/nvim-autopairs", opts = {} },
     {
-        "numToStr/Comment.nvim",
-        dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-        },
-        keys = {
-            { "gc", mode = { "n", "v" } },
-            { "gb", mode = { "n", "v" } },
-        },
-        config = function()
-            require("Comment").setup({
-                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-                ignore = "^$",
-            })
-        end,
-    },
-    {
+        -- context-aware commentstring (e.g. JSX) for the built-in gc/gcc
         "JoosepAlviste/nvim-ts-context-commentstring",
         lazy = true,
         opts = {
             enable_autocmd = false,
         },
+        init = function()
+            local get_option = vim.filetype.get_option
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.filetype.get_option = function(filetype, option)
+                return option == "commentstring"
+                        and require("ts_context_commentstring.internal").calculate_commentstring()
+                    or get_option(filetype, option)
+            end
+        end,
     },
     {
         "christoomey/vim-tmux-navigator",
@@ -42,13 +36,6 @@ return {
         config = function()
             vim.g.floaterm_opener = "edit"
         end,
-    },
-    {
-        "famiu/bufdelete.nvim",
-        keys = {
-            { "<leader>bd", "<cmd>Bdelete<cr>", desc = "Delete Buffer" },
-            { "<leader>bD", "<cmd>Bdelete!<cr>", desc = "Delete Buffer (force)" },
-        },
     },
     {
         "haya14busa/vim-asterisk",
@@ -68,6 +55,15 @@ return {
             { "nvim-treesitter/nvim-treesitter-context", opts = { max_lines = 3 } },
         },
         config = function()
+            -- enable treesitter highlighting and indentation
+            local function start(buf)
+                vim.treesitter.start(buf)
+                vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end
+
+            -- buffers waiting for a parser that is being installed, by language
+            local pending = {} ---@type table<string, integer[]>
+
             vim.api.nvim_create_autocmd("FileType", {
                 callback = function(args)
                     local lang = vim.treesitter.language.get_lang(args.match)
@@ -78,14 +74,29 @@ return {
                     if not parsers[lang] then
                         return
                     end
-                    -- auto-install missing parsers
-                    if not vim.list_contains(require("nvim-treesitter.config").get_installed(), lang) then
-                        require("nvim-treesitter.install").install({ lang })
+                    if vim.list_contains(require("nvim-treesitter.config").get_installed(), lang) then
+                        start(args.buf)
                         return
                     end
-                    -- enable treesitter highlighting and indentation
-                    vim.treesitter.start(args.buf)
-                    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    -- auto-install missing parsers, once per language
+                    if pending[lang] then
+                        table.insert(pending[lang], args.buf)
+                        return
+                    end
+                    pending[lang] = { args.buf }
+                    require("nvim-treesitter").install({ lang }):await(vim.schedule_wrap(function()
+                        local bufs = pending[lang]
+                        pending[lang] = nil
+                        if not vim.treesitter.language.add(lang) then
+                            return
+                        end
+                        for _, buf in ipairs(bufs) do
+                            local ft = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype
+                            if ft and vim.treesitter.language.get_lang(ft) == lang then
+                                start(buf)
+                            end
+                        end
+                    end))
                 end,
             })
 
