@@ -57,6 +57,7 @@ in
       ddd.agents.enable = true;
 
       programs = {
+        fd.enable = true;
         home-manager.enable = true;
         nix-index.enable = true;
         zoxide.enable = true;
@@ -77,7 +78,6 @@ in
         codex.enable = true;
         delta.enable = true;
         direnv.enable = true;
-        fd.enable = true;
         fzf.enable = true;
         git.enable = true;
         herdr.enable = true;

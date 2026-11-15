@@ -7,7 +7,6 @@
     ./codex
     ./delta.nix
     ./direnv.nix
-    ./fd.nix
     ./fzf.nix
     ./git.nix
     ./herdr
