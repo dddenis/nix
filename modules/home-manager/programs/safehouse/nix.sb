@@ -57,6 +57,20 @@
 ;; Datadog Pup session registry; credentials live in Keychain.
 (allow file-read* (home-subpath "/Library/Application Support/pup"))
 
+;; slackcli: workspaces.json lists the stored profiles; the session tokens
+;; live in Keychain, so the login only works with --enable=keychain.
+;; Read-only, and without browser-profile, so a sandboxed agent can use the
+;; stored login but cannot change it or reach the login browser's cookies.
+(allow file-read*
+    (home-literal "/.config/slackcli")
+    (home-literal "/.config/slackcli/workspaces.json")
+)
+;; Update-notifier cache and diagnostic log.
+(allow file-read* file-write*
+    (home-literal "/.config/slackcli/update-check.json")
+    (home-subpath "/Library/Logs/slackcli")
+)
+
 ;; Audio output for afplay-based hooks.
 (allow mach-lookup
     (global-name "com.apple.audio.AudioComponentRegistrar")
