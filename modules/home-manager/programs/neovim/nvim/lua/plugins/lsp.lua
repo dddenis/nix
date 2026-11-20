@@ -87,6 +87,7 @@ return {
                 "svelte",
                 "terraformls",
                 "ts_ls",
+                "tsc",
             })
         end,
     },
